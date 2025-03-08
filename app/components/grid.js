@@ -1,7 +1,7 @@
 "use client";
 import GridItem from "./grid-item";
 
-export default function ItemGrid({ items }) {
+export default function ItemGrid({ items, itemsList, setItemsList }) {
 
     function addGrid(amount) {
         let s = "";
@@ -14,7 +14,7 @@ export default function ItemGrid({ items }) {
     return (
         <div className="grid grid-cols-6 grid-rows-4 w-full gap-4 bg-sky-200">
             {items.map(item => (
-                <GridItem key={item.id} id={item.id} name={item.name} price={item.price}></GridItem>
+                <GridItem key={item.id} id={item.id} name={item.name} price={item.price} itemsList={itemsList} setItemsList={setItemsList} ></GridItem>
             ))}
         </div>
     );
