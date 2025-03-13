@@ -4,7 +4,7 @@ export default function Header() {
 
 
     return (
-        <h1 className="text-5xl mt-4 ml-4 dark:text-white text-black"><a href="/">FoodTrack</a></h1>
+        <h1 className="text-5xl mt-4 ml-4 text-black"><a href="/">FoodTrack</a></h1>
     );
 
 }

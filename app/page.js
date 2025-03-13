@@ -36,9 +36,8 @@ export default function Home() {
   **/
 
   return (
-    <div className="flex flex-col bg-sky-150 h-screen">
-      <Header></Header>
-      <div className="flex bg-sky-50 h-full">
+    <div className="flex flex-col h-screen">
+      <div className="flex h-full">
         <Sidebar></Sidebar>
         <ItemGrid items={items} setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
         <ItemList itemsList={itemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal}></ItemList>

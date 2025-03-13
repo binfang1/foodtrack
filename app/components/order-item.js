@@ -2,7 +2,7 @@
 
 export default function OrderItem() {
     return (
-        <div className="w-full bg-sky-400">
+        <div className="p-[12px] w-full bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9]">
             <p>ID</p>
             <p>CLIENT</p>
             <p>CREATION TIME</p>

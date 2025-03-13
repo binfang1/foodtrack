@@ -10,7 +10,7 @@ export default function GridItem({ id, name, price, itemsList, setItemsList }) {
     }
 
     return (
-        <div onClick={onClick} className="text-center flex flex-col justify-center h-full bg-sky-300" key={id}>
+        <div onClick={onClick} className="cursor-pointer text-center flex flex-col justify-center h-[150px] w-[295px] bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9]" key={id}>
             <h2>{id}</h2>
             <h1>{name}</h1>
             <h3>{price}</h3>
