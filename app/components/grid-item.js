@@ -4,15 +4,7 @@ export default function GridItem({ id, name, price, itemsList, setItemsList }) {
 
     function onClick() {
         const newItemsList = [...itemsList]
-        if (newItemsList.some(item => item.name == name)) {
-            const index = newItemsList.findIndex(item => item.name === name);
-            const oldPrice = newItemsList[index].price / newItemsList[index].quantity
-            newItemsList[index].quantity += 1;
-            newItemsList[index].price = newItemsList[index].price + oldPrice;
-        }
-        else {
-            newItemsList.push({"quantity": 1, "name": name, "price": price});
-        }
+        newItemsList.push({"name": name, "price": price});
         setItemsList(newItemsList);
         console.log(itemsList);
     }

@@ -2,10 +2,10 @@ import { NextResponse, NextRequest } from 'next/server'
 import mysql from  'mysql2/promise';
 
 const connection = await mysql.createConnection({
-  host: 'localhost',
+  host: '127.0.0.1',
   user: 'root',
   database: 'foodtrack',
-  password: 'MyPassword'
+  password: 'foodtrack'
 });
 
 export async function GET(request) {
