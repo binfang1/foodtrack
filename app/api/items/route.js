@@ -5,7 +5,7 @@ const connection = await mysql.createConnection({
   host: 'localhost',
   user: 'root',
   database: 'foodtrack',
-  password: 'MyPassword'
+  password: 'foodtrack'
 });
 
 export async function GET(request) {
