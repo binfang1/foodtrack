@@ -23,24 +23,22 @@ async function getData() {
 }
 
 export default function Home() {
-  const [items, setItems] = useState([{id: 0, name: "Item 1", price: 1.00}, {id: 1, name: "Item 2", price: 2.00}]);
+  const [items, setItems] = useState([]);
   const [itemsList, setItemsList] = useState([]);
   const [subTotal, setSubtotal] = useState(0.00);
   const [tax, setTax] = useState(0.00);
   const [total, setTotal] = useState(0.00);
 
-  /**
   useEffect(() => {
     getData().then((response) => setItems(response))
   }, []);
-  **/
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="flex h-full">
+      <div className="flex bg-[#E4E4EF] h-full">
         <Sidebar></Sidebar>
         <ItemGrid items={items} setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
-        <ItemList itemsList={itemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal}></ItemList>
+        <ItemList itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal}></ItemList>
       </div>
     </div>
   );
