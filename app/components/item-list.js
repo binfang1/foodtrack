@@ -50,7 +50,7 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
     }
 
     return (
-        <div className="text-[18px] pl-[32px] py-[32px] flex h-full flex-col w-[500px] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+        <div className="text-[18px] pl-[32px] py-[32px] flex h-full flex-col w-[550px] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
             <div className="overflow-auto touch-auto">
                 {itemsList.map((item, index) => (
                     <div key={index} className="w-full">
@@ -63,9 +63,9 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
                             <div className="flex flex-col p-[8px]">
                                 <div className="invisible">a</div>
                                 <div className="flex w-[420px]">
-                                    <button type = "button" className="cursor-pointer" onClick = {() => remove(index)}>🗑</button>
                                     <p className="ml-[8px]">{item.name}:</p>
-                                    <p className="ml-auto pr-[32px]">${item.price.toFixed(2)}</p>
+                                    <p className="ml-auto pr-[16px]">${item.price.toFixed(2)}</p>
+                                    <button type = "button" className="cursor-pointer" onClick = {() => remove(index)}>🗑</button>
                                 </div>
                             </div>
 
