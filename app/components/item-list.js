@@ -3,8 +3,37 @@
 import { useEffect } from "react";
 
 
-export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList  }) {
 
+export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList  }) {
+   
+    async function postData() {
+        const url = "http://localhost:3000/api/createOrder";
+        try {
+          const response = await fetch(url , {
+            'method': 'POST',
+            'body': JSON.stringify(
+                { client: 'test', 
+                    subtotal: subTotal, 
+                    tax: tax, 
+                    total: total, 
+                    items: itemsList.toString(), 
+                    notes: "test_notes", 
+                    status: false, 
+                    creation_datetime: new Date().toISOString().slice(0, 19).replace('T', ' '), 
+                    completed_datetime: null },
+              )
+          });
+          if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+          }
+      
+          const json = await response.json();
+          return json;
+        } catch (error) {
+          console.error(error.message);
+        }
+      }
+    
 
 
     useEffect(() => {
@@ -22,7 +51,9 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
         //console.log(total);
     }, [itemsList]);
 
-
+    const saveOrder = () => {
+        postData().then((response) => console.log(response))
+    }
 
     const remove = (index) => {
         const newItemsList = [...itemsList]
@@ -93,7 +124,7 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
                 </div>
                 
                 <div className="flex justify-between mt-[32px]">
-                    <button className="py-[14px] w-[136px] bg-[#BABABA] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Save</button>
+                    <button onClick = {() => saveOrder()} className="py-[14px] w-[136px] bg-[#BABABA] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Save</button>
                     <button className="py-[14px] w-[136px] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Pay</button>
                 </div>
                 
