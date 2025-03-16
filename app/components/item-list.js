@@ -33,6 +33,22 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
           console.error(error.message);
         }
       }
+
+    async function pay() {
+        try {
+            const response = await fetch("http://localhost:3000/api/items", {
+                'method': 'POST',
+                'body' : JSON.stringify({
+                    'h': 'h'
+
+                })
+            });
+
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
     
 
 

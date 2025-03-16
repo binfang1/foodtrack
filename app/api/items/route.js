@@ -25,5 +25,35 @@ export async function GET(request) {
 
   // response with the JSON object
 
-
 }
+
+export async function POST(request) {
+  const { id, name, price, desc } = await request.json();
+
+  try {
+    const [results, fields] = await connection.query(
+      'UPDATE items VALUES (?, ?, ?) WHERE id = ?', 
+      [name, price, desc, id]
+    )
+
+    return NextResponse.json();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function DELETE(request) {
+  const { id } = await request.json();
+
+  try {
+    const [results, fields] = await connection.query(
+      'DELETE FROM items WHERE id = ?', [id]
+    )
+
+    return NextResponse.json();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+

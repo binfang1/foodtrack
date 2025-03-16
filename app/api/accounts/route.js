@@ -12,7 +12,7 @@ export async function GET(request) {
 
   try {
     const [results, fields] = await connection.query(
-      'SELECT * FROM `orders`'
+      'SELECT * FROM `accounts`'
     );
   
     console.log(results); // results contains rows returned by server
@@ -33,7 +33,7 @@ export async function DELETE(request) {
 
   try {
     const [results, fields] = await connection.query(
-      'DELETE FROM order WHERE id = ?', [id]
+      'DELETE FROM accounts WHERE id = ?', [id]
     )
 
     return NextResponse.json();
@@ -43,12 +43,12 @@ export async function DELETE(request) {
 }
 
 export async function POST(request) {
-  const { id, client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime } = await request.json();
+  const { id, username, password, admin } = await request.json();
 
   try {
     const [results, fields] = await connection.query(
-      'UPDATE order VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?', 
-      [client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, id]
+      'UPDATE accounts VALUES (?, ?, ?) WHERE id = ?', 
+      [username, password, admin, id]
     )
 
     return NextResponse.json();
@@ -56,4 +56,3 @@ export async function POST(request) {
     console.log(err);
   }
 }
-
