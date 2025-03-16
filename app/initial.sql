@@ -1,4 +1,8 @@
-CREATE TABLE IF NOT EXISTS items (
+DROP DATABASE IF EXISTS `menu_items`;
+CREATE DATABASE `menu_items`;
+USE `menu_items`;
+
+CREATE TABLE items (
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,
     name TEXT,
     price REAL,
