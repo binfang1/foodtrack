@@ -7,7 +7,7 @@ import { useEffect } from "react";
 export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList  }) {
    
     async function postData() {
-        const url = "http://localhost:3000/api/createOrder";
+        const url = "http://localhost:3000/api/orders";
         try {
           const response = await fetch(url , {
             'method': 'POST',

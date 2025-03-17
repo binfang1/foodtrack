@@ -28,6 +28,30 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
+    try {
+        
+        const { name, price, description } = await request.json()
+
+        const [results, fields] = await connection.query(
+            'INSERT INTO items (name, price, description) VALUES (?,?,?)',
+            [name, price, description]
+        );
+
+        return new Response(JSON.stringify(
+            { message: "success" },
+            {
+              headers: { "content-type": "application/json" },
+              status: 200,
+            }
+          )
+      );
+      } catch (err) {
+        console.log(err);
+      }
+  // response with the JSON object
+}
+
+export async function PUT(request) {
   const { id, name, price, desc } = await request.json();
 
   try {
