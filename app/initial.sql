@@ -30,7 +30,4 @@ CREATE TABLE IF NOT EXISTS accounts (
 );
 
 INSERT INTO items VALUES (1, "test item", 100.00, "test description");
-INSERT INTO orders VALUES (1, "test client", 100.00, 1.00, 101.00, "test items",
-"test notes", "test status", NOW(), NOW()
-);
 INSERT INTO accounts VALUES (1, "Test account", "Test password", 1);

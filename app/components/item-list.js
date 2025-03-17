@@ -16,7 +16,7 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
                     subtotal: subTotal, 
                     tax: tax, 
                     total: total, 
-                    items: itemsList.toString(), 
+                    items: JSON.stringify(itemsList), 
                     notes: "test_notes", 
                     status: false, 
                     creation_datetime: new Date().toISOString().slice(0, 19).replace('T', ' '), 
@@ -68,7 +68,9 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
     }, [itemsList]);
 
     const saveOrder = () => {
-        postData().then((response) => console.log(response))
+        postData().then((response) => console.log(response));
+        setItemsList([]);
+        alert("Order has been added")
     }
 
     const remove = (index) => {
