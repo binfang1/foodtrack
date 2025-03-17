@@ -75,7 +75,7 @@ export default function Home() {
             <div className="w-[220px] bg-[#E4E4EF]">
                 <div className="bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] p-[8px]  flex flex-col">
                     <div className="px-[8px] text-[14px]">
-                        <h1 className="text-[#757575]">Welcome {loggedIn.username}</h1>
+                        <h1 className="text-[#757575]">Welcome: {loggedIn.username}</h1>
                         <h2 className="font-semibold text-[20px] mb-[-10px] cursor-pointer" onClick = {() => setPage("home")}>FoodTrack</h2>
                         <hr className="border-[#D9D9D9] my-[20px]"></hr>
                     </div>
