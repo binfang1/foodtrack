@@ -11,7 +11,7 @@ export default function OrderItem({order}) {
             <p>{order.status}</p>
             <div className="py-12">
                 {JSON.parse(order.items).map(item => (
-                    <p key = {counter++}>{item.name}</p>
+                    <p key = {counter++}>{item.name} - QTY: {item.quantity}</p>
                 ))}
             </div>
         </div>

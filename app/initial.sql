@@ -29,5 +29,9 @@ CREATE TABLE IF NOT EXISTS accounts (
     admin BOOLEAN
 );
 
-INSERT INTO items VALUES (1, "test item", 100.00, "test description");
-INSERT INTO accounts VALUES (1, "Test account", "Test password", 1);
+INSERT INTO items VALUES (1, "Almond Chicken", 10.00, "test description");
+INSERT INTO items VALUES (2, "Hot Pot", 50.00, "test description");
+INSERT INTO items VALUES (3, "Fried Rice", 10.00, "test description");
+INSERT INTO items VALUES (4, "Dumplings", 5.00, "test description");
+INSERT INTO items VALUES (5, "Orange Chicken", 12.00, "test description");
+INSERT INTO accounts VALUES (1, "Admin", "Admin", 1);

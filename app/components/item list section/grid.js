@@ -12,7 +12,8 @@ export default function ItemGrid({ items, itemsList, setItemsList }) {
     }
 
     return (
-        <div className="p-[16px] grid grid-cols-4 grid-rows-4 w-[1150px] gap-[34px] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+        <div className="p-[16px] flex w-[1150px] gap-[34px] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+            
             {items.map(item => (
                 <GridItem key={item.id} id={item.id} name={item.name} price={item.price} itemsList={itemsList} setItemsList={setItemsList} ></GridItem>
             ))}

@@ -2,11 +2,13 @@
 
 import Header from "./components/header.js";
 import Sidebar from "./components/sidebar.js";
-import ItemGrid from "./components/grid.js";
+import ItemGrid from "./components/item list section/grid.js";
 import { useState, useEffect } from "react";
-import ItemList from "./components/item-list.js";
-import Login from "./components/login.js";
-import OrderGrid from "./components/order-grid";
+import ItemList from "./components/items sections/item-list.js";
+import Login from "./components/login/login.js";
+import OrderGrid from "./components/order section/order-grid.js";
+import Settings from "./components/settings/settings.js";
+import Items from "./components/view items/items.js"
 
 async function getData() {
   const url = "http://localhost:3000/api/items";
@@ -51,21 +53,20 @@ export default function Home() {
   const [page, setPage] = useState("home");
 
   useEffect(() => {
+    getAccounts().then((response) => setAccounts(response))
     getData().then((response) => setItems(response))
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     getAccounts().then((response) => setAccounts(response))
+    getData().then((response) => setItems(response))
   }, []);
 
   useEffect(() => {
     setPage(page);
   }, [page]);
 
-  function LogOut() {
-    setItemsList([]);
-    setLoggedIn();
-  }
+
 
   return (
     <div className="flex flex-col h-screen">
@@ -82,14 +83,14 @@ export default function Home() {
                     <div className = "text-[18px] h-[880px]">
                         <a onClick = {() => setPage("home")} className="px-[8px] cursor-pointer">Home</a>
                         <hr className="border-[#D9D9D9] my-[20px] mx-[8px]"></hr>
-                        <a className="px-[8px] cursor-pointer">Items</a>
+                        <a onClick = {() => setPage("items")} className="px-[8px] cursor-pointer">Add Items</a>
                         <hr className="border-[#D9D9D9] my-[20px] mx-[8px]"></hr>
                         <a onClick = {() => setPage("orders")} className="px-[8px] cursor-pointer">Orders</a>
                         <hr className="border-[#D9D9D9] my-[20px] mx-[8px]"></hr>
                         <a className="px-[8px] cursor-pointer">History</a>
                         <hr className="border-[#D9D9D9] my-[20px] mx-[8px]"></hr>
                     </div>
-                    <a className="px-[8px] mb-[24px] cursor-pointer" onClick = {() => LogOut()}>Log Out</a>
+                    <a className="px-[8px] mb-[24px] cursor-pointer" onClick = {() => setPage("settings")}>Settings</a>
                 </div>
             </div>
             {page == "home" &&
@@ -103,11 +104,19 @@ export default function Home() {
                 <OrderGrid></OrderGrid>
               </div>
             }
-            {page == "items"
+            {page == "items" &&
+              <div>
+                <Items items={items} setItemsList={setItemsList} itemsList={itemsList}></Items>
+              </div>
 
             }
             {page == "history"
 
+            }
+            {page == "settings" && 
+              <div>
+                <Settings setLoggedIn = {setLoggedIn} setItemsList = {setItemsList} setPage = {setPage}></Settings>
+              </div>
             }
             
           </div>

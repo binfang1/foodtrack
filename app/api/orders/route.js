@@ -15,9 +15,9 @@ export async function GET(request) {
       'SELECT * FROM `orders`'
     );
   
-    console.log(results); // results contains rows returned by server
-    console.log(fields); // fields contains extra meta data about results, if available
-
+    //console.log(results); // results contains rows returned by server
+    //console.log(fields); // fields contains extra meta data about results, if available
+    console.log("Connected to Orders!")
     return NextResponse.json(results)
   } catch (err) {
     console.log(err);
@@ -37,6 +37,7 @@ export async function POST(request) {
           'INSERT INTO orders (client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime) VALUES (?,?,?,?,?,?,?,?,?)',
           [client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime]
       );
+      console.log(client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime)
 
       return new Response(JSON.stringify(
           { message: "success" },

@@ -15,9 +15,9 @@ export async function GET(request) {
       'SELECT * FROM `accounts`'
     );
   
-    console.log(results); // results contains rows returned by server
-    console.log(fields); // fields contains extra meta data about results, if available
-
+    //console.log(results); // results contains rows returned by server
+    //console.log(fields); // fields contains extra meta data about results, if available
+    console.log("Connected to Accounts!")
     return NextResponse.json(results)
   } catch (err) {
     console.log(err);
