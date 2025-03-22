@@ -105,7 +105,7 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
     }
 
     return (
-        <div className="text-[0.84vw] py-[1.7vw] pl-[1.7vw] flex h-full flex-col w-[30vw] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+        <div className="text-[0.84vw] py-[1.7vw] pl-[1.7vw] flex h-[100vh] flex-col w-[30vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
             <div className="overflow-auto touch-auto">
                 {itemsList.map((item, index) => (
                     <div key={index} className="w-full pr-[1.7vw]">

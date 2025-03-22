@@ -12,6 +12,7 @@ import { GoNote } from "react-icons/go";
 import { GoHistory } from "react-icons/go";
 import { GoChecklist } from "react-icons/go";
 import { GoGear } from "react-icons/go";
+import Head from 'next/head'
 
 
 
@@ -42,7 +43,6 @@ async function getAccounts() {
     }
 
     const json = await response.json();
-    console.log(json);
     return json;
   } catch (error) {
     console.error(error.message);
@@ -59,7 +59,7 @@ export default function Home() {
   const [loggedIn, setLoggedIn] = useState();
   const [page, setPage] = useState("home");
   const [back, setBack] = useState(true);
-  const [width, setWidth] = useState(innerWidth);
+  const [width, setWidth] = useState(500);
 
   useEffect(() => {
     getAccounts().then((response) => setAccounts(response))
@@ -87,7 +87,7 @@ export default function Home() {
       <div className="bg-[#E4E4EF] h-full w-full">
         {loggedIn ? (
           <div className="flex bg-[#E4E4EF] h-full">
-            <div className="w-[15vw] bg-[#E4E4EF]">
+            <div className="w-[15vw] bg-[#E4E4EF] max-[769px]:w-[30vw]">
                 <div className="bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] p-[0.84vw]  flex flex-col">
                     <div className="text-[0.85vw]">
                         <h1 className="text-[#757575]">Welcome, {loggedIn.username}</h1>
@@ -128,13 +128,11 @@ export default function Home() {
             </div>
             {page == "home" &&
               <div>
-                {768 >= width && 
-                  <div className="flex">
+                  <div className="flex max-[769px]:hidden">
                     <ItemGrid items={items} setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
                     <ItemList itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal}></ItemList>
                   </div>
-                } : 
-                  <div>
+                  <div className='hidden max-[769px]:block'>
                     {back ? (
                       <ItemGrid items={items} setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
                     ) : (
