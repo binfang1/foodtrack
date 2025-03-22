@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GoTrash } from "react-icons/go";
 import Items from "../view items/items";
 
@@ -8,7 +8,13 @@ import Items from "../view items/items";
 
 
 export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList  }) {
-   
+    const [popupEnabled, popupIsEnabled] = useState(false);
+    const [toggle, setToggle] = useState(false)
+    const [notes, setNotes] = useState("");
+    const [name, setName] = useState("");
+    const [mode, setMode] = useState("");
+
+
     async function postData() {
         const url = "http://localhost:3000/api/orders";
         try {
@@ -65,19 +71,21 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
         setSubTotal(tempSubTotal);
         setTax(tempTax);
         setTotal(tempTotal);
-        //console.log(subTotal);
-        //console.log(tax);
-        //console.log(total);
     }, [itemsList]);
 
-    const saveOrder = () => {
+    const saveButton = () => {
         if (itemsList.length != 0) {
-            console.log(itemsList.length)
-            postData().then((response) => console.log(response));
-            setItemsList([]);
-            alert("Order has been added")
+            popupIsEnabled(!popupEnabled);
+            changeBrightness();
         }
     }
+
+    const closePopUp = () => {
+        popupIsEnabled(!popupEnabled);
+        changeBrightness()
+    }
+
+    
 
     const remove = (index) => {
         const newItemsList = [...itemsList]
@@ -104,7 +112,25 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
         setItemsList(newItemsList);
     }
 
+    const changeBrightness = () => {
+        setToggle(!toggle);
+    }
+
+    useEffect(() => {
+        if (toggle) {
+            document.getElementById('darken').style.filter = 'brightness(50%)'
+            document.getElementById('darken-grid').style.filter = 'brightness(50%)'
+        }
+        else {
+            document.getElementById('darken').style.filter = 'brightness(100%)'
+            document.getElementById('darken-grid').style.filter = 'brightness(100%)'
+        }
+    }, [toggle])
+
+
+
     return (
+    <div className="h-[100vh] w-[30vw] bg-[#D9D9D9] h-full drop-shadow-md ">
         <div className="text-[0.84vw] py-[1.7vw] pl-[1.7vw] flex h-[100vh] flex-col w-[30vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
             <div className="overflow-auto touch-auto">
                 {itemsList.map((item, index) => (
@@ -149,12 +175,34 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
                 </div>
                 
                 <div className="flex justify-between mt-[1.7vw]">
-                    <button onClick = {() => saveOrder()} className="py-[0.73vw] w-[7.09vw] bg-[#BABABA] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Save</button>
+                    <button onClick = {() => saveButton()} className="py-[0.73vw] w-[7.09vw] bg-[#BABABA] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Save</button>
                     <button className="py-[0.73vw] w-[7.09vw] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Pay</button>
                 </div>
-                
             </div>
         </div>
+        {popupEnabled ? (
+            <div className = "absolute bottom-0 left-[-0.01vw] top-[-0.01vw] right-0 flex justify-center items-center w-[85vw] h-[100vh] bg-black/50">
+                <div className ="absolute flex flex-col top-[20%] left-[-35%] absolute p-12 max-w-[400px] w-full h-full max-h-[500px] bg-white">
+                    <div className="flex justify-end">
+                        <button className="cursor-pointer text-black text-3xl w-10 h-10" onClick = {() => closePopUp()}>X</button>
+                    </div>
+                    <h1 className="text-black text-2xl mb-4">"Lul"</h1>
+                    {mode == "Save" &&
+                        <form onSubmit={1} className="flex flex-col gap-[20px]">
+        
+                            
+                        
+                        </form>
+                    }
+                    {mode == "Pay" &&
+                        <form onSubmit={1} className="flex flex-col gap-[20px]">
+  
+                        </form>
+                    }
+                </div>
+            </div>
+        ) : ("")}
+    </div>
     );
 
 }

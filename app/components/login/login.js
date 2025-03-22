@@ -7,8 +7,6 @@ export default function Login({loggedIn, setLoggedIn, accounts}) {
 
     const checkLogin = (event) => {
         event.preventDefault();
-        console.log(password, user)
-        console.log(accounts)
         if (accounts.some(account => account.username == user)) {
             const index = accounts.findIndex(account => account.username == user);
             if (accounts[index].password == password) {
@@ -32,17 +30,19 @@ export default function Login({loggedIn, setLoggedIn, accounts}) {
     };
 
     return (
-        <div className="w-[300px] h-[300px] mt-[200px] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] m-auto">
-            <form onSubmit={checkLogin} className="flex flex-col m-auto gap-[32px] text-center">
-                <h1 className="text-[32px]">Login</h1>
-                <label>Username:
-                    <input onChange={getUser} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black" type="text" required/>
-                </label>
-                <label>Password:
-                    <input onChange={getPass} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black" type="text" required/>
-                </label>
-                <input className="bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12 m-auto" type = "submit" value = "Login"/>
-            </form>
+        <div className="w-[100vw] h-[100vh] flex">
+            <div className="w-[15.625vw] h-[15.625vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] m-auto">
+                <form onSubmit={checkLogin} className="flex flex-col m-auto gap-[1.7vw] text-center">
+                    <h1 className="text-[1.7vw]">Login</h1>
+                    <label className="text-[0.7vw]">Username:
+                        <input onChange={getUser} className = "text-[1.7vw]border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="text" required/>
+                    </label>
+                    <label className="text-[0.7vw]">Password:
+                        <input onChange={getPass} className = "border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="text" required/>
+                    </label>
+                    <input className="text-[0.7vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[4.7vw] h-[1.6vw] m-auto" type = "submit" value = "Login"/>
+                </form>
+            </div>
         </div>
     )
 }

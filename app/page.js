@@ -27,7 +27,6 @@ async function getData() {
     }
 
     const json = await response.json();
-    console.log(json);
     return json;
   } catch (error) {
     console.error(error.message);
@@ -59,7 +58,6 @@ export default function Home() {
   const [loggedIn, setLoggedIn] = useState();
   const [page, setPage] = useState("home");
   const [back, setBack] = useState(true);
-  const [width, setWidth] = useState(500);
 
   useEffect(() => {
     getAccounts().then((response) => setAccounts(response))
@@ -73,7 +71,6 @@ export default function Home() {
 
   useEffect(() => {
     setPage(page);
-    console.log(width)
   }, [page]);
 
 
@@ -148,7 +145,7 @@ export default function Home() {
             }
             {page == "items" &&
               <div>
-                <Items items={items} setItemsList={setItemsList} itemsList={itemsList}></Items>
+                <Items items={items} setItemsList={setItemsList} itemsList={itemsList} page = {page} setPage = {setPage} setItems={setItems}></Items>
               </div>
 
             }
