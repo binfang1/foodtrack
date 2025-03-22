@@ -33,7 +33,7 @@ export default function Items({ items, itemsList, setItemsList }) {
         } catch (error) {
           console.error(error.message);
         }
-      }
+    }
 
     async function postData() {
         const url = "http://localhost:3000/api/items";
@@ -100,7 +100,7 @@ export default function Items({ items, itemsList, setItemsList }) {
 
 
     return (
-        <div className="relative p-[16px] w-[1700px] flex flex-col bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+        <div className="relative p-[16px] w-[85vw] flex flex-col bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
             <button  onClick = {openPopupAdd} className="cursor-pointer bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-12">Add Item</button>
             {items.map(item => (
                 <div className = "flex mt-4 p-2 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-96 h-16" key={item.id}>
@@ -112,7 +112,7 @@ export default function Items({ items, itemsList, setItemsList }) {
                 </div>
             ))}
             {popupEnabled ? (
-                        <main className = "absolute bottom-0 left-0 top-0 right-0 flex justify-center items-center w-[1698px] bg-slate-950/50">
+                        <main className = "absolute bottom-0 left-0 top-0 right-0 flex justify-center items-center w-[85vw] bg-slate-950/50">
                             <div className ="flex flex-col absolute p-12 max-w-[400px] w-full h-full max-h-[500px] bg-white">
                                 <div className="flex justify-end">
                                     <button className="cursor-pointer text-black text-3xl w-10 h-10" onClick = {() => popupIsEnabled(false)}>X</button>

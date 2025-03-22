@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
+import { GoTrash } from "react-icons/go";
+import Items from "../view items/items";
+
 
 
 
@@ -68,9 +71,12 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
     }, [itemsList]);
 
     const saveOrder = () => {
-        postData().then((response) => console.log(response));
-        setItemsList([]);
-        alert("Order has been added")
+        if (itemsList.length != 0) {
+            console.log(itemsList.length)
+            postData().then((response) => console.log(response));
+            setItemsList([]);
+            alert("Order has been added")
+        }
     }
 
     const remove = (index) => {
@@ -99,51 +105,52 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
     }
 
     return (
-        <div className="text-[18px] pl-[32px] py-[32px] flex h-full flex-col w-[550px] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+        <div className="text-[0.84vw] py-[1.7vw] pl-[1.7vw] flex h-full flex-col w-[30vw] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
             <div className="overflow-auto touch-auto">
                 {itemsList.map((item, index) => (
-                    <div key={index} className="w-full">
-                        <div className="flex py-[4px]">
+                    <div key={index} className="w-full pr-[1.7vw]">
+                        <div className="flex">
                             <div className="flex flex-col">
-                                <button type = "button" className="p-[1px] cursor-pointer drop-shadow-sm rounded-xl border-solid border-3 border-[#D9D9D9]  " onClick = {() => increment(index)}>+</button>
-                                <p className="p-[2px] text-center">{item.quantity}</p>
-                                <button type = "button" className="p-[1px] cursor-pointer drop-shadow-sm rounded-xl border-solid border-3 border-[#D9D9D9]" onClick = {() => decrement(index)}>-</button>
+                                <button type = "button w-full" className="p-[0.104vw] cursor-pointer rounded-xl border-solid border-[0.8px] border-black" onClick = {() => increment(index)}>+</button>
+                                <p className="p-[0.21vw] w-[1.83vw] text-center">{item.quantity}</p>
+                                <button type = "button w-full" className="p-[0.052vw] cursor-pointer rounded-xl border-solid border-[0.8px] border-black" onClick = {() => decrement(index)}>-</button>
                             </div>
-                            <div className="flex flex-col p-[8px]">
+                            <div className="flex flex-col w-full h-full mt-auto mb-auto">
                                 <div className="invisible">a</div>
-                                <div className="flex w-[420px]">
-                                    <p className="ml-[8px]">{item.name}:</p>
-                                    <p className="ml-auto pr-[16px]">${item.price.toFixed(2)}</p>
-                                    <button type = "button" className="cursor-pointer" onClick = {() => remove(index)}>🗑</button>
+                                <div className="flex">
+                                    <p className="ml-[0.21vw]">{item.name}:</p>
+                                    <p className="ml-auto mr-[0.42vw]">${item.price.toFixed(2)}</p>
+                                        <button type = "button" className="cursor-pointer" onClick = {() => remove(index)}><GoTrash /></button>
+                                    
                                 </div>
+                                <div className="invisible">a</div>
                             </div>
 
                         </div>
-                        <hr className="border-[#D9D9D9] my-[20px] mb-[40px] mr-[32px]"></hr>
+                        <hr className="border-[#D9D9D9] my-[1.042vw] mb-[2.08vw]"></hr>
                     </div>
                     ))}
             </div>
-            <div className="mt-auto pr-[32px]">
-                <hr className="border-[#D9D9D9] my-[32px]"></hr>
-
-                <div className="flex py-[4px]">
+            <div className="mt-auto pr-[1.7vw]">
+                <hr className="border-[#D9D9D9] my-[1.7vw]"></hr>
+                <div className="flex py-[0.21vw]">
                     <p>SubTotal:</p>
                     <p className="ml-auto">${subTotal.toFixed(2)}</p>
                 </div>
 
-                <div className="flex py-[4px]">
+                <div className="flex py-[0.21vw]">
                     <p>Tax:</p>
                     <p className="ml-auto">${tax.toFixed(2)}</p>
                 </div>
 
-                <div className="flex py-[4px]">
+                <div className="flex py-[0.21vw]">
                     <p>Total:</p>
                     <p className="ml-auto">${total.toFixed(2)}</p>
                 </div>
                 
-                <div className="flex justify-between mt-[32px]">
-                    <button onClick = {() => saveOrder()} className="py-[14px] w-[136px] bg-[#BABABA] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Save</button>
-                    <button className="py-[14px] w-[136px] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Pay</button>
+                <div className="flex justify-between mt-[1.7vw]">
+                    <button onClick = {() => saveOrder()} className="py-[0.73vw] w-[7.09vw] bg-[#BABABA] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Save</button>
+                    <button className="py-[0.73vw] w-[7.09vw] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Pay</button>
                 </div>
                 
             </div>

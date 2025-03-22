@@ -12,11 +12,13 @@ export default function ItemGrid({ items, itemsList, setItemsList }) {
     }
 
     return (
-        <div className="p-[16px] flex w-[1150px] gap-[34px] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
-            
-            {items.map(item => (
-                <GridItem key={item.id} id={item.id} name={item.name} price={item.price} itemsList={itemsList} setItemsList={setItemsList} ></GridItem>
-            ))}
+        <div className="w-[55vw] gap-y-[1vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+            <div className="flex flex-wrap w-[50vw] gap-[1vw] m-auto mt-[1.625vw]">
+                {items.map(item => (
+                    <GridItem key={item.id} id={item.id} name={item.name} price={item.price} itemsList={itemsList} setItemsList={setItemsList} ></GridItem>
+                ))}
+            </div>
+
         </div>
     );
 
