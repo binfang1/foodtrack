@@ -28,7 +28,7 @@ export default function OrderGrid() {
     }, []);
 
     return (
-        <div className="p-[16px] w-[1700px] h-[100vh] grid grid-cols-6 grid-rows-2 gap-4 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+        <div className="p-[16px] w-[85vw] h-[100vh] grid grid-cols-6 grid-rows-2 gap-4 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
                 {orders.map((order, index) => (
                     <div key = {index}>
                         <OrderItem order = {order}></OrderItem>

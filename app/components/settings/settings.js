@@ -9,7 +9,7 @@ export default function Settings({setLoggedIn,  setItemsList, setPage}) {
       }
 
     return (
-        <div className="p-[16px] w-[1700px] flex flex-col bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+        <div className="p-[16px] w-[85vw] flex flex-col bg-white h-[100vh] drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
             <a className="cursor-pointer" onClick = {() => LogOut()}>Log Out</a>
         </div>
     );

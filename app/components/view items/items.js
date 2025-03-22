@@ -2,7 +2,22 @@
 import GridItem from "../../components/item list section/grid-item"
 import { useState, useEffect } from "react";
 
-export default function Items({ items, itemsList, setItemsList }) {
+async function getData() {
+    const url = "http://localhost:3000/api/items";
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+  
+      const json = await response.json();
+      return json;
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+export default function Items({ items, itemsList, setItemsList, setPage, page, setItems }) {
     const [popupEnabled, popupIsEnabled] = useState(false);
     const [currentItem, setCurrentItem] = useState();
     const [editTitle, setEditTitle] = useState("")
@@ -64,7 +79,24 @@ export default function Items({ items, itemsList, setItemsList }) {
         event.preventDefault();
         putData().then((response) => alert("Item Has Been Updated!"));
         setItemsList([]);
+        popupIsEnabled(!popupEnabled);
+        changeBrightness();
+        getData().then((response) => setItems(response))
     }
+
+    const addItem = (event) => {
+        event.preventDefault();
+        postData().then((response) => alert("Item Has Been Added!"));
+        setItemsList([]);
+        popupIsEnabled(!popupEnabled);
+        changeBrightness();
+        getData().then((response) => setItems(response))
+    }
+
+      useEffect(() => {
+        setItemsList(itemsList);
+      }, [itemsList]);
+
 
     const changeBrightness = () => {
         setToggle(!toggle);
@@ -79,11 +111,6 @@ export default function Items({ items, itemsList, setItemsList }) {
         }
     }, [toggle])
 
-    const addItem = (event) => {
-        event.preventDefault();
-        postData().then((response) => alert("Item Has Been Added!"));
-        setItemsList([]);
-    }
 
     const getName = (event) => {
         event.preventDefault();
@@ -99,8 +126,8 @@ export default function Items({ items, itemsList, setItemsList }) {
         popupIsEnabled(!popupEnabled);
         changeBrightness()
         setEditTitle("Editing")
-        setName("");
-        setPrice(0);
+        setName(item.name);
+        setPrice(item.price);
         setCurrentItem(item)
     }
 
@@ -124,20 +151,22 @@ export default function Items({ items, itemsList, setItemsList }) {
 
     return (
         <div className="relative h-[100vh] w-[85vw] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
-            <div className=" p-[16px] h-[100vh] flex flex-col bg-white rounded-xl" >
-                <button  onClick = {openPopupAdd} className="cursor-pointer bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-12">Add Item</button>
-                {items.map(item => (
-                    <div className = "flex mt-4 p-2 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-96 h-16" key={item.id}>
-                        <div>
-                            <p>Name: {item.name} </p>
-                            <p>Price:${item.price.toFixed(2)}</p>
+            <div className="p-[0.8vw] h-[100vh] flex flex-col bg-white rounded-xl" >
+                <button onClick = {openPopupAdd} className="mb-[0.8vw] cursor-pointer bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-12">Add Item</button>
+                <div className="overflow-auto ">    
+                    {items.map(item => (
+                        <div className = "flex mt-4 p-2 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-96 h-16" key={item.id}>
+                            <div>
+                                <p>Name: {item.name} </p>
+                                <p>Price:${item.price.toFixed(2)}</p>
+                            </div>
+                            <p className="cursor-pointer ml-auto justify-self-center hover:underline" onClick = {() => openPopupEdit(item)}>edit</p>
                         </div>
-                        <p className="cursor-pointer ml-auto justify-self-center hover:underline" onClick = {() => openPopupEdit(item)}>edit</p>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
             {popupEnabled ? (
-                        <div className = "absolute bottom-0 left-[calc(-0.01vw-1.5px)] top-[calc(-0.01vw-1.5px)] right-0 flex justify-center items-center w-[85vw] h-[100vh] bg-black/50">
+                        <div className = "absolute bottom-0 left-[-0.2vw] top-[-0.2vw] right-0 flex justify-center items-center w-[85vw] h-[100vh] bg-black/50">
                             <div className ="flex flex-col absolute p-12 max-w-[400px] w-full h-full max-h-[500px] bg-white">
                                 <div className="flex justify-end">
                                     <button className="cursor-pointer text-black text-3xl w-10 h-10" onClick = {() => closePopUp()}>X</button>
