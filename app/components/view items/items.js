@@ -8,6 +8,7 @@ export default function Items({ items, itemsList, setItemsList }) {
     const [editTitle, setEditTitle] = useState("")
     const [price, setPrice] = useState(0.00);
     const [name, setName] = useState("");
+    const [toggle, setToggle] = useState(false)
 
 
     async function putData() {
@@ -65,6 +66,19 @@ export default function Items({ items, itemsList, setItemsList }) {
         setItemsList([]);
     }
 
+    const changeBrightness = () => {
+        setToggle(!toggle);
+    }
+
+    useEffect(() => {
+        if (toggle) {
+            document.getElementById('darken').style.filter = 'brightness(50%)'
+        }
+        else {
+            document.getElementById('darken').style.filter = 'brightness(100%)'
+        }
+    }, [toggle])
+
     const addItem = (event) => {
         event.preventDefault();
         postData().then((response) => alert("Item Has Been Added!"));
@@ -83,6 +97,7 @@ export default function Items({ items, itemsList, setItemsList }) {
 
     const openPopupEdit = (item) => {
         popupIsEnabled(!popupEnabled);
+        changeBrightness()
         setEditTitle("Editing")
         setName("");
         setPrice(0);
@@ -91,31 +106,41 @@ export default function Items({ items, itemsList, setItemsList }) {
 
     const openPopupAdd = () => {
         popupIsEnabled(!popupEnabled);
+        changeBrightness()
         setEditTitle("Adding")
         setName("");
         setPrice(0);
         setCurrentItem()
     }
 
+    const closePopUp = () => {
+        popupIsEnabled(!popupEnabled);
+        changeBrightness()
+    }
+
+    
+
 
 
     return (
-        <div className="relative p-[16px] w-[85vw] flex flex-col bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
-            <button  onClick = {openPopupAdd} className="cursor-pointer bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-12">Add Item</button>
-            {items.map(item => (
-                <div className = "flex mt-4 p-2 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-96 h-16" key={item.id}>
-                    <div>
-                        <p>Name: {item.name} </p>
-                        <p>Price:${item.price.toFixed(2)}</p>
+        <div className="relative h-[100vh] w-[85vw] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+            <div className=" p-[16px] h-[100vh] flex flex-col bg-white rounded-xl" >
+                <button  onClick = {openPopupAdd} className="cursor-pointer bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-12">Add Item</button>
+                {items.map(item => (
+                    <div className = "flex mt-4 p-2 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-96 h-16" key={item.id}>
+                        <div>
+                            <p>Name: {item.name} </p>
+                            <p>Price:${item.price.toFixed(2)}</p>
+                        </div>
+                        <p className="cursor-pointer ml-auto justify-self-center hover:underline" onClick = {() => openPopupEdit(item)}>edit</p>
                     </div>
-                    <p className="cursor-pointer ml-auto justify-self-center hover:underline" onClick = {() => openPopupEdit(item)}>edit</p>
-                </div>
-            ))}
+                ))}
+            </div>
             {popupEnabled ? (
-                        <main className = "absolute bottom-0 left-0 top-0 right-0 flex justify-center items-center w-[85vw] bg-slate-950/50">
+                        <div className = "absolute bottom-0 left-[calc(-0.01vw-1.5px)] top-[calc(-0.01vw-1.5px)] right-0 flex justify-center items-center w-[85vw] h-[100vh] bg-black/50">
                             <div className ="flex flex-col absolute p-12 max-w-[400px] w-full h-full max-h-[500px] bg-white">
                                 <div className="flex justify-end">
-                                    <button className="cursor-pointer text-black text-3xl w-10 h-10" onClick = {() => popupIsEnabled(false)}>X</button>
+                                    <button className="cursor-pointer text-black text-3xl w-10 h-10" onClick = {() => closePopUp()}>X</button>
                                 </div>
                                 <h1 className="text-black text-2xl mb-4">{editTitle} "{currentItem ? currentItem.name : "New Item"}"</h1>
                                 {editTitle == "Editing" &&
@@ -154,8 +179,8 @@ export default function Items({ items, itemsList, setItemsList }) {
                                     </form>
                                 }
                             </div>
-                        </main>
+                        </div>
                     ) : ("")}
-                </div>
+        </div>
     );
 }

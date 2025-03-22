@@ -83,11 +83,11 @@ export default function Home() {
 
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen overflow-hidden">
       <div className="bg-[#E4E4EF] h-full w-full">
         {loggedIn ? (
-          <div className="flex bg-[#E4E4EF] h-full">
-            <div className="w-[15vw] bg-[#E4E4EF] max-[769px]:w-[30vw]">
+          <div className="flex bg-[#E4E4EF] h-[100vh]]">
+            <div className="w-[15vw] bg-[#E4E4EF] max-[769px]:w-[30vw]" id = 'darken'>
                 <div className="bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] p-[0.84vw]  flex flex-col">
                     <div className="text-[0.85vw]">
                         <h1 className="text-[#757575]">Welcome, {loggedIn.username}</h1>
