@@ -29,11 +29,11 @@ export async function GET(request) {
 
 export async function POST(request) {
     try {
-        const { name, price, description } = await request.json()
+        const { name, price, category, description } = await request.json()
 
         const [results, fields] = await connection.query(
-            'INSERT INTO items (name, price, description) VALUES (?,?,?)',
-            [name, price, description]
+            'INSERT INTO items (name, price, description) VALUES (?,?,?,?)',
+            [name, price, category, description]
         );
 
         return new Response(JSON.stringify(
@@ -51,12 +51,12 @@ export async function POST(request) {
 }
 
 export async function PUT(request) {
-  const { id, name, price, desc } = await request.json();
+  const { id, name, price, desc, category } = await request.json();
 
   try {
     const [results, fields] = await connection.query(
-      'UPDATE items SET name = ?, price = ?, description = ? WHERE id = ?', 
-      [name, price, desc, id]
+      'UPDATE items SET name = ?, price = ?, category = ?, description = ? WHERE id = ?', 
+      [name, price, category, desc, id]
     )
 
     return new Response(JSON.stringify(
