@@ -21,12 +21,12 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
           const response = await fetch(url , {
             'method': 'POST',
             'body': JSON.stringify(
-                { client: 'test', 
+                { client: name, 
                     subtotal: subTotal, 
                     tax: tax, 
                     total: total, 
                     items: JSON.stringify(itemsList), 
-                    notes: "test_notes", 
+                    notes: notes, 
                     status: false, 
                     creation_datetime: new Date().toISOString().slice(0, 19).replace('T', ' '), 
                     completed_datetime: null },
@@ -76,14 +76,31 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
     const saveButton = () => {
         if (itemsList.length != 0) {
             popupIsEnabled(!popupEnabled);
+            setMode("Save");
             changeBrightness();
         }
     }
 
+    const saveOrder = () => {
+        event.preventDefault();
+        postData().then((response) => console.log(response));
+        setItemsList([]);
+        alert("Order has been added")
+        closePopUp();
+    }
+
     const closePopUp = () => {
         popupIsEnabled(!popupEnabled);
-        changeBrightness()
+        changeBrightness();
     }
+
+    const getName = (event) => {
+        setName(event.target.value);
+    };
+
+    const getNotes = (event) => {
+        setNotes(event.target.value);
+    };
 
     
 
@@ -185,16 +202,25 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
         </div>
         {popupEnabled ? (
             <div className = "absolute bottom-0 left-[-0.01vw] top-[-0.01vw] right-0 flex justify-center items-center w-[85vw] h-[100vh] bg-black/50">
-                <div className ="absolute flex flex-col top-[20%] left-[-35%] absolute p-12 max-w-[400px] w-full h-full max-h-[500px] bg-white">
+                <div className ="absolute flex flex-col top-[-35%%] left-[-35%] absolute p-12 max-w-[400px] w-full h-full max-h-[300px] bg-white">
                     <div className="flex justify-end">
                         <button className="cursor-pointer text-black text-3xl w-10 h-10" onClick = {() => closePopUp()}>X</button>
                     </div>
-                    <h1 className="text-black text-2xl mb-4">"Lul"</h1>
+                    <h1 className="text-black text-center text-2xl mb-4">{mode}</h1>
                     {mode == "Save" &&
-                        <form onSubmit={1} className="flex flex-col gap-[20px]">
-        
-                            
-                        
+                        <form onSubmit={saveOrder} className="flex flex-col gap-[20px] mx-auto">
+                            <div>
+                                <label>
+                                    <input placeholder="Enter Order Name" required onChange={getName} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black" type="text"/>
+                                </label>
+                            </div>
+
+                            <div>
+                                <label>
+                                    <input placeholder="Enter Notes" onChange={getNotes} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  type="text"/>
+                                </label>
+                            </div>
+                            <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Save Order"/>
                         </form>
                     }
                     {mode == "Pay" &&
