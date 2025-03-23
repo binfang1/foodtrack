@@ -22,6 +22,7 @@ export default function ItemGrid({ items, itemsList, setItemsList }) {
             categories.push(category);
         }
     }
+    categories.sort(function(a, b) {return a.category.localeCompare(b.category);});
     function addGrid(amount) {
         let s = "";
         for (let i = 0; i < amount; i++) {
@@ -29,6 +30,7 @@ export default function ItemGrid({ items, itemsList, setItemsList }) {
         }
         return s;
     }
+    
 
     return ( 
         <div id = "darken-grid" className = "w-[55vw] h-[100vh] bg-[#D9D9D9]">

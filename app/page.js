@@ -109,7 +109,7 @@ export default function Home() {
 
                       <div className='flex'>
                         <GoNote className='mt-auto mb-auto'/>
-                        <a onClick = {enableSideBar ? () => setPage("items") : undefined} className="px-[0.84vw] cursor-pointer">Add Items</a>
+                        <a onClick = {enableSideBar ? () => setPage("items") : undefined} className="px-[0.84vw] cursor-pointer">Edit Items</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
 
