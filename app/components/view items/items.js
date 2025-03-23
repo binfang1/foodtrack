@@ -26,6 +26,24 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
     const [category, setCategory] = useState("");
     const [toggle, setToggle] = useState(false)
 
+    let categories = [];
+
+    for (let i = 0; i < items.length; i++) {
+        const category = new Object;
+        if (categories.some(item => item.category == items[i].category)) { 
+            const index = categories.findIndex(item => item.category == items[i].category);
+            categories[index].object.push(items[i])
+        }
+        else {
+            category.category = items[i].category;
+            category.object = [items[i]];
+            categories.push(category);
+        }
+    }
+    categories.sort(function(a, b) {return a.category.localeCompare(b.category);});
+    console.log(categories)
+
+
 
     async function putData() {
         const url = "http://localhost:3000/api/items";
@@ -34,9 +52,9 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
             'method': 'PUT',
             'body': JSON.stringify(
                 {  
-                    name: name,
-                    price: price,
-                    category: category,
+                    name: (name ? name : currentItem.name),
+                    price: (price ? price : currentItem.price),
+                    category: (category ? category : currentItem.category),
                     desc: currentItem.description,
                     id: currentItem.id
                 },
@@ -84,7 +102,8 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         setItemsList([]);
         popupIsEnabled(!popupEnabled);
         changeBrightness();
-        getData().then((response) => setItems(response))
+        getData().then((response) => setItems(response));
+        setItems(items);
     }
 
     const addItem = (event) => {
@@ -93,12 +112,13 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         setItemsList([]);
         popupIsEnabled(!popupEnabled);
         changeBrightness();
-        getData().then((response) => setItems(response))
+        getData().then((response) => setItems(response));
+        setItems(items);
     }
 
     useEffect(() => {
-    setItemsList(itemsList);
-    }, [itemsList]);
+        setItems(items);
+    }, [items]);
 
 
     const changeBrightness = () => {
@@ -134,12 +154,18 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         setPrice(event.target.value);
     };
 
+    const getCategory = (event) => {
+        event.preventDefault();
+        setCategory(event.target.value)
+    }
+
     const openPopupEdit = (item) => {
         popupIsEnabled(!popupEnabled);
         changeBrightness()
         setEditTitle("Editing")
-        setName(item.name);
-        setPrice(item.price);
+        setName("");
+        setPrice("");
+        setCategory("");
         setCurrentItem(item)
     }
 
@@ -148,7 +174,8 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         changeBrightness()
         setEditTitle("Adding")
         setName("");
-        setPrice(0);
+        setPrice("");
+        setCategory("");
         setCurrentItem()
     }
 
@@ -165,16 +192,26 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         <div className="relative h-[100vh] w-[85vw] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
             <div className="p-[0.8vw] h-[100vh] flex flex-col bg-white rounded-xl" >
                 <button onClick = {openPopupAdd} className="mb-[0.8vw] cursor-pointer bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-12">Add Item</button>
-                <div className="overflow-auto ">    
-                    {items.map(item => (
-                        <div className = "flex mt-4 p-2 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-96 h-16" key={item.id}>
-                            <div>
-                                <p>Name: {item.name} </p>
-                                <p>Price:${item.price.toFixed(2)}</p>
+                <div className="overflow-auto">
+                    <div>
+                        {categories.map(category => (
+                            <div key = {category.category}>
+                                <h1 className="text-[1.5vw]">{category.category}:</h1>
+                                <div className="flex flex-wrap gap-[1vw] mb-[2vw]">
+                                    {items.filter(item => item.category === category.category).map(item => (
+                                        <div className = "flex mt-4 p-2 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-96 h-16" key={item.id}>
+                                            <div>
+                                                <p>Name: {item.name} </p>
+                                                <p>Price:${item.price.toFixed(2)}</p>
+                                            </div>
+                                            <p className="cursor-pointer ml-auto justify-self-center hover:underline" onClick = {() => openPopupEdit(item)}>edit</p>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                            <p className="cursor-pointer ml-auto justify-self-center hover:underline" onClick = {() => openPopupEdit(item)}>edit</p>
-                        </div>
-                    ))}
+                        ))}
+                    </div>    
+
                 </div>
             </div>
             {popupEnabled ? (
@@ -185,35 +222,46 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
                                 </div>
                                 <h1 className="text-black text-2xl mb-4">{editTitle} "{currentItem ? currentItem.name : "New Item"}"</h1>
                                 {editTitle == "Editing" &&
-                                    <form onSubmit={editItem} className="flex flex-col gap-[20px]">
+                                    <form onSubmit={editItem} className="flex flex-col gap-[20px] mx-auto">
                                         <div>
-                                            <p>Old Name: "{currentItem.name}"</p>
-                                            <label>New Name:
-                                                <input  onChange={getName} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {name} type="text"/>
+                                            <label>
+                                                <input placeholder = {currentItem.name} onChange={getName} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {name} type="text"/>
                                             </label>
                                         </div>
 
                                         <div>
-                                            <p>Old Price: "${currentItem.price.toFixed(2)}"</p>
-                                            <label>New Price:
-                                                <input onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
+                                            <label>
+                                                <input placeholder= {currentItem.price.toFixed(2)} onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
                                             </label>
                                         </div>
                                         
+                                        
+                                        <div>
+                                            <label>
+                                                <input placeholder={currentItem.category} onChange={getCategory} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {category} type="text"/>
+                                            </label>
+                                        </div>
+
                                         <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Save Changes"/>
                                     </form>
                                 }
                                 {editTitle == "Adding" &&
-                                    <form onSubmit={addItem} className="flex flex-col gap-[20px]">
+                                    <form onSubmit={addItem} className="flex flex-col gap-[20px] mx-auto">
                                         <div>
-                                            <label>Name:
-                                                <input required onChange={getName} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {name} type="text"/>
+                                            <label>
+                                                <input placeholder="Enter Item Name" required onChange={getName} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {name} type="text"/>
                                             </label>
                                         </div>
 
                                         <div>
-                                            <label>Price:
-                                                <input required onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
+                                            <label>
+                                                <input placeholder="Enter Price" required onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
+                                            </label>
+                                        </div>
+
+                                        <div>
+                                            <label>
+                                                <input placeholder="Enter Category" required onChange={getCategory} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {category} type="text"/>
                                             </label>
                                         </div>
                                         <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = {currentItem ? "Save Changes" : "Save Item"}/>

@@ -32,7 +32,7 @@ export async function POST(request) {
         const { name, price, category, description } = await request.json()
 
         const [results, fields] = await connection.query(
-            'INSERT INTO items (name, price, description) VALUES (?,?,?,?)',
+            'INSERT INTO items (name, price, category, description) VALUES (?,?,?,?)',
             [name, price, category, description]
         );
 

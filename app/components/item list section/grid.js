@@ -2,6 +2,9 @@
 import GridItem from "./grid-item";
 import CategoryItem from "./category-item";
 import { useEffect, useState } from "react";
+import { GoTriangleLeft } from "react-icons/go";
+
+
 
 export default function ItemGrid({ items, itemsList, setItemsList }) {
     const [categoryPage, setCategoryPage] = useState("Default");
@@ -41,7 +44,9 @@ export default function ItemGrid({ items, itemsList, setItemsList }) {
                     }
                     {categoryPage != "Default" &&
                     <div>
-                        <button onClick={() => setCategoryPage("Default")}>back</button>
+                        <div>
+                            <GoTriangleLeft onClick={() => setCategoryPage("Default")}/>
+                        </div>
                         <div className="flex flex-wrap w-[50vw] gap-[1vw] mx-auto mt-[1.625vw]">
                             {items.filter(item => item.category === categoryPage).map(item => (
                                 <GridItem key={item.id} id={item.id} name={item.name} price={item.price} itemsList={itemsList} setItemsList={setItemsList} ></GridItem>
