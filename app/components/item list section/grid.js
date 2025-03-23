@@ -13,7 +13,7 @@ export default function ItemGrid({ items, itemsList, setItemsList }) {
 
     return ( 
         <div id = "darken-grid" className = "w-[55vw] h-[100vh] bg-[#D9D9D9]">
-            <div className="gap-y-[1vw] h-[100vh] bg-white  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]
+            <div className="gap-y-[1vw] h-[100vh] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]
             max-[769px]:w-[70vw]">
                 <div className="flex flex-wrap w-[50vw] gap-[1vw] m-auto mt-[1.625vw]">
                     {items.map(item => (

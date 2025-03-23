@@ -132,6 +132,9 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
     return (
     <div className="h-[100vh] w-[30vw] bg-[#D9D9D9] h-full drop-shadow-md ">
         <div className="text-[0.84vw] py-[1.7vw] pl-[1.7vw] flex h-[100vh] flex-col w-[30vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+            {itemsList.length !=0 && 
+                <button onClick = {() => setItemsList([])} className="cursor-pointer py-[0.73vw] mb-[1.2vw] mr-[1.7vw] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Clear Items</button>
+            }
             <div className="overflow-auto touch-auto">
                 {itemsList.map((item, index) => (
                     <div key={index} className="w-full pr-[1.7vw]">
@@ -153,7 +156,7 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
                             </div>
 
                         </div>
-                        <hr className="border-[#D9D9D9] my-[1.042vw] mb-[2.08vw]"></hr>
+                        <hr className="border-[#D9D9D9] my-[1.2vw] mb-[1.2vw]"></hr>
                     </div>
                     ))}
             </div>
