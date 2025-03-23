@@ -58,6 +58,8 @@ export default function Home() {
   const [loggedIn, setLoggedIn] = useState();
   const [page, setPage] = useState("home");
   const [back, setBack] = useState(true);
+  const [mainOrder, setMainOrder] = useState();
+  const [enableSideBar, sideBarEnabled] = useState(true);
 
   useEffect(() => {
     getAccounts().then((response) => setAccounts(response))
@@ -88,26 +90,26 @@ export default function Home() {
                 <div className="bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] p-[0.84vw]  flex flex-col">
                     <div className="text-[0.85vw]">
                         <h1 className="text-[#757575]">Welcome, {loggedIn.username}</h1>
-                        <h2 className="font-semibold text-[1.1vw] mb-[-0.52vw] cursor-pointer" onClick = {() => setPage("home")}>FoodTrack</h2>
+                        <h2 className="font-semibold text-[1.1vw] mb-[-0.52vw] cursor-pointer" onClick = {enableSideBar ? () => setPage("home") : undefined}>FoodTrack</h2>
                         <hr className="border-[#D9D9D9] my-[1.1vw]"></hr>
                     </div>
                     <div className = "text-[0.94vw] h-full">
 
                       <div className='flex'>
                         <GoHome className='mt-auto mb-auto'/>
-                        <a onClick = {() => setPage("home")} className="px-[0.84vw] cursor-pointer">Home</a>
+                        <a onClick = {enableSideBar ? () => setPage("home") : undefined} className="px-[0.84vw] cursor-pointer">Home</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                         
                       <div className='flex'>
                         <GoChecklist className='mt-auto mb-auto'/>
-                        <a onClick = {() => setPage("orders")} className="px-[0.84vw] cursor-pointer">Orders</a>
+                        <a onClick = {enableSideBar ? () => setPage("orders") : undefined} className="px-[0.84vw] cursor-pointer">Orders</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
 
                       <div className='flex'>
                         <GoNote className='mt-auto mb-auto'/>
-                        <a onClick = {() => setPage("items")} className="px-[0.84vw] cursor-pointer">Add Items</a>
+                        <a onClick = {enableSideBar ? () => setPage("items") : undefined} className="px-[0.84vw] cursor-pointer">Add Items</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
 
@@ -119,7 +121,7 @@ export default function Home() {
                     </div>
                     <div className='flex mb-[1.25vw] text-[0.94vw]'>
                         <GoGear className='mt-auto mb-auto'/>
-                        <a className="px-[0.84vw] cursor-pointer" onClick = {() => setPage("settings")}>Settings</a>
+                        <a className="px-[0.84vw] cursor-pointer" onClick = {enableSideBar ? () => setPage("settings") : undefined}>Settings</a>
                       </div>
                 </div>
             </div>
@@ -127,25 +129,25 @@ export default function Home() {
               <div>
                   <div className="flex max-[769px]:hidden">
                     <ItemGrid items={items} setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
-                    <ItemList itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal}></ItemList>
+                    <ItemList enableSideBar = {enableSideBar} sideBarEnabled = {sideBarEnabled} itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal} mainOrder={mainOrder} setMainOrder={setMainOrder}></ItemList>
                   </div>
                   <div className='hidden max-[769px]:block'>
                     {back ? (
                       <ItemGrid items={items} setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
                     ) : (
-                      <ItemList itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal}></ItemList>
+                      <ItemList enableSideBar = {enableSideBar} sideBarEnabled = {sideBarEnabled} itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal} mainOrder={mainOrder} setMainOrder={setMainOrder}></ItemList>
                     )}
                   </div>
               </div>
             }
             {page == "orders" &&
               <div>
-                <OrderGrid></OrderGrid>
+                <OrderGrid enableSideBar = {enableSideBar} sideBarEnabled = {sideBarEnabled}  mainOrder={mainOrder} setMainOrder={setMainOrder}></OrderGrid>
               </div>
             }
             {page == "items" &&
               <div>
-                <Items items={items} setItemsList={setItemsList} itemsList={itemsList} page = {page} setPage = {setPage} setItems={setItems}></Items>
+                <Items enableSideBar = {enableSideBar} sideBarEnabled = {sideBarEnabled} items={items} setItemsList={setItemsList} itemsList={itemsList} page = {page} setPage = {setPage} setItems={setItems}></Items>
               </div>
 
             }

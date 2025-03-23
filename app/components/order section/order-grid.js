@@ -19,7 +19,7 @@ async function getData() {
     }
   }
 
-export default function OrderGrid() {
+export default function OrderGrid({ enableSideBar, sideBarEnabled, mainOrder, setMainOrder }) {
 
     const [orders, setOrders] = useState([]);
 

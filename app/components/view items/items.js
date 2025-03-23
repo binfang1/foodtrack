@@ -17,12 +17,13 @@ async function getData() {
     }
   }
 
-export default function Items({ items, itemsList, setItemsList, setPage, page, setItems }) {
+export default function Items({ enableSideBar, sideBarEnabled, items, itemsList, setItemsList, setPage, page, setItems }) {
     const [popupEnabled, popupIsEnabled] = useState(false);
     const [currentItem, setCurrentItem] = useState();
     const [editTitle, setEditTitle] = useState("")
     const [price, setPrice] = useState(0.00);
     const [name, setName] = useState("");
+    const [category, setCategory] = useState("");
     const [toggle, setToggle] = useState(false)
 
 
@@ -35,6 +36,7 @@ export default function Items({ items, itemsList, setItemsList, setPage, page, s
                 {  
                     name: name,
                     price: price,
+                    category: category,
                     desc: currentItem.description,
                     id: currentItem.id
                 },
@@ -60,6 +62,7 @@ export default function Items({ items, itemsList, setItemsList, setPage, page, s
                 {  
                     name: name,
                     price: price,
+                    category: category,
                     desc: "Test Desc"
                 },
                 )
@@ -93,9 +96,9 @@ export default function Items({ items, itemsList, setItemsList, setPage, page, s
         getData().then((response) => setItems(response))
     }
 
-      useEffect(() => {
-        setItemsList(itemsList);
-      }, [itemsList]);
+    useEffect(() => {
+    setItemsList(itemsList);
+    }, [itemsList]);
 
 
     const changeBrightness = () => {
@@ -108,6 +111,15 @@ export default function Items({ items, itemsList, setItemsList, setPage, page, s
         }
         else {
             document.getElementById('darken').style.filter = 'brightness(100%)'
+        }
+    }, [toggle])
+
+    useEffect(() => {
+        if (toggle == true) {
+            sideBarEnabled(false);
+        }
+        else if (toggle == false) {
+            sideBarEnabled(true);
         }
     }, [toggle])
 
