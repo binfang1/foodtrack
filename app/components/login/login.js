@@ -34,11 +34,11 @@ export default function Login({loggedIn, setLoggedIn, accounts}) {
             <div className="w-[15.625vw] h-[15.625vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] m-auto">
                 <form onSubmit={checkLogin} className="flex flex-col m-auto gap-[1.7vw] text-center">
                     <h1 className="text-[1.7vw]">Login</h1>
-                    <label className="text-[0.7vw]">Username:
-                        <input onChange={getUser} className = "text-[1.7vw]border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="text" required/>
+                    <label className="text-[0.7vw]">
+                        <input placeholder="Username" onChange={getUser} className = "text-[1.7vw]border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="text" required/>
                     </label>
-                    <label className="text-[0.7vw]">Password:
-                        <input onChange={getPass} className = "border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="text" required/>
+                    <label className="text-[0.7vw]">
+                        <input placeholder="password" onChange={getPass} className = "border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="password" required/>
                     </label>
                     <input className="text-[0.7vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[4.7vw] h-[1.6vw] m-auto" type = "submit" value = "Login"/>
                 </form>
