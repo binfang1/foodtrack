@@ -96,6 +96,28 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         }
     }
 
+    async function deleteData() {
+        const url = "http://localhost:3000/api/items";
+        try {
+            const response = await fetch(url , {
+            'method': 'DELETE',
+            'body': JSON.stringify(
+                {  
+                    id: currentItem.id
+                },
+                )
+            });
+            if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+            }
+        
+            const json = await response.json();
+            return json;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
     const editItem = (event) => {
         event.preventDefault();
         putData().then((response) => alert("Item Has Been Updated!"));
@@ -114,6 +136,23 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         changeBrightness();
         getData().then((response) => setItems(response));
         setItems(items);
+    }
+
+    const deleteItem = () => {
+        event.preventDefault();
+        console.log(currentItem)
+        deleteData().then((response) => alert("Item Has Been deleted"));
+        setItemsList([]);
+        popupIsEnabled(!popupEnabled);
+        changeBrightness();
+        getData().then((response) => setItems(response));
+        setItems(items);
+    }
+
+
+
+    const deleteButton = () => {
+        deleteItem();
     }
 
     useEffect(() => {
@@ -220,29 +259,32 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
                                 <div className="flex justify-end">
                                     <button className="cursor-pointer text-black text-3xl w-10 h-10" onClick = {() => closePopUp()}>X</button>
                                 </div>
-                                <h1 className="text-black text-2xl mb-4">{editTitle} "{currentItem ? currentItem.name : "New Item"}"</h1>
+                                <h1 className="text-black text-2xl mb-4 mx-auto">{editTitle} "{currentItem ? currentItem.name : "New Item"}"</h1>
                                 {editTitle == "Editing" &&
                                     <form onSubmit={editItem} className="flex flex-col gap-[20px] mx-auto">
-                                        <div>
+                                        <div className="mx-auto">
                                             <label>
                                                 <input placeholder = {currentItem.name} onChange={getName} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {name} type="text"/>
                                             </label>
                                         </div>
 
-                                        <div>
+                                        <div className="mx-auto">
                                             <label>
                                                 <input placeholder= {currentItem.price.toFixed(2)} onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
                                             </label>
                                         </div>
                                         
                                         
-                                        <div>
+                                        <div className="mx-auto">
                                             <label>
                                                 <input placeholder={currentItem.category} onChange={getCategory} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {category} type="text"/>
                                             </label>
                                         </div>
-
-                                        <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Save Changes"/>
+                                        
+                                        <div className="flex gap-[1vw] mx-auto">
+                                            <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Save Changes"/>
+                                            <input onClick = {() => deleteButton()}className="cursor-pointer m-auto bg-red-300  rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "button" value = "Delete Item"/>
+                                        </div>
                                     </form>
                                 }
                                 {editTitle == "Adding" &&

@@ -80,7 +80,14 @@ export async function DELETE(request) {
       'DELETE FROM items WHERE id = ?', [id]
     )
 
-    return NextResponse.json();
+    return new Response(JSON.stringify(
+      { message: "success" },
+      {
+        headers: { "content-type": "application/json" },
+        status: 200,
+      }
+    )
+  );
   } catch (err) {
     console.log(err);
   }
