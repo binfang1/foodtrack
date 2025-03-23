@@ -7,7 +7,7 @@ import Items from "../view items/items";
 
 
 
-export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList  }) {
+export default function ItemList({ enableSideBar, sideBarEnabled, itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList, mainOrder, setMainOrder  }) {
     const [popupEnabled, popupIsEnabled] = useState(false);
     const [toggle, setToggle] = useState(false)
     const [notes, setNotes] = useState("");
@@ -81,6 +81,18 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
         }
     }
 
+    const payButton = () => {
+        if (itemsList.length != 0) {
+            popupIsEnabled(!popupEnabled);
+            setMode("Pay");
+            changeBrightness();
+        }
+    }
+
+    const payOrder = () => {
+
+    }
+
     const saveOrder = () => {
         event.preventDefault();
         postData().then((response) => console.log(response));
@@ -137,12 +149,23 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
         if (toggle) {
             document.getElementById('darken').style.filter = 'brightness(50%)'
             document.getElementById('darken-grid').style.filter = 'brightness(50%)'
+
         }
         else {
             document.getElementById('darken').style.filter = 'brightness(100%)'
             document.getElementById('darken-grid').style.filter = 'brightness(100%)'
         }
     }, [toggle])
+
+    useEffect(() => {
+        if (toggle == true) {
+            sideBarEnabled(false);
+        }
+        else if (toggle == false) {
+            sideBarEnabled(true);
+        }
+    }, [toggle])
+    
 
 
 
@@ -196,7 +219,7 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
                 
                 <div className="flex justify-between mt-[1.7vw]">
                     <button onClick = {() => saveButton()} className="py-[0.73vw] w-[7.09vw] bg-[#BABABA] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Save</button>
-                    <button className="py-[0.73vw] w-[7.09vw] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Pay</button>
+                    <button onClick = {() => payButton()} className="py-[0.73vw] w-[7.09vw] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Pay</button>
                 </div>
             </div>
         </div>
@@ -224,8 +247,20 @@ export default function ItemList({ itemsList, subTotal, tax, total, setSubTotal,
                         </form>
                     }
                     {mode == "Pay" &&
-                        <form onSubmit={1} className="flex flex-col gap-[20px]">
-  
+                        <form onSubmit={payOrder} className="flex flex-col gap-[20px] mx-auto">
+                            <div>
+                                <label>
+                                    <input placeholder="Enter Order Name" required onChange={getName} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black" type="text"/>
+                                </label>
+                            </div>
+                            <p className="text-center">Payment Method</p>
+                            <div className="flex justify-between">
+                                <button>Cash</button>
+                                <button>Credit</button>
+                            </div>
+
+         
+                            <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Pay"/>
                         </form>
                     }
                 </div>
