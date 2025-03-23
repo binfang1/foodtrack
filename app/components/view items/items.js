@@ -191,7 +191,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
     return (
         <div className="relative h-[100vh] w-[85vw] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
             <div className="p-[0.8vw] h-[100vh] flex flex-col bg-white rounded-xl" >
-                <button onClick = {openPopupAdd} className="mb-[0.8vw] cursor-pointer bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-12">Add Item</button>
+                <button onClick = {openPopupAdd} className="mb-[0.8vw] cursor-pointer bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-[5vw]">Add Item</button>
                 <div className="overflow-auto">
                     <div>
                         {categories.map(category => (
@@ -199,7 +199,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
                                 <h1 className="text-[1.5vw]">{category.category}:</h1>
                                 <div className="flex flex-wrap gap-[1vw] mb-[2vw]">
                                     {items.filter(item => item.category === category.category).map(item => (
-                                        <div className = "flex mt-4 p-2 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-96 h-16" key={item.id}>
+                                        <div className = "flex mt-4 p-2 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[15vw] h-[3.5vw]" key={item.id}>
                                             <div>
                                                 <p>Name: {item.name} </p>
                                                 <p>Price:${item.price.toFixed(2)}</p>
