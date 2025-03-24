@@ -7,7 +7,7 @@
         name TEXT,
         price REAL,
         category TEXT,
-        description TEXT
+        stock INT
     );
 
     CREATE TABLE IF NOT EXISTS orders (
@@ -28,15 +28,17 @@
 
     CREATE TABLE IF NOT EXISTS accounts (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
-        username TEXT,
+        username varchar(255),
         password TEXT,
-        admin BOOLEAN
+        type TEXT,
+        UNIQUE (username)
     );
 
-    INSERT INTO items VALUES (1, "Almond Chicken", 10.00, "Chicken", "test description");
-    INSERT INTO items VALUES (2, "Hot Pot", 50.00, "Misc" ,"test description");
-    INSERT INTO items VALUES (3, "Fried Rice", 10.00, "Rice" ,"test description");
-    INSERT INTO items VALUES (4, "Dumplings", 5.00, "Side" ,"test description");
-    INSERT INTO items VALUES (5, "Orange Chicken", 12.00, "Chicken" ,"test description");
-    INSERT INTO accounts VALUES (1, "Admin", "Admin", 1);
-    INSERT INTO accounts VALUES (2, "User", "User", 0);
+    INSERT INTO items VALUES (1, "Almond Chicken", 10.00, "Chicken", 200);
+    INSERT INTO items VALUES (2, "Hot Pot", 50.00, "Misc" , 300);
+    INSERT INTO items VALUES (3, "Fried Rice", 10.00, "Rice" , 10);
+    INSERT INTO items VALUES (4, "Dumplings", 5.00, "Side" , 50);
+    INSERT INTO items VALUES (5, "Orange Chicken", 12.00, "Chicken" , 70);
+    INSERT INTO accounts VALUES (1, "Admin", "Admin", "Admin");
+    INSERT INTO accounts VALUES (2, "User", "User", "Server");
+    INSERT INTO accounts VALUES(3, "Chef", "Chef", "Chef");

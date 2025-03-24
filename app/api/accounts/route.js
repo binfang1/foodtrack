@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server';
 import mysql from  'mysql2/promise';
 
 const connection = await mysql.createConnection({
@@ -36,22 +36,51 @@ export async function DELETE(request) {
       'DELETE FROM accounts WHERE id = ?', [id]
     )
 
-    return NextResponse.json();
+    return new Response(JSON.stringify(
+      { message: "success" },
+      {
+        headers: { "content-type": "application/json" },
+        status: 200,
+      }
+    )
+  );
   } catch (err) {
     console.log(err);
   }
 }
 
 export async function POST(request) {
-  const { id, username, password, admin } = await request.json();
+  const {username, password, type } = await request.json();
 
   try {
     const [results, fields] = await connection.query(
-      'UPDATE accounts VALUES (?, ?, ?) WHERE id = ?', 
-      [username, password, admin, id]
+      'INSERT INTO accounts (username, password, type) VALUES (?,?,?)', 
+      [username, password, type]
     )
 
-    return NextResponse.json();
+    return NextResponse.json(results)
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function PUT(request) {
+  const { id, username, password, type } = await request.json();
+
+  try {
+    const [results, fields] = await connection.query(
+      'UPDATE accounts SET username=?, password=?, type=? WHERE id = ?', 
+      [username, password, type, id]
+    )
+
+    return new Response(JSON.stringify(
+      { message: "success" },
+      {
+        headers: { "content-type": "application/json" },
+        status: 200,
+      }
+    )
+  );
   } catch (err) {
     console.log(err);
   }

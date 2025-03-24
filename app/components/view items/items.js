@@ -1,5 +1,5 @@
 "use client";
-import GridItem from "../../components/item list section/grid-item"
+import GridItem from "../item grid section/grid-item"
 import { useState, useEffect } from "react";
 
 async function getData() {
@@ -17,14 +17,16 @@ async function getData() {
     }
   }
 
-export default function Items({ enableSideBar, sideBarEnabled, items, itemsList, setItemsList, setPage, page, setItems }) {
+export default function Items({ categoryPage, setCategoryPage, enableSideBar, sideBarEnabled, items, itemsList, setItemsList, setPage, page, setItems }) {
     const [popupEnabled, popupIsEnabled] = useState(false);
     const [currentItem, setCurrentItem] = useState();
     const [editTitle, setEditTitle] = useState("")
     const [price, setPrice] = useState(0.00);
     const [name, setName] = useState("");
     const [category, setCategory] = useState("");
-    const [toggle, setToggle] = useState(false)
+    const [stock, setStock] = useState(1);
+    const [toggle, setToggle] = useState(false);
+    const [buttonsEnabled, enabledButton] = useState(true);
 
     let categories = [];
 
@@ -41,8 +43,10 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         }
     }
     categories.sort(function(a, b) {return a.category.localeCompare(b.category);});
-    console.log(categories)
 
+    useEffect(() => {
+        getData().then((response) => setItems(response))
+      }, []);
 
 
     async function putData() {
@@ -55,7 +59,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
                     name: (name ? name : currentItem.name),
                     price: (price ? price : currentItem.price),
                     category: (category ? category : currentItem.category),
-                    desc: currentItem.description,
+                    stock: (stock ? stock : currentItem.stock),
                     id: currentItem.id
                 },
               )
@@ -81,7 +85,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
                     name: name,
                     price: price,
                     category: category,
-                    desc: "Test Desc"
+                    stock: stock
                 },
                 )
             });
@@ -125,7 +129,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         popupIsEnabled(!popupEnabled);
         changeBrightness();
         getData().then((response) => setItems(response));
-        setItems(items);
+        setCategoryPage("Default");
     }
 
     const addItem = (event) => {
@@ -135,18 +139,18 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         popupIsEnabled(!popupEnabled);
         changeBrightness();
         getData().then((response) => setItems(response));
-        setItems(items);
+        setCategoryPage("Default");
     }
 
     const deleteItem = () => {
         event.preventDefault();
-        console.log(currentItem)
         deleteData().then((response) => alert("Item Has Been deleted"));
         setItemsList([]);
         popupIsEnabled(!popupEnabled);
         changeBrightness();
         getData().then((response) => setItems(response));
         setItems(items);
+        setCategoryPage("Default");
     }
 
 
@@ -157,7 +161,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
 
     useEffect(() => {
         setItems(items);
-    }, [items]);
+    }, [itemsList]);
 
 
     const changeBrightness = () => {
@@ -198,6 +202,11 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         setCategory(event.target.value)
     }
 
+    const getStock = (event) => {
+        event.preventDefault();
+        setStock(event.target.value)
+    }
+
     const openPopupEdit = (item) => {
         popupIsEnabled(!popupEnabled);
         changeBrightness()
@@ -205,6 +214,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         setName("");
         setPrice("");
         setCategory("");
+        setStock("");
         setCurrentItem(item)
     }
 
@@ -215,6 +225,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         setName("");
         setPrice("");
         setCategory("");
+        setStock("");
         setCurrentItem()
     }
 
@@ -230,39 +241,52 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
     return (
         <div className="relative h-[100vh] w-[85vw] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
             <div className="p-[0.8vw] h-[100vh] flex flex-col bg-white rounded-xl" >
-                <button onClick = {openPopupAdd} className="mb-[0.8vw] cursor-pointer bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-[5vw]">Add Item</button>
                 <div className="overflow-auto">
                     <div>
                         {categories.map(category => (
                             <div key = {category.category}>
                                 <h1 className="text-[1.5vw]">{category.category}:</h1>
-                                <div className="flex flex-wrap gap-[1vw] mb-[2vw]">
-                                    {items.filter(item => item.category === category.category).map(item => (
-                                        <div className = "flex mt-4 p-2 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[15vw] h-[4.5vw]" key={item.id}>
-                                            <div className="flex">
-                                                <img src={`/item_images/${item.id}.png`} className="w-24 h-24"></img>
-                                                <div className="p-2">
-                                                    <p>Name: {item.name} </p>
-                                                    <p>Price:${item.price.toFixed(2)}</p>
-                                                </div>
-                                            </div>
-                                            <p className="cursor-pointer ml-auto justify-self-center hover:underline" onClick = {() => openPopupEdit(item)}>Edit</p>
+                                
+                                <div className="flex flex-col">
+                                    <div className="mb-[0.8vw]">
+                                        <div className="grid grid-cols-5 text-[0.9vw]">
+                                            <p>Image:</p>
+                                            <p>Name:</p>
+                                            <p>price:</p>
+                                            <p>Stock:</p>
+                                            <p className="invisible">a</p>
                                         </div>
+                                        <hr></hr>
+                                    </div>
+                                    
+                                    {items.filter(item => item.category === category.category).map(item => (
+                                        <div key={item.id}>
+                                            <div className = "mb-[0.8vw] grid grid-cols-5 bg-white text-black text-black shadow-sm text-[0.9vw]">
+                                                <img src={`/item_images/${item.id}.png`} className="w-[4vw] h-[4vw]"></img>
+                                                <p className="text-[0.9vw]"> {item.name} </p>
+                                                <p className="text-[0.9vw]">${item.price.toFixed(2)}</p>
+                                                <p className="text-[0.9vw]">{item.stock}</p>
+                                                <p className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => openPopupEdit(item)}>Edit</p>
+                                            </div>
+                
+                                        </div>
+                                        
                                     ))}
                                 </div>
                             </div>
                         ))}
                     </div>    
-
+                        
                 </div>
+                <button onClick = {openPopupAdd} className="mt-auto mb-[1.5vw] cursor-pointer bg-white rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-[3vw] text-[0.9vw]">Add Item</button>
             </div>
             {popupEnabled ? (
                         <div className = "absolute bottom-0 left-[-0.2vw] top-[-0.2vw] right-0 flex justify-center items-center w-[85vw] h-[100vh] bg-black/50">
                             <div className ="flex flex-col absolute p-12 max-w-[400px] w-full h-full max-h-[500px] bg-white">
                                 <div className="flex justify-end">
-                                    <button className="cursor-pointer text-black text-3xl w-10 h-10" onClick = {() => closePopUp()}>X</button>
+                                    <button className="cursor-pointer text-black text-[2vw] w-[1.5vw] h-[1.5vw]" onClick = {() => closePopUp()}>X</button>
                                 </div>
-                                <h1 className="text-black text-2xl mb-4 mx-auto">{editTitle} "{currentItem ? currentItem.name : "New Item"}"</h1>
+                                <h1 className="text-black text-[1.5vw] mb-4 mx-auto">{editTitle} "{currentItem ? currentItem.name : "New Item"}"</h1>
                                 {editTitle == "Editing" &&
                                     <form onSubmit={editItem} className="flex flex-col gap-[20px] mx-auto">
                                         <div className="mx-auto">
@@ -273,7 +297,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
 
                                         <div className="mx-auto">
                                             <label>
-                                                <input placeholder= {currentItem.price.toFixed(2)} onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
+                                                <input placeholder= {currentItem.price.toFixed(2)} step="0.01" min = "0" onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
                                             </label>
                                         </div>
                                         
@@ -281,6 +305,12 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
                                         <div className="mx-auto">
                                             <label>
                                                 <input placeholder={currentItem.category} onChange={getCategory} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {category} type="text"/>
+                                            </label>
+                                        </div>
+
+                                        <div className="mx-auto">
+                                            <label>
+                                                <input placeholder={currentItem.stock} min = "0" onChange={getStock} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {stock} type="number"/>
                                             </label>
                                         </div>
                                         
@@ -300,13 +330,19 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
 
                                         <div>
                                             <label>
-                                                <input placeholder="Enter Price" required onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
+                                                <input placeholder="Enter Price" step="0.01" min = "0" required onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
                                             </label>
                                         </div>
 
                                         <div>
                                             <label>
                                                 <input placeholder="Enter Category" required onChange={getCategory} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {category} type="text"/>
+                                            </label>
+                                        </div>
+
+                                        <div className="mx-auto">
+                                            <label>
+                                                <input placeholder="stock amount" min = "0" onChange={getStock} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {stock} type="number"/>
                                             </label>
                                         </div>
                                         <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = {currentItem ? "Save Changes" : "Save Item"}/>
