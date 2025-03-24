@@ -238,15 +238,15 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
                                 <h1 className="text-[1.5vw]">{category.category}:</h1>
                                 <div className="flex flex-wrap gap-[1vw] mb-[2vw]">
                                     {items.filter(item => item.category === category.category).map(item => (
-                                        <div className = "flex mt-4 p-2 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[15vw] h-[4.5vw]" key={item.id}>
+                                        <div className = "flex mt-[]0.5vw] p-[0.5vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[20vw] h-[5vw]" key={item.id}>
                                             <div className="flex">
-                                                <img src={`/item_images/${item.id}.png`} className="w-24 h-24"></img>
-                                                <div className="p-2">
+                                                <img src={`/item_images/${item.id}.png`} className="w-[3.5vw] h-[3.5vw]"></img>
+                                                <div className="p-[0.3vw] text-[0.9vw]">
                                                     <p>Name: {item.name} </p>
                                                     <p>Price:${item.price.toFixed(2)}</p>
                                                 </div>
                                             </div>
-                                            <p className="cursor-pointer ml-auto justify-self-center hover:underline" onClick = {() => openPopupEdit(item)}>Edit</p>
+                                            <p className="cursor-pointer ml-auto justify-self-center hover:underline text-[0.9vw]" onClick = {() => openPopupEdit(item)}>Edit</p>
                                         </div>
                                     ))}
                                 </div>
@@ -260,9 +260,9 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
                         <div className = "absolute bottom-0 left-[-0.2vw] top-[-0.2vw] right-0 flex justify-center items-center w-[85vw] h-[100vh] bg-black/50">
                             <div className ="flex flex-col absolute p-12 max-w-[400px] w-full h-full max-h-[500px] bg-white">
                                 <div className="flex justify-end">
-                                    <button className="cursor-pointer text-black text-3xl w-10 h-10" onClick = {() => closePopUp()}>X</button>
+                                    <button className="cursor-pointer text-black text-[2vw] w-[1.5vw] h-[1.5vw]" onClick = {() => closePopUp()}>X</button>
                                 </div>
-                                <h1 className="text-black text-2xl mb-4 mx-auto">{editTitle} "{currentItem ? currentItem.name : "New Item"}"</h1>
+                                <h1 className="text-black text-[1.5vw] mb-4 mx-auto">{editTitle} "{currentItem ? currentItem.name : "New Item"}"</h1>
                                 {editTitle == "Editing" &&
                                     <form onSubmit={editItem} className="flex flex-col gap-[20px] mx-auto">
                                         <div className="mx-auto">

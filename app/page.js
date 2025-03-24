@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import ItemList from "./components/items sections/item-list.js";
 import Login from "./components/login/login.js";
 import OrderGrid from "./components/order section/order-grid.js";
-import Settings from "./components/settings/settings.js";
 import Items from "./components/view items/items.js"
 import { GoHome } from "react-icons/go";
 import { GoNote } from "react-icons/go";
@@ -13,6 +12,11 @@ import { GoHistory } from "react-icons/go";
 import { GoChecklist } from "react-icons/go";
 import { GoGear } from "react-icons/go";
 import Head from 'next/head'
+import { GoPerson } from "react-icons/go";
+import { GoPulse } from "react-icons/go";
+
+
+
 
 
 
@@ -60,6 +64,13 @@ export default function Home() {
   const [back, setBack] = useState(true);
   const [mainOrder, setMainOrder] = useState();
   const [enableSideBar, sideBarEnabled] = useState(true);
+  const [enableItemGrid, itemGridEnabled] = useState(true);
+
+  function LogOut() {
+    setItemsList([]);
+    setLoggedIn();
+    setPage("home");
+  }
 
   useEffect(() => {
     getAccounts().then((response) => setAccounts(response))
@@ -122,12 +133,12 @@ export default function Home() {
                       {loggedIn.admin ? (
                       <div>
                       <div className='flex'>
-                        <GoHistory className='mt-auto mb-auto'/>
+                        <GoPerson className='mt-auto mb-auto'/>
                         <a className="px-[1.042vw] cursor-pointer">Accounts</a>
                       </div>
                       <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                       <div className='flex'>
-                        <GoHistory className='mt-auto mb-auto'/>
+                        <GoPulse className='mt-auto mb-auto'/>
                         <a className="px-[1.042vw] cursor-pointer">Analytics</a>
                       </div>
                       <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
@@ -136,21 +147,21 @@ export default function Home() {
                     </div>
                     <div className='flex mb-[1.25vw] text-[0.94vw]'>
                         <GoGear className='mt-auto mb-auto'/>
-                        <a className="px-[0.84vw] cursor-pointer" onClick = {enableSideBar ? () => setPage("settings") : undefined}>Settings</a>
+                        <a className="px-[0.84vw] cursor-pointer" onClick = {enableSideBar ? () => LogOut() : undefined}>Log Out</a>
                       </div>
                 </div>
             </div>
             {page == "home" &&
               <div>
                   <div className="flex max-[769px]:hidden">
-                    <ItemGrid items={items} setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
-                    <ItemList enableSideBar = {enableSideBar} sideBarEnabled = {sideBarEnabled} itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal} mainOrder={mainOrder} setMainOrder={setMainOrder}></ItemList>
+                    <ItemGrid enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} items={items} setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
+                    <ItemList itemGridEnabled = {itemGridEnabled} sideBarEnabled = {sideBarEnabled} itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal} mainOrder={mainOrder} setMainOrder={setMainOrder}></ItemList>
                   </div>
                   <div className='hidden max-[769px]:block'>
                     {back ? (
-                      <ItemGrid items={items} setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
+                      <ItemGrid enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} items={items} setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
                     ) : (
-                      <ItemList enableSideBar = {enableSideBar} sideBarEnabled = {sideBarEnabled} itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal} mainOrder={mainOrder} setMainOrder={setMainOrder}></ItemList>
+                      <ItemList itemGridEnabled = {itemGridEnabled} sideBarEnabled = {sideBarEnabled} itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal} mainOrder={mainOrder} setMainOrder={setMainOrder}></ItemList>
                     )}
                   </div>
               </div>

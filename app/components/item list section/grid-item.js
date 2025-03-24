@@ -1,6 +1,6 @@
 "use-client";
 
-export default function GridItem({ id, name, price, itemsList, setItemsList }) {
+export default function GridItem({ itemGridEnabled, enableItemGrid, id, name, price, itemsList, setItemsList }) {
 
     function onClick() {
         const newItemsList = [...itemsList]
@@ -18,7 +18,7 @@ export default function GridItem({ id, name, price, itemsList, setItemsList }) {
     }
 
     return (
-        <div onClick={onClick} className="cursor-pointer text-center flex flex-col justify-center h-[11.6vw] w-[9.12vw] bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] text-[0.84vw]" key={id}>
+        <div onClick={enableItemGrid ? onClick : undefined} className="cursor-pointer text-center flex flex-col justify-center h-[11.6vw] w-[9.12vw] bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] text-[0.84vw]" key={id}>
             <img src={`item_images/${id}.png`}></img>
             <h1>{name}</h1>
             <h3>${price.toFixed(2)}</h3>

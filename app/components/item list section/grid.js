@@ -6,8 +6,9 @@ import { GoTriangleLeft } from "react-icons/go";
 
 
 
-export default function ItemGrid({ items, itemsList, setItemsList }) {
+export default function ItemGrid({ itemGridEnabled, enableItemGrid, items, itemsList, setItemsList }) {
     const [categoryPage, setCategoryPage] = useState("Default");
+
     let categories = [];
 
     for (let i = 0; i < items.length; i++) {
@@ -40,7 +41,7 @@ export default function ItemGrid({ items, itemsList, setItemsList }) {
                     {categoryPage == "Default" &&
                         <div  className="flex flex-wrap w-[50vw] gap-[1vw] mx-auto mt-[1.625vw]">
                             {categories.map(item => (
-                                <CategoryItem key = {item.category} name = {item.category} categoryPage = {categoryPage} setCategoryPage = {setCategoryPage}></CategoryItem>
+                                <CategoryItem key = {item.category} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} name = {item.category} categoryPage = {categoryPage} setCategoryPage = {setCategoryPage}></CategoryItem>
                             ))}
                         </div>
                     }
@@ -51,7 +52,7 @@ export default function ItemGrid({ items, itemsList, setItemsList }) {
                         </div>
                         <div className="flex flex-wrap w-[50vw] gap-[1vw] mx-auto mt-[1.625vw]">
                             {items.filter(item => item.category === categoryPage).map(item => (
-                                <GridItem key={item.id} id={item.id} name={item.name} price={item.price} itemsList={itemsList} setItemsList={setItemsList} ></GridItem>
+                                <GridItem key={item.id} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} id={item.id} name={item.name} price={item.price} itemsList={itemsList} setItemsList={setItemsList} ></GridItem>
                             ))}
                         </div>
                      </div>

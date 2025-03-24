@@ -7,16 +7,19 @@ import Items from "../view items/items";
 
 
 
-export default function ItemList({ enableSideBar, sideBarEnabled, itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList, mainOrder, setMainOrder  }) {
+export default function ItemList({ itemGridEnabled, sideBarEnabled, itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList, mainOrder, setMainOrder  }) {
+    const currentTime = new Date();
     const [popupEnabled, popupIsEnabled] = useState(false);
     const [toggle, setToggle] = useState(false)
     const [notes, setNotes] = useState("");
     const [name, setName] = useState("");
     const [mode, setMode] = useState("");
+    const [time, setTime] = useState(new Date(currentTime.getTime() + 30 * 60 * 1000));
+    const [changeTime, setChangeTime] = useState(`${String(time.getHours()).padStart(2,'0')}:${String(time.getMinutes()).padStart(2,'0')}`)
 
 
     async function postData() {
-        const url = "http://localhost:3000/api/orders";
+        const url = "http://127.0.0.1:3000/api/orders";
         try {
           const response = await fetch(url , {
             'method': 'POST',
@@ -28,10 +31,10 @@ export default function ItemList({ enableSideBar, sideBarEnabled, itemsList, sub
                     items: JSON.stringify(itemsList), 
                     notes: notes, 
                     status: false, 
-                    creation_datetime: new Date().toISOString().slice(0, 19).replace('T', ' '), 
+                    creation_datetime: `${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDay()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`, 
                     completed_datetime: null,
                     payment_status: "Unpaid",
-                    pickup_datetime: null,
+                    pickup_datetime: `${String(time.getFullYear()).padStart(2, '0')}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDay()).padStart(2, '0')} ${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}:${String(time.getSeconds()).padStart(2,'0')}` ,
                     payment_method: null
                  },
               )
@@ -49,7 +52,7 @@ export default function ItemList({ enableSideBar, sideBarEnabled, itemsList, sub
 
     async function pay() {
         try {
-            const response = await fetch("http://localhost:3000/api/items", {
+            const response = await fetch("http://127.0.0.1:3000/api/items", {
                 'method': 'POST',
                 'body' : JSON.stringify({
                     'h': 'h'
@@ -62,7 +65,9 @@ export default function ItemList({ enableSideBar, sideBarEnabled, itemsList, sub
             console.error(error.message);
         }
     }
-    
+    useEffect(() => {
+        setChangeTime(`${String(time.getHours()).padStart(2,'0')}:${String(time.getMinutes()).padStart(2,'0')}`)
+    }, [time])
 
 
     useEffect(() => {
@@ -81,6 +86,7 @@ export default function ItemList({ enableSideBar, sideBarEnabled, itemsList, sub
         if (itemsList.length != 0) {
             popupIsEnabled(!popupEnabled);
             setMode("Save");
+            setTime(new Date(currentTime.getTime() + 30 * 60 * 1000));
             changeBrightness();
         }
     }
@@ -89,6 +95,7 @@ export default function ItemList({ enableSideBar, sideBarEnabled, itemsList, sub
         if (itemsList.length != 0) {
             popupIsEnabled(!popupEnabled);
             setMode("Pay");
+            setTime(new Date(currentTime.getTime() + 30 * 60 * 1000));
             changeBrightness();
         }
     }
@@ -103,6 +110,8 @@ export default function ItemList({ enableSideBar, sideBarEnabled, itemsList, sub
         setItemsList([]);
         alert("Order has been added")
         closePopUp();
+        console.log(new Date().toISOString().slice(0, 19).replace('T', ' '));
+        console.log(`${time.getFullYear()}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDay()).padStart(2, '0')} ${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}:${String(time.getSeconds()).padStart(2,'0')}`);
     }
 
     const closePopUp = () => {
@@ -117,6 +126,10 @@ export default function ItemList({ enableSideBar, sideBarEnabled, itemsList, sub
     const getNotes = (event) => {
         setNotes(event.target.value);
     };
+
+    const getTime = (event) => {
+        setTime(new Date(time.getFullYear(), time.getMonth(), time.getDay(), event.target.value.slice(0, 2), event.target.value.slice(3, 5)))
+    }
 
     
 
@@ -164,9 +177,12 @@ export default function ItemList({ enableSideBar, sideBarEnabled, itemsList, sub
     useEffect(() => {
         if (toggle == true) {
             sideBarEnabled(false);
+            itemGridEnabled(false);
+
         }
         else if (toggle == false) {
             sideBarEnabled(true);
+            itemGridEnabled(true);
         }
     }, [toggle])
     
@@ -247,6 +263,13 @@ export default function ItemList({ enableSideBar, sideBarEnabled, itemsList, sub
                                     <input placeholder="Enter Notes" onChange={getNotes} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  type="text"/>
                                 </label>
                             </div>
+
+                            <div>
+                                <label>
+                                    <input onChange={getTime} value = {changeTime} className = "w-full border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  type="time"/>
+                                </label>
+                            </div>
+
                             <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Save Order"/>
                         </form>
                     }
