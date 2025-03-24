@@ -39,3 +39,4 @@
     INSERT INTO items VALUES (4, "Dumplings", 5.00, "Side" ,"test description");
     INSERT INTO items VALUES (5, "Orange Chicken", 12.00, "Chicken" ,"test description");
     INSERT INTO accounts VALUES (1, "Admin", "Admin", 1);
+    INSERT INTO accounts VALUES (2, "User", "User", 0);

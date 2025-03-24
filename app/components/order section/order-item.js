@@ -8,10 +8,11 @@ export default function OrderItem({order}) {
             <p>{order.id}</p>
             <p>{order.client}</p>
             <p>{order.creation_datetime}</p>
+            <p>{order.pickup_time}</p>
             <p>{order.status}</p>
             <div className="py-12">
                 {JSON.parse(order.items).map(item => (
-                    <p key = {counter++}>{item.name} - QTY: {item.quantity}</p>
+                    <p key = {counter++}>{item.quantity}x - {item.name}</p>
                 ))}
             </div>
         </div>

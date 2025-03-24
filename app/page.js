@@ -109,7 +109,7 @@ export default function Home() {
 
                       <div className='flex'>
                         <GoNote className='mt-auto mb-auto'/>
-                        <a onClick = {enableSideBar ? () => setPage("items") : undefined} className="px-[0.84vw] cursor-pointer">Edit Items</a>
+                        <a onClick = {enableSideBar ? () => setPage("items") : undefined} className="px-[0.84vw] cursor-pointer">Items</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
 
@@ -118,11 +118,21 @@ export default function Home() {
                         <a className="px-[1.042vw] cursor-pointer">History</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
+
+                      {loggedIn.admin ? (
+                      <div>
                       <div className='flex'>
                         <GoHistory className='mt-auto mb-auto'/>
                         <a className="px-[1.042vw] cursor-pointer">Accounts</a>
                       </div>
-                        <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
+                      <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
+                      <div className='flex'>
+                        <GoHistory className='mt-auto mb-auto'/>
+                        <a className="px-[1.042vw] cursor-pointer">Analytics</a>
+                      </div>
+                      <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
+                      </div>
+                      ) : ("")}
                     </div>
                     <div className='flex mb-[1.25vw] text-[0.94vw]'>
                         <GoGear className='mt-auto mb-auto'/>
