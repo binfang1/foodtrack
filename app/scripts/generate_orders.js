@@ -1,11 +1,3 @@
-import mysql from  'mysql2/promise';
-
-const connection = await mysql.createConnection({
-  host: '127.0.0.1',
-  user: 'root',
-  database: 'foodtrack',
-  password: 'foodtrack'
-});
 
 async function getItems() {
     const url = "http://localhost:3000/api/items";
@@ -62,11 +54,11 @@ async function postOrder(name, items, notes="", status, creation_datetime, payme
     }
 }
 
-export async function generate_orders(count, start_date, end_date, start_hour = 11, end_hour = 20) {
+async function generate_orders(count, start_date, end_date, start_hour = 11, end_hour = 20) {
     let items = await getItems();
 
     for(let i = 0; i < count; i++) {
-        let item_count = Math.floor(Math.random() * 11);
+        let item_count = Math.floor(Math.random() * 11) + 1;
 
         let items_list = getRandomItemsList(item_count, items);
 

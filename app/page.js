@@ -13,6 +13,7 @@ import { GoHistory } from "react-icons/go";
 import { GoChecklist } from "react-icons/go";
 import { GoGear } from "react-icons/go";
 import Head from 'next/head'
+import Analytics from './components/analytics/analytics.js';
 
 
 
@@ -128,7 +129,7 @@ export default function Home() {
                       <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                       <div className='flex'>
                         <GoHistory className='mt-auto mb-auto'/>
-                        <a className="px-[1.042vw] cursor-pointer">Analytics</a>
+                        <a onClick = {enableSideBar ? () => setPage("analytics") : undefined} className="px-[0.84vw] cursor-pointer">Analytics</a>
                       </div>
                       <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                       </div>
@@ -172,6 +173,16 @@ export default function Home() {
             {page == "settings" && 
               <div>
                 <Settings setLoggedIn = {setLoggedIn} setItemsList = {setItemsList} setPage = {setPage}></Settings>
+              </div>
+            }
+            {page == "accounts" && 
+              <div>
+                
+              </div>
+            }
+            {page == "analytics" && 
+              <div>
+                <Analytics></Analytics>
               </div>
             }
             
