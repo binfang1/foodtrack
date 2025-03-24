@@ -238,12 +238,15 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
                                 <h1 className="text-[1.5vw]">{category.category}:</h1>
                                 <div className="flex flex-wrap gap-[1vw] mb-[2vw]">
                                     {items.filter(item => item.category === category.category).map(item => (
-                                        <div className = "flex mt-4 p-2 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[15vw] h-[3.5vw]" key={item.id}>
-                                            <div>
-                                                <p>Name: {item.name} </p>
-                                                <p>Price:${item.price.toFixed(2)}</p>
+                                        <div className = "flex mt-4 p-2 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[15vw] h-[4.5vw]" key={item.id}>
+                                            <div className="flex">
+                                                <img src={`/item_images/${item.id}.png`} className="w-24 h-24"></img>
+                                                <div className="p-2">
+                                                    <p>Name: {item.name} </p>
+                                                    <p>Price:${item.price.toFixed(2)}</p>
+                                                </div>
                                             </div>
-                                            <p className="cursor-pointer ml-auto justify-self-center hover:underline" onClick = {() => openPopupEdit(item)}>edit</p>
+                                            <p className="cursor-pointer ml-auto justify-self-center hover:underline" onClick = {() => openPopupEdit(item)}>Edit</p>
                                         </div>
                                     ))}
                                 </div>
