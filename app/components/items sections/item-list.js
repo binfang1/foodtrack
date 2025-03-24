@@ -30,11 +30,11 @@ export default function ItemList({ itemGridEnabled, sideBarEnabled, itemsList, s
                     total: total, 
                     items: JSON.stringify(itemsList), 
                     notes: notes, 
-                    status: false, 
-                    creation_datetime: `${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDay()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`, 
+                    status: "unpaid", 
+                    creation_datetime: `${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`, 
                     completed_datetime: null,
                     payment_status: "Unpaid",
-                    pickup_datetime: `${String(time.getFullYear()).padStart(2, '0')}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDay()).padStart(2, '0')} ${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}:${String(time.getSeconds()).padStart(2,'0')}` ,
+                    pickup_datetime: `${String(time.getFullYear()).padStart(2, '0')}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDate()).padStart(2, '0')} ${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}:${String(time.getSeconds()).padStart(2,'0')}` ,
                     payment_method: null
                  },
               )
@@ -110,8 +110,7 @@ export default function ItemList({ itemGridEnabled, sideBarEnabled, itemsList, s
         setItemsList([]);
         alert("Order has been added")
         closePopUp();
-        console.log(new Date().toISOString().slice(0, 19).replace('T', ' '));
-        console.log(`${time.getFullYear()}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDay()).padStart(2, '0')} ${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}:${String(time.getSeconds()).padStart(2,'0')}`);
+        console.log(`${time.getFullYear()}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDate()).padStart(2, '0')} ${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}:${String(time.getSeconds()).padStart(2,'0')}`);
     }
 
     const closePopUp = () => {
@@ -128,7 +127,7 @@ export default function ItemList({ itemGridEnabled, sideBarEnabled, itemsList, s
     };
 
     const getTime = (event) => {
-        setTime(new Date(time.getFullYear(), time.getMonth(), time.getDay(), event.target.value.slice(0, 2), event.target.value.slice(3, 5)))
+        setTime(new Date(time.getFullYear(), time.getMonth(), time.getDate(), event.target.value.slice(0, 2), event.target.value.slice(3, 5)))
     }
 
     
