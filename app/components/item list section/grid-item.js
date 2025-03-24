@@ -18,8 +18,8 @@ export default function GridItem({ id, name, price, itemsList, setItemsList }) {
     }
 
     return (
-        <div onClick={onClick} className="cursor-pointer text-center flex flex-col justify-center h-[7.8vw] w-[9.12vw] bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] text-[0.84vw]" key={id}>
-            <h2>{id}</h2>
+        <div onClick={onClick} className="cursor-pointer text-center flex flex-col justify-center h-[11.6vw] w-[9.12vw] bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] text-[0.84vw]" key={id}>
+            <img src={`item_images/${id}.png`}></img>
             <h1>{name}</h1>
             <h3>${price.toFixed(2)}</h3>
         </div>
