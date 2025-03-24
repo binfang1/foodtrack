@@ -31,13 +31,13 @@ export async function GET(request) {
 export async function POST(request) {
   try {
       
-      const { client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime } = await request.json()
+      const { client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method } = await request.json()
 
       const [results, fields] = await connection.query(
-          'INSERT INTO orders (client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime) VALUES (?,?,?,?,?,?,?,?,?)',
-          [client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime]
+          'INSERT INTO orders (client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
+          [client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method]
       );
-      console.log(client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime)
+      console.log(client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method)
 
       return new Response(JSON.stringify(
           { message: "success" },
@@ -84,5 +84,8 @@ export async function PUT(request) {
   } catch (err) {
     console.log(err);
   }
+
 }
+
+
 

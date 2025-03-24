@@ -20,7 +20,10 @@
         notes TEXT,
         status TEXT,
         creation_datetime DATETIME,
-        completed_datetime DATETIME
+        completed_datetime DATETIME,
+        payment_status TEXT,
+        pickup_datetime DATETIME,
+        payment_method TEXT
     );
 
     CREATE TABLE IF NOT EXISTS accounts (

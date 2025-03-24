@@ -118,6 +118,11 @@ export default function Home() {
                         <a className="px-[1.042vw] cursor-pointer">History</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
+                      <div className='flex'>
+                        <GoHistory className='mt-auto mb-auto'/>
+                        <a className="px-[1.042vw] cursor-pointer">Accounts</a>
+                      </div>
+                        <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                     </div>
                     <div className='flex mb-[1.25vw] text-[0.94vw]'>
                         <GoGear className='mt-auto mb-auto'/>

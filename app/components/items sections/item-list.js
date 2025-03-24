@@ -29,7 +29,11 @@ export default function ItemList({ enableSideBar, sideBarEnabled, itemsList, sub
                     notes: notes, 
                     status: false, 
                     creation_datetime: new Date().toISOString().slice(0, 19).replace('T', ' '), 
-                    completed_datetime: null },
+                    completed_datetime: null,
+                    payment_status: "Unpaid",
+                    pickup_datetime: null,
+                    payment_method: null
+                 },
               )
           });
           if (!response.ok) {

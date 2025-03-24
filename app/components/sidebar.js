@@ -20,6 +20,8 @@ export default function Sidebar() {
                     <hr className="border-[#D9D9D9] my-[20px] mx-[8px]"></hr>
                     <a className="px-[8px]">History</a>
                     <hr className="border-[#D9D9D9] my-[20px] mx-[8px]"></hr>
+                    <a className="px-[8px]">Accounts</a>
+                    <hr className="border-[#D9D9D9] my-[20px] mx-[8px]"></hr>
                 </div>
                 <a className="px-[8px] mb-[24px]">Settings</a>
             </div>
