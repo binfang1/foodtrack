@@ -24,7 +24,8 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
     const [price, setPrice] = useState(0.00);
     const [name, setName] = useState("");
     const [category, setCategory] = useState("");
-    const [toggle, setToggle] = useState(false)
+    const [toggle, setToggle] = useState(false);
+    const [buttonsEnabled, enabledButton] = useState(true);
 
     let categories = [];
 
@@ -230,24 +231,37 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
     return (
         <div className="relative h-[100vh] w-[85vw] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
             <div className="p-[0.8vw] h-[100vh] flex flex-col bg-white rounded-xl" >
-                <button onClick = {openPopupAdd} className="mb-[0.8vw] cursor-pointer bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-[5vw]">Add Item</button>
+                <button onClick = {openPopupAdd} className="mb-[0.8vw] cursor-pointer bg-white rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-[3vw] text-[0.9vw]">Add Item</button>
                 <div className="overflow-auto">
                     <div>
                         {categories.map(category => (
                             <div key = {category.category}>
                                 <h1 className="text-[1.5vw]">{category.category}:</h1>
-                                <div className="flex flex-wrap gap-[1vw] mb-[2vw]">
-                                    {items.filter(item => item.category === category.category).map(item => (
-                                        <div className = "flex mt-[]0.5vw] p-[0.5vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[20vw] h-[5vw]" key={item.id}>
-                                            <div className="flex">
-                                                <img src={`/item_images/${item.id}.png`} className="w-[3.5vw] h-[3.5vw]"></img>
-                                                <div className="p-[0.3vw] text-[0.9vw]">
-                                                    <p>Name: {item.name} </p>
-                                                    <p>Price:${item.price.toFixed(2)}</p>
-                                                </div>
-                                            </div>
-                                            <p className="cursor-pointer ml-auto justify-self-center hover:underline text-[0.9vw]" onClick = {() => openPopupEdit(item)}>Edit</p>
+                                
+                                <div className="flex flex-col">
+                                    <div className="mb-[0.8vw]">
+                                        <div className="grid grid-cols-5 text-[0.9vw]">
+                                            <p>Image:</p>
+                                            <p>Name:</p>
+                                            <p>price:</p>
+                                            <p>Stock:</p>
+                                            <p className="invisible">a</p>
                                         </div>
+                                        <hr></hr>
+                                    </div>
+                                    
+                                    {items.filter(item => item.category === category.category).map(item => (
+                                        <div key={item.id}>
+                                            <div className = "mb-[0.8vw] grid grid-cols-5 bg-white text-black text-black shadow-sm text-[0.9vw]">
+                                                <img src={`/item_images/${item.id}.png`} className="w-[4vw] h-[4vw]"></img>
+                                                <p className="text-[0.9vw]"> {item.name} </p>
+                                                <p className="text-[0.9vw]">${item.price.toFixed(2)}</p>
+                                                <p className="text-[0.9vw]">STOCK</p>
+                                                <p className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => openPopupEdit(item)}>Edit</p>
+                                            </div>
+                
+                                        </div>
+                                        
                                     ))}
                                 </div>
                             </div>
