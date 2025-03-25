@@ -1,5 +1,5 @@
 "use client";
-import GridItem from "../../components/item list section/grid-item"
+import GridItem from "../item grid section/grid-item"
 import { useState, useEffect } from "react";
 
 async function getData() {
@@ -24,6 +24,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
     const [price, setPrice] = useState(0.00);
     const [name, setName] = useState("");
     const [category, setCategory] = useState("");
+    const [stock, setStock] = useState(1);
     const [toggle, setToggle] = useState(false);
     const [buttonsEnabled, enabledButton] = useState(true);
 
@@ -42,7 +43,6 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         }
     }
     categories.sort(function(a, b) {return a.category.localeCompare(b.category);});
-    console.log(categories)
 
 
 
@@ -56,7 +56,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
                     name: (name ? name : currentItem.name),
                     price: (price ? price : currentItem.price),
                     category: (category ? category : currentItem.category),
-                    desc: currentItem.description,
+                    stock: (stock ? stock : currentItem.stock),
                     id: currentItem.id
                 },
               )
@@ -82,7 +82,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
                     name: name,
                     price: price,
                     category: category,
-                    desc: "Test Desc"
+                    stock: stock
                 },
                 )
             });
@@ -126,7 +126,6 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         popupIsEnabled(!popupEnabled);
         changeBrightness();
         getData().then((response) => setItems(response));
-        setItems(items);
     }
 
     const addItem = (event) => {
@@ -136,12 +135,10 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         popupIsEnabled(!popupEnabled);
         changeBrightness();
         getData().then((response) => setItems(response));
-        setItems(items);
     }
 
     const deleteItem = () => {
         event.preventDefault();
-        console.log(currentItem)
         deleteData().then((response) => alert("Item Has Been deleted"));
         setItemsList([]);
         popupIsEnabled(!popupEnabled);
@@ -158,7 +155,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
 
     useEffect(() => {
         setItems(items);
-    }, [items]);
+    }, [itemsList]);
 
 
     const changeBrightness = () => {
@@ -199,6 +196,11 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         setCategory(event.target.value)
     }
 
+    const getStock = (event) => {
+        event.preventDefault();
+        setStock(event.target.value)
+    }
+
     const openPopupEdit = (item) => {
         popupIsEnabled(!popupEnabled);
         changeBrightness()
@@ -206,6 +208,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         setName("");
         setPrice("");
         setCategory("");
+        setStock("");
         setCurrentItem(item)
     }
 
@@ -216,6 +219,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         setName("");
         setPrice("");
         setCategory("");
+        setStock("");
         setCurrentItem()
     }
 
@@ -231,7 +235,6 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
     return (
         <div className="relative h-[100vh] w-[85vw] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
             <div className="p-[0.8vw] h-[100vh] flex flex-col bg-white rounded-xl" >
-                <button onClick = {openPopupAdd} className="mb-[0.8vw] cursor-pointer bg-white rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-[3vw] text-[0.9vw]">Add Item</button>
                 <div className="overflow-auto">
                     <div>
                         {categories.map(category => (
@@ -256,7 +259,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
                                                 <img src={`/item_images/${item.id}.png`} className="w-[4vw] h-[4vw]"></img>
                                                 <p className="text-[0.9vw]"> {item.name} </p>
                                                 <p className="text-[0.9vw]">${item.price.toFixed(2)}</p>
-                                                <p className="text-[0.9vw]">STOCK</p>
+                                                <p className="text-[0.9vw]">{item.stock}</p>
                                                 <p className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => openPopupEdit(item)}>Edit</p>
                                             </div>
                 
@@ -267,8 +270,9 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
                             </div>
                         ))}
                     </div>    
-
+                        
                 </div>
+                <button onClick = {openPopupAdd} className="mt-auto mb-[1.5vw] cursor-pointer bg-white rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-[3vw] text-[0.9vw]">Add Item</button>
             </div>
             {popupEnabled ? (
                         <div className = "absolute bottom-0 left-[-0.2vw] top-[-0.2vw] right-0 flex justify-center items-center w-[85vw] h-[100vh] bg-black/50">
@@ -287,7 +291,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
 
                                         <div className="mx-auto">
                                             <label>
-                                                <input placeholder= {currentItem.price.toFixed(2)} onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
+                                                <input placeholder= {currentItem.price.toFixed(2)} min = "0" onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
                                             </label>
                                         </div>
                                         
@@ -295,6 +299,12 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
                                         <div className="mx-auto">
                                             <label>
                                                 <input placeholder={currentItem.category} onChange={getCategory} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {category} type="text"/>
+                                            </label>
+                                        </div>
+
+                                        <div className="mx-auto">
+                                            <label>
+                                                <input placeholder={currentItem.stock} min = "1" onChange={getStock} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {stock} type="number"/>
                                             </label>
                                         </div>
                                         
@@ -314,7 +324,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
 
                                         <div>
                                             <label>
-                                                <input placeholder="Enter Price" required onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
+                                                <input placeholder="Enter Price" min = "0" required onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
                                             </label>
                                         </div>
 
