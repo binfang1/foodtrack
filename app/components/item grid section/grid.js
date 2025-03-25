@@ -30,7 +30,6 @@ export default function ItemGrid({categoryPage, setCategoryPage,  itemGridEnable
         const newItemsList = [...itemsList]
         if (newItemsList.some(item => item.id == data.id)) {  
             const index = newItemsList.findIndex(item => item.id === data.id); 
-            console.log(index)
             if (newItemsList[index].quantity == data.stock) {
                 return false;
             }
@@ -71,7 +70,7 @@ export default function ItemGrid({categoryPage, setCategoryPage,  itemGridEnable
                         </div>
                         <div className="flex flex-wrap w-[50vw] gap-[1vw] mx-auto mt-[1.625vw]">
                             {newItems.filter(item => item.category === categoryPage).map(item => (
-                                <GridItem status = {inStock(item)} key={item.id} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} id={item.id} name={item.name} price={item.price} stock = {item.stock} category = {item.category} itemsList={itemsList} setItemsList={setItemsList} >{console.log(item)}</GridItem>
+                                <GridItem status = {inStock(item)} key={item.id} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} id={item.id} name={item.name} price={item.price} stock = {item.stock} category = {item.category} itemsList={itemsList} setItemsList={setItemsList} ></GridItem>
                             ))}
                         </div>
                      </div>

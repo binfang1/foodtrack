@@ -185,7 +185,6 @@ export default function ItemList({ categoryPage, setCategoryPage, itemGridEnable
         const oldPrice = newItemsList[index].price / newItemsList[index].quantity
         newItemsList[index].quantity += 1;
         newItemsList[index].price = newItemsList[index].price + oldPrice;
-        console.log(newItemsList[index])
         setItemsList(newItemsList);
         if (newItemsList[index].quantity == newItemsList[index].stock) {
             newItemsList[index].setter(false);
@@ -206,9 +205,7 @@ export default function ItemList({ categoryPage, setCategoryPage, itemGridEnable
     }
 
     const clearAll = () => {
-        console.log("here")
         for (let i = 0; i < itemsList.length; i++) {
-            console.log(itemsList[i])
             itemsList[i].setter(true);
         }
         setItemsList([]);

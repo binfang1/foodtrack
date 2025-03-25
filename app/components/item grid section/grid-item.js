@@ -24,7 +24,6 @@ export default function GridItem({ status, itemGridEnabled, enableItemGrid, id, 
             const oldPrice = newItemsList[index].price / newItemsList[index].quantity
             newItemsList[index].quantity += 1;
             newItemsList[index].price = newItemsList[index].price + oldPrice;
-            console.log(newItemsList[index])
             if (newItemsList[index].quantity == newItemsList[index].stock) {
                 changeStock(false);
             }
