@@ -1,17 +1,17 @@
 "use client";
 import ReactDOM from 'react-dom'
-import ItemGrid from "./components/item list section/grid.js";
+import ItemGrid from "./components/item grid section/grid.js";
 import { useState, useEffect } from "react";
 import ItemList from "./components/items sections/item-list.js";
 import Login from "./components/login/login.js";
 import OrderGrid from "./components/order section/order-grid.js";
 import Items from "./components/view items/items.js"
+import Accounts from "./components/accounts/accounts.js"
 import { GoHome } from "react-icons/go";
 import { GoNote } from "react-icons/go";
 import { GoHistory } from "react-icons/go";
 import { GoChecklist } from "react-icons/go";
 import { GoGear } from "react-icons/go";
-import Head from 'next/head'
 import { GoPerson } from "react-icons/go";
 import { GoPulse } from "react-icons/go";
 
@@ -60,7 +60,7 @@ export default function Home() {
   const [total, setTotal] = useState(0.00);
   const [accounts, setAccounts] = useState([]);
   const [loggedIn, setLoggedIn] = useState();
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState("");
   const [back, setBack] = useState(true);
   const [mainOrder, setMainOrder] = useState();
   const [enableSideBar, sideBarEnabled] = useState(true);
@@ -69,7 +69,7 @@ export default function Home() {
   function LogOut() {
     setItemsList([]);
     setLoggedIn();
-    setPage("home");
+    setPage("");
   }
 
   useEffect(() => {
@@ -92,6 +92,7 @@ export default function Home() {
 
 
 
+
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <div className="bg-[#E4E4EF] h-full w-full">
@@ -101,16 +102,21 @@ export default function Home() {
                 <div className="bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] p-[0.84vw]  flex flex-col">
                     <div className="text-[0.85vw]">
                         <h1 className="text-[#757575]">Welcome, {loggedIn.username}</h1>
-                        <h2 className="font-semibold text-[1.1vw] mb-[-0.52vw] cursor-pointer" onClick = {enableSideBar ? () => setPage("home") : undefined}>FoodTrack</h2>
+                        <h2 className="font-semibold text-[1.1vw] mb-[-0.52vw]">FoodTrack</h2>
                         <hr className="border-[#D9D9D9] my-[1.1vw]"></hr>
                     </div>
                     <div className = "text-[0.94vw] h-full">
 
+
+                    {loggedIn.type != "Chef" &&
+                      <div>
                       <div className='flex'>
                         <GoHome className='mt-auto mb-auto'/>
                         <a onClick = {enableSideBar ? () => setPage("home") : undefined} className="px-[0.84vw] cursor-pointer">Home</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
+                      </div>
+                      } 
                         
                       <div className='flex'>
                         <GoChecklist className='mt-auto mb-auto'/>
@@ -118,23 +124,31 @@ export default function Home() {
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
 
-                      <div className='flex'>
-                        <GoNote className='mt-auto mb-auto'/>
-                        <a onClick = {enableSideBar ? () => setPage("items") : undefined} className="px-[0.84vw] cursor-pointer">Items</a>
-                      </div>
-                        <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
 
+                      {loggedIn.type != "Chef" &&
+                      <div>
                       <div className='flex'>
                         <GoHistory className='mt-auto mb-auto'/>
                         <a className="px-[1.042vw] cursor-pointer">History</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
+                      </div>
+                      }
 
-                      {loggedIn.admin ? (
+
+
+
+
+                      {loggedIn.type == "Admin" && 
                       <div>
                       <div className='flex'>
+                        <GoNote className='mt-auto mb-auto'/>
+                        <a onClick = {enableSideBar ? () => setPage("items") : undefined} className="px-[0.84vw] cursor-pointer">Items</a>
+                      </div>
+                        <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
+                      <div className='flex'>
                         <GoPerson className='mt-auto mb-auto'/>
-                        <a className="px-[1.042vw] cursor-pointer">Accounts</a>
+                        <a onClick = {enableSideBar ? () => setPage("accounts") : undefined} className="px-[1.042vw] cursor-pointer">Accounts</a>
                       </div>
                       <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                       <div className='flex'>
@@ -143,7 +157,7 @@ export default function Home() {
                       </div>
                       <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                       </div>
-                      ) : ("")}
+                       }
                     </div>
                     <div className='flex mb-[1.25vw] text-[0.94vw]'>
                         <GoGear className='mt-auto mb-auto'/>
@@ -180,15 +194,15 @@ export default function Home() {
             {page == "history"
 
             }
-            {page == "settings" && 
+            {page == "accounts" && 
               <div>
-                <Settings setLoggedIn = {setLoggedIn} setItemsList = {setItemsList} setPage = {setPage}></Settings>
+                <Accounts accounts = {accounts} setAccounts={setAccounts}></Accounts>
               </div>
             }
             
           </div>
         ) : (
-          <Login loggedIn = {loggedIn} setLoggedIn = {setLoggedIn} accounts = {accounts}></Login>
+          <Login page = {page} setPage = {setPage} loggedIn = {loggedIn} setLoggedIn = {setLoggedIn} accounts = {accounts}></Login>
         )}
        
       </div>
