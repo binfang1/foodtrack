@@ -65,7 +65,14 @@ export async function DELETE(request) {
       'DELETE FROM order WHERE id = ?', [id]
     )
 
-    return NextResponse.json();
+    return new Response(JSON.stringify(
+      { message: "success" },
+      {
+        headers: { "content-type": "application/json" },
+        status: 200,
+      }
+    )
+  );
   } catch (err) {
     console.log(err);
   }
@@ -80,7 +87,14 @@ export async function PUT(request) {
       [client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, id]
     )
 
-    return NextResponse.json();
+    return new Response(JSON.stringify(
+      { message: "success" },
+      {
+        headers: { "content-type": "application/json" },
+        status: 200,
+      }
+    )
+  );
   } catch (err) {
     console.log(err);
   }

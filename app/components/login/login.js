@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-export default function Login({loggedIn, setLoggedIn, accounts}) {
+export default function Login({loggedIn, setLoggedIn, accounts, page, setPage}) {
     const [password, setPassword] = useState("");
     const [user, setUser] = useState("");
     
@@ -11,6 +11,13 @@ export default function Login({loggedIn, setLoggedIn, accounts}) {
             const index = accounts.findIndex(account => account.username == user);
             if (accounts[index].password == password) {
                 setLoggedIn(accounts[index]);
+                if (accounts[index].type == "Chef") {
+                    setPage("orders");
+                }
+                else {
+                    setPage("home");
+                }
+
             }
             else {
                 alert('incorrect username and/or password')
