@@ -4,17 +4,19 @@ import { useEffect, useState } from "react";
 
 export default function GridItem({ status, itemGridEnabled, enableItemGrid, id, name, price, stock, category, itemsList, setItemsList }) {
     const [inStock, setStock] = useState(status);
+    let value = status;
     if (stock == 0) {
         setStock(false);
-        
     }
 
     useEffect(() => {
-        console.log(inStock)
         setStock(inStock);
-        console.log("here")
         console.log(inStock)
     }, [inStock])
+
+    function changeStock(value) {
+        setStock(value);
+    }
 
 
     function onClick() {
@@ -34,7 +36,7 @@ export default function GridItem({ status, itemGridEnabled, enableItemGrid, id, 
             }
         }
         else {
-            newItemsList.push({"id": id, "quantity": 1, "name": name, "price": price, "stock": stock, "category": category, "setter": function(value) {setStock(value)}});
+            newItemsList.push({"id": id, "quantity": 1, "name": name, "price": price, "stock": stock, "category": category, "setter": function(value) {changeStock(value)}});
             if (newItemsList[newItemsList.length -1].quantity == newItemsList[newItemsList.length -1].stock) {
                 setStock(false);
             }
@@ -44,7 +46,7 @@ export default function GridItem({ status, itemGridEnabled, enableItemGrid, id, 
 
     return (
         <div onClick={enableItemGrid ? onClick : undefined} className="cursor-pointer text-center flex flex-col justify-center h-[11.6vw] w-[9.12vw] bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] text-[0.84vw]" key={id}>
-            {inStock ? (
+            {value ? (
             <img src={`item_images/${id}.png`}></img>
 
             ) : (

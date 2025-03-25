@@ -304,7 +304,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
 
                                         <div className="mx-auto">
                                             <label>
-                                                <input placeholder={currentItem.stock} min = "1" onChange={getStock} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {stock} type="number"/>
+                                                <input placeholder={currentItem.stock} min = "0" onChange={getStock} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {stock} type="number"/>
                                             </label>
                                         </div>
                                         

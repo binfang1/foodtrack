@@ -7,7 +7,7 @@ import Items from "../view items/items";
 
 
 
-export default function ItemList({ itemGridEnabled, sideBarEnabled, itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList, mainOrder, setMainOrder  }) {
+export default function ItemList({ categoryPage, setCategoryPage, itemGridEnabled, sideBarEnabled, itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList, mainOrder, setMainOrder  }) {
     const currentTime = new Date();
     const [popupEnabled, popupIsEnabled] = useState(false);
     const [toggle, setToggle] = useState(false)
@@ -151,6 +151,7 @@ export default function ItemList({ itemGridEnabled, sideBarEnabled, itemsList, s
         setItemsList([]);
         alert("Order has been added")
         closePopUp();
+        setCategoryPage("Default")
     }
 
     const closePopUp = () => {

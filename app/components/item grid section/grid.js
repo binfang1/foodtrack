@@ -6,21 +6,27 @@ import { GoMoveToStart } from "react-icons/go";
 
 
 
-export default function ItemGrid({ itemGridEnabled, enableItemGrid, items, itemsList, setItemsList }) {
-    const [categoryPage, setCategoryPage] = useState("Default");
+export default function ItemGrid({categoryPage, setCategoryPage,  itemGridEnabled, enableItemGrid, items, itemsList, setItemsList }) {
+    
 
     let categories = [];
+    let newItems = [];
 
     for (let i = 0; i < items.length; i++) {
         const category = new Object;
-        if (categories.some(item => item.category == items[i].category)) { 
+        if (items[i].stock == 0) {
+            continue;
+        }
+        else if (categories.some(item => item.category == items[i].category)) { 
             const index = categories.findIndex(item => item.category == items[i].category);
             categories[index].object.push(items[i])
+            newItems.push(items[i])
         }
         else {
             category.category = items[i].category;
             category.object = [items[i]];
             categories.push(category);
+            newItems.push(items[i])
         }
     }
     categories.sort(function(a, b) {return a.category.localeCompare(b.category);});
@@ -62,7 +68,7 @@ export default function ItemGrid({ itemGridEnabled, enableItemGrid, items, items
                             <GoMoveToStart onClick={() => setCategoryPage("Default")} className="cursor-pointer text-[3vw] p-[0.4vw] border-1 rounded-3xl solid mt-[1vw] ml-[1vw]"/>
                         </div>
                         <div className="flex flex-wrap w-[50vw] gap-[1vw] mx-auto mt-[1.625vw]">
-                            {items.filter(item => item.category === categoryPage).map(item => (
+                            {newItems.filter(item => item.category === categoryPage).map(item => (
                                 <GridItem status = {inStock(item)} key={item.id} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} id={item.id} name={item.name} price={item.price} stock = {item.stock} category = {item.category} itemsList={itemsList} setItemsList={setItemsList} ></GridItem>
                             ))}
                         </div>

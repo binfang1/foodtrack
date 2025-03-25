@@ -65,6 +65,7 @@ export default function Home() {
   const [mainOrder, setMainOrder] = useState();
   const [enableSideBar, sideBarEnabled] = useState(true);
   const [enableItemGrid, itemGridEnabled] = useState(true);
+  const [categoryPage, setCategoryPage] = useState("Default");
 
   function LogOut() {
     setItemsList([]);
@@ -77,6 +78,7 @@ export default function Home() {
     getData().then((response) => setItems(response))
   }, [page]);
 
+
   useEffect(() => {
     getAccounts().then((response) => setAccounts(response))
     getData().then((response) => setItems(response))
@@ -85,6 +87,7 @@ export default function Home() {
   useEffect(() => {
     setPage(page);
   }, [page]);
+
 
 
 
@@ -168,14 +171,14 @@ export default function Home() {
             {page == "home" &&
               <div>
                   <div className="flex max-[769px]:hidden">
-                    <ItemGrid enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} items={items} setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
-                    <ItemList itemGridEnabled = {itemGridEnabled} sideBarEnabled = {sideBarEnabled} itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal} mainOrder={mainOrder} setMainOrder={setMainOrder}></ItemList>
+                    <ItemGrid categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} items={items}  setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
+                    <ItemList categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} setPage = {setPage} itemGridEnabled = {itemGridEnabled} sideBarEnabled = {sideBarEnabled} itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal} mainOrder={mainOrder} setMainOrder={setMainOrder}></ItemList>
                   </div>
                   <div className='hidden max-[769px]:block'>
                     {back ? (
-                      <ItemGrid enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} items={items} setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
+                      <ItemGrid categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} items={items} setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
                     ) : (
-                      <ItemList itemGridEnabled = {itemGridEnabled} sideBarEnabled = {sideBarEnabled} itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal} mainOrder={mainOrder} setMainOrder={setMainOrder}></ItemList>
+                      <ItemList categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} setPage = {setPage} itemGridEnabled = {itemGridEnabled} sideBarEnabled = {sideBarEnabled} itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal} mainOrder={mainOrder} setMainOrder={setMainOrder}></ItemList>
                     )}
                   </div>
               </div>
