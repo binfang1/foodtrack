@@ -24,6 +24,17 @@ export default function ItemGrid({ itemGridEnabled, enableItemGrid, items, items
         }
     }
     categories.sort(function(a, b) {return a.category.localeCompare(b.category);});
+
+    function inStock(data) {
+        const newItemsList = [...itemsList]
+        if (newItemsList.some(item => item.quantity == data.stock)) {   
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     function addGrid(amount) {
         let s = "";
         for (let i = 0; i < amount; i++) {
@@ -52,7 +63,7 @@ export default function ItemGrid({ itemGridEnabled, enableItemGrid, items, items
                         </div>
                         <div className="flex flex-wrap w-[50vw] gap-[1vw] mx-auto mt-[1.625vw]">
                             {items.filter(item => item.category === categoryPage).map(item => (
-                                <GridItem key={item.id} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} id={item.id} name={item.name} price={item.price} itemsList={itemsList} setItemsList={setItemsList} ></GridItem>
+                                <GridItem status = {inStock(item)} key={item.id} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} id={item.id} name={item.name} price={item.price} stock = {item.stock} category = {item.category} itemsList={itemsList} setItemsList={setItemsList} ></GridItem>
                             ))}
                         </div>
                      </div>

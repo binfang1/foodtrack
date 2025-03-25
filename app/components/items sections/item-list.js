@@ -65,6 +65,46 @@ export default function ItemList({ itemGridEnabled, sideBarEnabled, itemsList, s
             console.error(error.message);
         }
     }
+
+    async function updateItem(item) {
+        console.log("e")
+        const url = "http://localhost:3000/api/items";
+        console.log(item.stock)
+        try {
+          const response = await fetch(url , {
+            'method': 'PUT',
+            'body': JSON.stringify(
+                {  
+                    name: item.name,
+                    price: item.price/item.quantity,
+                    category: item.category,
+                    stock: item.stock-item.quantity,
+                    id: item.id
+                },
+              )
+          });
+          if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+          }
+      
+          const json = await response.json();
+          return json;
+        } catch (error) {
+          console.error(error.message);
+        }
+    }
+
+    async function removeStock() {
+        try {
+            for (const item of itemsList) {
+                await updateItem(item);
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+
     useEffect(() => {
         setChangeTime(`${String(time.getHours()).padStart(2,'0')}:${String(time.getMinutes()).padStart(2,'0')}`)
     }, [time])
@@ -107,10 +147,10 @@ export default function ItemList({ itemGridEnabled, sideBarEnabled, itemsList, s
     const saveOrder = () => {
         event.preventDefault();
         postData().then((response) => console.log(response));
+        removeStock().then((response) => console.log(response));
         setItemsList([]);
         alert("Order has been added")
         closePopUp();
-        console.log(`${time.getFullYear()}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDate()).padStart(2, '0')} ${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}:${String(time.getSeconds()).padStart(2,'0')}`);
     }
 
     const closePopUp = () => {
@@ -130,31 +170,49 @@ export default function ItemList({ itemGridEnabled, sideBarEnabled, itemsList, s
         setTime(new Date(time.getFullYear(), time.getMonth(), time.getDate(), event.target.value.slice(0, 2), event.target.value.slice(3, 5)))
     }
 
-    
-
     const remove = (index) => {
         const newItemsList = [...itemsList]
+        newItemsList[index].setter(true);
         newItemsList.splice(index, 1);
         setItemsList(newItemsList);
     }  
 
     const increment = (index) => {
         const newItemsList = [...itemsList]
+        if (newItemsList[index].quantity == newItemsList[index].stock) {
+            newItemsList[index].setter(false);
+            return;
+        }
         const oldPrice = newItemsList[index].price / newItemsList[index].quantity
         newItemsList[index].quantity += 1;
         newItemsList[index].price = newItemsList[index].price + oldPrice;
+        console.log(newItemsList[index])
         setItemsList(newItemsList);
+        if (newItemsList[index].quantity == newItemsList[index].stock) {
+            newItemsList[index].setter(false);
+            return;
+        }
     }
 
     const decrement = (index) => {
         const newItemsList = [...itemsList]
         const oldPrice = newItemsList[index].price / newItemsList[index].quantity
+        newItemsList[index].setter(true);
         newItemsList[index].quantity -= 1;
         newItemsList[index].price = newItemsList[index].price - oldPrice;
         if (newItemsList[index].quantity == 0) {
             newItemsList.splice(index, 1);
         }
         setItemsList(newItemsList);
+    }
+
+    const clearAll = () => {
+        console.log("here")
+        for (let i = 0; i < itemsList.length; i++) {
+            console.log(itemsList[i])
+            itemsList[i].setter(true);
+        }
+        setItemsList([]);
     }
 
     const changeBrightness = () => {
@@ -192,7 +250,7 @@ export default function ItemList({ itemGridEnabled, sideBarEnabled, itemsList, s
     <div className="h-[100vh] w-[30vw] bg-[#D9D9D9] h-full drop-shadow-md ">
         <div className="text-[0.84vw] py-[1.7vw] pl-[1.7vw] flex h-[100vh] flex-col w-[30vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
             {itemsList.length !=0 && 
-                <button onClick = {() => setItemsList([])} className="cursor-pointer py-[0.73vw] mb-[1.2vw] mr-[1.7vw] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Clear Items</button>
+                <button onClick = {() => clearAll()} className="cursor-pointer py-[0.73vw] mb-[1.2vw] mr-[1.7vw] drop-shadow-sm border-solid border-2 border-[#D9D9D9]">Clear Items</button>
             }
             <div className="overflow-auto touch-auto">
                 {itemsList.map((item, index) => (
@@ -244,7 +302,7 @@ export default function ItemList({ itemGridEnabled, sideBarEnabled, itemsList, s
         </div>
         {popupEnabled ? (
             <div className = "absolute bottom-0 left-[-0.01vw] top-[-0.01vw] right-0 flex justify-center items-center w-[85vw] h-[100vh] bg-black/50">
-                <div className ="absolute flex flex-col top-[-35%%] left-[-35%] absolute p-12 max-w-[400px] w-full h-full max-h-[300px] bg-white">
+                <div className ="absolute flex flex-col top-[-35%%] left-[-35%] absolute p-12 max-w-[400px] w-full h-full max-h-[500px] bg-white">
                     <div className="flex justify-end">
                         <button className="cursor-pointer text-black text-3xl w-10 h-10" onClick = {() => closePopUp()}>X</button>
                     </div>
