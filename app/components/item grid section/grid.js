@@ -7,17 +7,12 @@ import { GoMoveToStart } from "react-icons/go";
 
 
 export default function ItemGrid({categoryPage, setCategoryPage,  itemGridEnabled, enableItemGrid, items, itemsList, setItemsList }) {
-    
-
     let categories = [];
     let newItems = [];
 
     for (let i = 0; i < items.length; i++) {
         const category = new Object;
-        if (items[i].stock == 0) {
-            continue;
-        }
-        else if (categories.some(item => item.category == items[i].category)) { 
+        if (categories.some(item => item.category == items[i].category)) { 
             const index = categories.findIndex(item => item.category == items[i].category);
             categories[index].object.push(items[i])
             newItems.push(items[i])
@@ -33,8 +28,15 @@ export default function ItemGrid({categoryPage, setCategoryPage,  itemGridEnable
 
     function inStock(data) {
         const newItemsList = [...itemsList]
-        if (newItemsList.some(item => item.quantity == data.stock)) {   
-            return false;
+        if (newItemsList.some(item => item.id == data.id)) {  
+            const index = newItemsList.findIndex(item => item.id === data.id); 
+            console.log(index)
+            if (newItemsList[index].quantity == data.stock) {
+                return false;
+            }
+            else {
+                return true;
+            }
         }
         else {
             return true;
@@ -69,7 +71,7 @@ export default function ItemGrid({categoryPage, setCategoryPage,  itemGridEnable
                         </div>
                         <div className="flex flex-wrap w-[50vw] gap-[1vw] mx-auto mt-[1.625vw]">
                             {newItems.filter(item => item.category === categoryPage).map(item => (
-                                <GridItem status = {inStock(item)} key={item.id} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} id={item.id} name={item.name} price={item.price} stock = {item.stock} category = {item.category} itemsList={itemsList} setItemsList={setItemsList} ></GridItem>
+                                <GridItem status = {inStock(item)} key={item.id} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} id={item.id} name={item.name} price={item.price} stock = {item.stock} category = {item.category} itemsList={itemsList} setItemsList={setItemsList} >{console.log(item)}</GridItem>
                             ))}
                         </div>
                      </div>

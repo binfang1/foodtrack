@@ -3,19 +3,13 @@ import { useEffect, useState } from "react";
 
 
 export default function GridItem({ status, itemGridEnabled, enableItemGrid, id, name, price, stock, category, itemsList, setItemsList }) {
-    const [inStock, setStock] = useState(status);
-    let value = status;
+    var value = status;
     if (stock == 0) {
-        setStock(false);
+        value = false;
     }
 
-    useEffect(() => {
-        setStock(inStock);
-        console.log(inStock)
-    }, [inStock])
-
-    function changeStock(value) {
-        setStock(value);
+    function changeStock(x) {
+        value = x;
     }
 
 
@@ -24,7 +18,7 @@ export default function GridItem({ status, itemGridEnabled, enableItemGrid, id, 
         if (newItemsList.some(item => item.name == name)) {
             const index = newItemsList.findIndex(item => item.name === name);
             if (newItemsList[index].quantity == newItemsList[index].stock) {
-                setStock(false);
+                changeStock(false);
                 return;
             }
             const oldPrice = newItemsList[index].price / newItemsList[index].quantity
@@ -32,13 +26,13 @@ export default function GridItem({ status, itemGridEnabled, enableItemGrid, id, 
             newItemsList[index].price = newItemsList[index].price + oldPrice;
             console.log(newItemsList[index])
             if (newItemsList[index].quantity == newItemsList[index].stock) {
-                setStock(false);
+                changeStock(false);
             }
         }
         else {
             newItemsList.push({"id": id, "quantity": 1, "name": name, "price": price, "stock": stock, "category": category, "setter": function(value) {changeStock(value)}});
             if (newItemsList[newItemsList.length -1].quantity == newItemsList[newItemsList.length -1].stock) {
-                setStock(false);
+                changeStock(false);
             }
         }
         setItemsList(newItemsList);
@@ -59,6 +53,6 @@ export default function GridItem({ status, itemGridEnabled, enableItemGrid, id, 
             <h1>{name}</h1>
             <h3>${price.toFixed(2)}</h3>
         </div>
-    );
+    );  
 
 }

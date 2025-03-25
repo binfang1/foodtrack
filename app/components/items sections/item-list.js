@@ -67,9 +67,7 @@ export default function ItemList({ categoryPage, setCategoryPage, itemGridEnable
     }
 
     async function updateItem(item) {
-        console.log("e")
         const url = "http://localhost:3000/api/items";
-        console.log(item.stock)
         try {
           const response = await fetch(url , {
             'method': 'PUT',

@@ -78,6 +78,9 @@ export default function Home() {
     getData().then((response) => setItems(response))
   }, [page]);
 
+  useEffect(() => {
+    getData().then((response) => setItems(response))
+  }, [categoryPage]);
 
   useEffect(() => {
     getAccounts().then((response) => setAccounts(response))
