@@ -27,7 +27,6 @@ export default function ItemGrid({categoryPage, setCategoryPage,  itemGridEnable
     categories.sort(function(a, b) {return a.category.localeCompare(b.category);});
 
     function inStock(data) {
-        console.log(items)
         const newItemsList = [...itemsList]
         if (newItemsList.some(item => item.id == data.id)) {  
             const index = newItemsList.findIndex(item => item.id === data.id); 

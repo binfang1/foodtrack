@@ -44,6 +44,9 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
     }
     categories.sort(function(a, b) {return a.category.localeCompare(b.category);});
 
+    useEffect(() => {
+        getData().then((response) => setItems(response))
+      }, []);
 
 
     async function putData() {

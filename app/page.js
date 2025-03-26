@@ -73,10 +73,6 @@ export default function Home() {
     setPage("");
   }
 
-  useEffect(() => {
-    getAccounts().then((response) => setAccounts(response))
-    getData().then((response) => setItems(response))
-  }, [page]);
 
   useEffect(() => {
     getData().then((response) => setItems(response))

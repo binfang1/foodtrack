@@ -4,11 +4,9 @@ import { useEffect, useState } from "react";
 
 export default function GridItem({ available, itemGridEnabled, enableItemGrid, id, name, price, stock, category, itemsList, setItemsList }) {
     const [indexedStock, setIndexedStock] = useState({"stock" : available})
-    console.log(indexedStock)
 
     useEffect (() => {
         if (itemsList) {
-
             const index = itemsList.findIndex(item => item.id === id);
             if (index !== -1) {
                 setIndexedStock(itemsList[index]);
@@ -31,7 +29,7 @@ export default function GridItem({ available, itemGridEnabled, enableItemGrid, i
             setIndexedStock(newItemsList[index])
         }
         else {
-            if (stock == false) {
+            if (indexedStock.stock == false) {
                 return;
             }
             newItemsList.push({"id": id, "quantity": 1, "name": name, "price": price, "stock": stock - 1, "category": category });
