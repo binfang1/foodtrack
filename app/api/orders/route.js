@@ -29,13 +29,13 @@ export async function GET(request) {
 export async function POST(request) {
   try {
       
-      const { client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method } = await request.json()
+      const { client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method, amount } = await request.json()
 
       const [results, fields] = await connection.query(
-          'INSERT INTO orders (client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
-          [client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method]
+          'INSERT INTO orders (client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method, amount) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+          [client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method, amount]
       );
-      console.log(client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method)
+      console.log(client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method, amount)
 
       return new Response(JSON.stringify(
           { message: "success" },
@@ -54,11 +54,11 @@ export async function POST(request) {
 }
 
 export async function PUT(request) {
-  const { client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method, id } = await request.json();
+  const { client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method, amount, id } = await request.json();
   try {
     const [results, fields] = await connection.query(
-      'UPDATE orders SET client=?, subtotal=?, tax=?, total=?, items=?, notes=?, status=?, creation_datetime=?, completed_datetime=?, payment_status=?, pickup_datetime=?, payment_method=? WHERE id = ?', 
-      [client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method, id]
+      'UPDATE orders SET client=?, subtotal=?, tax=?, total=?, items=?, notes=?, status=?, creation_datetime=?, completed_datetime=?, payment_status=?, pickup_datetime=?, payment_method=?, amount=? WHERE id = ?', 
+      [client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method, amount, id]
     )
 
     return new Response(JSON.stringify(

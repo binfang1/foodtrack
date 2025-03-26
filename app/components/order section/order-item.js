@@ -20,6 +20,7 @@ async function getData() {
 
 export default function OrderItem({order, orders, setOrders , setPage, setCategoryPage, itemsList, setItemsList, mainOrder, setMainOrder, items}) {
     var counter = 1;
+    var time = (`${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`);
     async function updateItem(item) {
         const url = "http://localhost:3000/api/items";
 
@@ -71,6 +72,7 @@ export default function OrderItem({order, orders, setOrders , setPage, setCatego
               'body': JSON.stringify(
                   { 
                       status: change, 
+                      completed_datetime: time,
                       id: order.id
                    },
                 )
@@ -136,12 +138,14 @@ export default function OrderItem({order, orders, setOrders , setPage, setCatego
             return;
         }
         else if (order.status == "Finished") {
+            time = null;
             statusChange("Preparing").then((function() {
                 getData().then((response) => setOrders(response));
             }));
 
         }
         else if (order.status == "Preparing") {
+            time = null;
             statusChange("Order Created").then((function() {
                 getData().then((response) => setOrders(response));
             }));
@@ -153,11 +157,13 @@ export default function OrderItem({order, orders, setOrders , setPage, setCatego
             return;
         }
         else if (order.status == "Order Created") {
+            time = null;
             statusChange("Preparing").then((function() {
                 getData().then((response) => setOrders(response));
             }));
         }
         else if (order.status == "Preparing") {
+            time = `${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`
             statusChange("Finished").then((function() {
                 getData().then((response) => setOrders(response));
             }));

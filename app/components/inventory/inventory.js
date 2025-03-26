@@ -17,30 +17,16 @@ async function getData() {
     }
   }
 
-  async function getIngredients() {
-    const url = "http://localhost:3000/api/raw";
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      }
-  
-      const json = await response.json();
-      return json;
-    } catch (error) {
-      console.error(error.message);
-    }
-  }
-
-export default function Items({ categoryPage, setCategoryPage, enableSideBar, sideBarEnabled, items, itemsList, setItemsList, setPage, page, setItems, ingredients, setIngredients }) {
+export default function Inventory({ categoryPage, setCategoryPage, enableSideBar, sideBarEnabled, items, itemsList, setItemsList, setPage, page, setItems }) {
     const [popupEnabled, popupIsEnabled] = useState(false);
     const [currentItem, setCurrentItem] = useState();
     const [editTitle, setEditTitle] = useState("")
     const [price, setPrice] = useState(0.00);
     const [name, setName] = useState("");
     const [category, setCategory] = useState("");
+    const [stock, setStock] = useState(1);
     const [toggle, setToggle] = useState(false);
-
+    const [buttonsEnabled, enabledButton] = useState(true);
 
     let categories = [];
 
@@ -60,7 +46,6 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
 
     useEffect(() => {
         getData().then((response) => setItems(response))
-        getIngredients().then((response) => setIngredients(response))
       }, []);
 
 
@@ -217,6 +202,10 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
         setCategory(event.target.value)
     }
 
+    const getStock = (event) => {
+        event.preventDefault();
+        setStock(event.target.value)
+    }
 
     const openPopupEdit = (item) => {
         popupIsEnabled(!popupEnabled);
@@ -225,7 +214,7 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
         setName("");
         setPrice("");
         setCategory("");
- 
+        setStock("");
         setCurrentItem(item)
     }
 
@@ -236,7 +225,7 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
         setName("");
         setPrice("");
         setCategory("");
-
+        setStock("");
         setCurrentItem()
     }
 
@@ -264,7 +253,7 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
                                             <p>Image:</p>
                                             <p>Name:</p>
                                             <p>price:</p>
-                                            <p>ingredients:</p>
+                                            <p>Stock:</p>
                                             <p className="invisible">a</p>
                                         </div>
                                         <hr></hr>
@@ -276,7 +265,7 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
                                                 <img src={`/item_images/${item.id}.png`} className="w-[4vw] h-[4vw]"></img>
                                                 <p className="text-[0.9vw]"> {item.name} </p>
                                                 <p className="text-[0.9vw]">${item.price.toFixed(2)}</p>
-                                                <p className="text-[0.9vw]">{JSON.parse(item.ingredients)}</p>
+                                                <p className="text-[0.9vw]">{item.stock}</p>
                                                 <p className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => openPopupEdit(item)}>Edit</p>
                                             </div>
                 
@@ -319,7 +308,11 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
                                             </label>
                                         </div>
 
-                               
+                                        <div className="mx-auto">
+                                            <label>
+                                                <input placeholder={currentItem.stock} min = "0" onChange={getStock} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {stock} type="number"/>
+                                            </label>
+                                        </div>
                                         
                                         <div className="flex gap-[1vw] mx-auto">
                                             <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Save Changes"/>
@@ -347,6 +340,11 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
                                             </label>
                                         </div>
 
+                                        <div className="mx-auto">
+                                            <label>
+                                                <input placeholder="stock amount" min = "0" onChange={getStock} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {stock} type="number"/>
+                                            </label>
+                                        </div>
                                         <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = {currentItem ? "Save Changes" : "Save Item"}/>
                                     </form>
                                 }

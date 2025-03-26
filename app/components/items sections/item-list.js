@@ -43,7 +43,8 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     completed_datetime: null,
                     payment_status: "unpaid",
                     pickup_datetime: `${String(time.getFullYear()).padStart(2, '0')}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDate()).padStart(2, '0')} ${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}:${String(time.getSeconds()).padStart(2,'0')}` ,
-                    payment_method: null
+                    payment_method: null,
+                    amount: null
                  },
               )
           });
@@ -70,12 +71,13 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     total: total, 
                     items: JSON.stringify(itemsList), 
                     notes: notes, 
-                    status: "Order Created", 
+                    status: "Order Created",
                     creation_datetime: `${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`, 
                     completed_datetime: null,
                     payment_status: "paid",
                     pickup_datetime: `${String(time.getFullYear()).padStart(2, '0')}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDate()).padStart(2, '0')} ${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}:${String(time.getSeconds()).padStart(2,'0')}` ,
-                    payment_method: paymentType
+                    payment_method: paymentType,
+                    amount: paymentTotal
                  },
               )
           });
@@ -108,6 +110,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     payment_status: "paid",
                     pickup_datetime: `${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)}`,
                     payment_method: paymentType,
+                    amount: paymentTotal,
                     id: mainOrder.id
                  },
               )
@@ -141,6 +144,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     payment_status: "unpaid",
                     pickup_datetime: `${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)}`,
                     payment_method: paymentType,
+                    amount: null,
                     id: mainOrder.id
                  },
               )
@@ -250,6 +254,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
             popupIsEnabled(!popupEnabled);
             setMode("Pay");
             setTime(new Date(currentTime.getTime() + 30 * 60 * 1000));
+            setPaymentType("");
             changeBrightness();
         }
     }
@@ -267,6 +272,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                 setMainOrder("");
                 setItemsList([]);
                 alert("Order has been paid")
+                setPaymentType("");
                 closePopUp();
                 setCategoryPage("Default")
                 return;
@@ -276,6 +282,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                 removeStock().then((response) => console.log(response));
                 setItemsList([]);
                 alert("Order has been paid and added")
+                setPaymentType("");
                 closePopUp();
                 setCategoryPage("Default")
             }
