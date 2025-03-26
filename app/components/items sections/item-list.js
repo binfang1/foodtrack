@@ -7,16 +7,22 @@ import Items from "../view items/items";
 
 
 
-export default function ItemList({ categoryPage, setCategoryPage, itemGridEnabled, sideBarEnabled, itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList, mainOrder, setMainOrder  }) {
+export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, setCategoryPage, itemGridEnabled, sideBarEnabled, itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList, mainOrder, setMainOrder}) {
     const currentTime = new Date();
     const [popupEnabled, popupIsEnabled] = useState(false);
-    const [toggle, setToggle] = useState(false)
+    const [toggle, setToggle] = useState(false);
     const [notes, setNotes] = useState("");
     const [name, setName] = useState("");
     const [mode, setMode] = useState("");
     const [time, setTime] = useState(new Date(currentTime.getTime() + 30 * 60 * 1000));
     const [changeTime, setChangeTime] = useState(`${String(time.getHours()).padStart(2,'0')}:${String(time.getMinutes()).padStart(2,'0')}`)
+    const [paymentType, setPaymentType] = useState("");
 
+
+    const changeType = (event) => {
+        event.preventDefault()
+        setPaymentType(event.target.innerText.toLowerCase());
+      };
 
     async function postData() {
         const url = "http://127.0.0.1:3000/api/orders";
@@ -120,10 +126,29 @@ export default function ItemList({ categoryPage, setCategoryPage, itemGridEnable
         setTotal(tempTotal);
     }, [itemsList]);
 
+    useEffect(() => {
+        setMode(mode);
+    }, [mode]);
+
+    useEffect(() => {
+        sideBarEnabled(enableSideBar);
+    }, [enableSideBar]);
+
+    useEffect(() => {
+        if (mainOrder) {
+            setMode("Edit")
+        }
+    }, [mainOrder])
+
     const saveButton = () => {
         if (itemsList.length != 0) {
             popupIsEnabled(!popupEnabled);
-            setMode("Save");
+            if (mainOrder) {
+                setMode("Edit")
+            }
+            else {
+                setMode("Save");
+            }
             setTime(new Date(currentTime.getTime() + 30 * 60 * 1000));
             changeBrightness();
         }
@@ -155,6 +180,7 @@ export default function ItemList({ categoryPage, setCategoryPage, itemGridEnable
     const closePopUp = () => {
         popupIsEnabled(!popupEnabled);
         changeBrightness();
+        setPaymentType("");
     }
 
     const getName = (event) => {
@@ -227,7 +253,12 @@ export default function ItemList({ categoryPage, setCategoryPage, itemGridEnable
     }, [toggle])
 
     useEffect(() => {
-        if (toggle == true) {
+        if (mainOrder) {
+            sideBarEnabled(false);
+            return;
+        }
+
+        else if (toggle == true) {
             sideBarEnabled(false);
             itemGridEnabled(false);
 
@@ -236,7 +267,7 @@ export default function ItemList({ categoryPage, setCategoryPage, itemGridEnable
             sideBarEnabled(true);
             itemGridEnabled(true);
         }
-    }, [toggle])
+    }, [toggle, mainOrder])
     
 
 
@@ -326,6 +357,26 @@ export default function ItemList({ categoryPage, setCategoryPage, itemGridEnable
                         </form>
                     }
                     {mode == "Pay" &&
+                        <form onSubmit={payOrder} className="flex flex-col gap-[20px] mx-auto w-full">
+                            <div className="mx-auto">
+                                <label>
+                                    <input placeholder="Enter Order Name" onChange={getName} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black max-auto" type="text"/>
+                                </label>
+                            </div>
+                            <p className="text-center">Payment Method</p>
+                            <div className="flex justify-between gap-[2vw] mx-auto">
+                                <button onClick={(event) => changeType(event)} className= {`${paymentType === "cash" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-24 h-12`}>Cash</button>
+                                <button onClick={(event) => changeType(event)} className= {`${paymentType === "amax" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-24 h-12`}>AMAX</button>
+                                <button onClick={(event) => changeType(event)} className= {`${paymentType === "mastercard" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-24 h-12`}>MasterCard</button>
+                                <button onClick={(event) => changeType(event)} className= {`${paymentType === "visa" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-24 h-12`}>VISA</button>
+                            </div>
+
+                            {paymentType ? (
+                                <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Pay"/>
+                            ) : ("")}
+                        </form>
+                    }
+                    {mode == "Edit" &&
                         <form onSubmit={payOrder} className="flex flex-col gap-[20px] mx-auto">
                             <div>
                                 <label>
@@ -334,11 +385,11 @@ export default function ItemList({ categoryPage, setCategoryPage, itemGridEnable
                             </div>
                             <p className="text-center">Payment Method</p>
                             <div className="flex justify-between">
-                                <button>Cash</button>
+                                <button className="border-1 border-solid border-black">Cash</button>
                                 <button>Credit</button>
                             </div>
 
-         
+            
                             <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Pay"/>
                         </form>
                     }

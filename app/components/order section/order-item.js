@@ -1,7 +1,7 @@
 
 "use client";
 
-export default function OrderItem({order, setPage, itemsList, setItemsList, mainOrder, setMainOrder, items}) {
+export default function OrderItem({order, setPage, setCategoryPage, itemsList, setItemsList, mainOrder, setMainOrder, items}) {
     var counter = 1;
     async function updateItem(item) {
         const url = "http://localhost:3000/api/items";
@@ -47,8 +47,16 @@ export default function OrderItem({order, setPage, itemsList, setItemsList, main
 
     function editPayOrder () {
         reinventory().then(function(response) {
+            const returnedItems = JSON.parse(order.items);
             setPage("home");
-            setItemsList(JSON.parse(order.items));
+            setCategoryPage("Default");
+            console.log(order)
+            for (let i = 0; i < items.length; i++) {
+                if (returnedItems.some(item => item.id == items[i].id)) {
+                    const index = returnedItems.findIndex(item => item.id === items[i].id);
+                    returnedItems[index].stock = items[i].stock
+            }}
+            setItemsList(returnedItems);
             setMainOrder(order);
         });
     }

@@ -35,7 +35,7 @@ export default function OrderGrid({ page, setPage, categoryPage, setCategoryPage
         <div className="p-[16px] w-[85vw] h-[100vh] grid grid-cols-6 grid-rows-2 gap-4 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
                 {orders.map((order, index) => (
                     <div key = {index}>
-                        <OrderItem setMainOrder = {setMainOrder} order = {order} setPage = {setPage} setItemsList={setItemsList} itemsList={itemsList} items = {items}></OrderItem>
+                        <OrderItem setMainOrder = {setMainOrder} order = {order} setCategoryPage = {setCategoryPage} setPage = {setPage} setItemsList={setItemsList} itemsList={itemsList} items = {items}></OrderItem>
                     </div>
                 ))}
         </div>
