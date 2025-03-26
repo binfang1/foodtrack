@@ -169,7 +169,7 @@ export default function Home() {
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                       <div className='flex'>
-                        <GoPerson className='mt-auto mb-auto'/>
+                        <GoBriefcase className='mt-auto mb-auto'/>
                         <a onClick = {enableSideBar ? () => setPage("inventory") : undefined} className="px-[1.042vw] cursor-pointer">Inventory</a>
                       </div>
                       <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
@@ -220,7 +220,7 @@ export default function Home() {
             }
             {page == "inventory" &&
               <div>
-                <Inventory></Inventory>
+                <Inventory setCategoryPage = {setCategoryPage} ingredients = {ingredients} setIngredients = {setIngredients}></Inventory>
               </div>
             }
             {page == "analytics" &&

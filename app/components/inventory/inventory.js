@@ -3,7 +3,7 @@ import GridItem from "../item grid section/grid-item"
 import { useState, useEffect } from "react";
 
 async function getData() {
-    const url = "http://localhost:3000/api/items";
+    const url = "http://localhost:3000/api/raw";
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -17,340 +17,77 @@ async function getData() {
     }
   }
 
-export default function Inventory({ categoryPage, setCategoryPage, enableSideBar, sideBarEnabled, items, itemsList, setItemsList, setPage, page, setItems }) {
-    const [popupEnabled, popupIsEnabled] = useState(false);
+export default function Inventory({ setCategoryPage, ingredients, setIngredients}) {
     const [currentItem, setCurrentItem] = useState();
     const [editTitle, setEditTitle] = useState("")
     const [price, setPrice] = useState(0.00);
     const [name, setName] = useState("");
-    const [category, setCategory] = useState("");
     const [stock, setStock] = useState(1);
-    const [toggle, setToggle] = useState(false);
-    const [buttonsEnabled, enabledButton] = useState(true);
-
-    let categories = [];
-
-    for (let i = 0; i < items.length; i++) {
-        const category = new Object;
-        if (categories.some(item => item.category == items[i].category)) { 
-            const index = categories.findIndex(item => item.category == items[i].category);
-            categories[index].object.push(items[i])
-        }
-        else {
-            category.category = items[i].category;
-            category.object = [items[i]];
-            categories.push(category);
-        }
-    }
-    categories.sort(function(a, b) {return a.category.localeCompare(b.category);});
+    const [page, setPage] = useState("");
+    const [threshold, setThreshold] = useState("");
+    const [id, setId] = useState("")
+    const [buy, setBuy] = useState("")
 
     useEffect(() => {
-        getData().then((response) => setItems(response))
-      }, []);
+        getData().then((response) => setIngredients(response))
+    }, [page]);
 
+    const change = () => {
 
-    async function putData() {
-        const url = "http://localhost:3000/api/items";
-        try {
-          const response = await fetch(url , {
-            'method': 'PUT',
-            'body': JSON.stringify(
-                {  
-                    name: (name ? name : currentItem.name),
-                    price: (price ? price : currentItem.price),
-                    category: (category ? category : currentItem.category),
-                    stock: (stock ? stock : currentItem.stock),
-                    id: currentItem.id
-                },
-              )
-          });
-          if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-          }
-      
-          const json = await response.json();
-          return json;
-        } catch (error) {
-          console.error(error.message);
-        }
     }
 
-    async function postData() {
-        const url = "http://localhost:3000/api/items";
-        try {
-            const response = await fetch(url , {
-            'method': 'POST',
-            'body': JSON.stringify(
-                {  
-                    name: name,
-                    price: price,
-                    category: category,
-                    stock: stock
-                },
-                )
-            });
-            if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-            }
-        
-            const json = await response.json();
-            return json;
-        } catch (error) {
-            console.error(error.message);
-        }
+    const edit = (data) => {
+
     }
-
-    async function deleteData() {
-        const url = "http://localhost:3000/api/items";
-        try {
-            const response = await fetch(url , {
-            'method': 'DELETE',
-            'body': JSON.stringify(
-                {  
-                    id: currentItem.id
-                },
-                )
-            });
-            if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-            }
-        
-            const json = await response.json();
-            return json;
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
-
-    const editItem = (event) => {
-        event.preventDefault();
-        putData().then((response) => alert("Item Has Been Updated!"));
-        setItemsList([]);
-        popupIsEnabled(!popupEnabled);
-        changeBrightness();
-        getData().then((response) => setItems(response));
-        setCategoryPage("Default");
-    }
-
-    const addItem = (event) => {
-        event.preventDefault();
-        postData().then((response) => alert("Item Has Been Added!"));
-        setItemsList([]);
-        popupIsEnabled(!popupEnabled);
-        changeBrightness();
-        getData().then((response) => setItems(response));
-        setCategoryPage("Default");
-    }
-
-    const deleteItem = () => {
-        event.preventDefault();
-        deleteData().then((response) => alert("Item Has Been deleted"));
-        setItemsList([]);
-        popupIsEnabled(!popupEnabled);
-        changeBrightness();
-        getData().then((response) => setItems(response));
-        setItems(items);
-        setCategoryPage("Default");
-    }
-
-
-
-    const deleteButton = () => {
-        deleteItem();
-    }
-
-    useEffect(() => {
-        setItems(items);
-    }, [itemsList]);
-
-
-    const changeBrightness = () => {
-        setToggle(!toggle);
-    }
-
-    useEffect(() => {
-        if (toggle) {
-            document.getElementById('darken').style.filter = 'brightness(50%)'
-        }
-        else {
-            document.getElementById('darken').style.filter = 'brightness(100%)'
-        }
-    }, [toggle])
-
-    useEffect(() => {
-        if (toggle == true) {
-            sideBarEnabled(false);
-        }
-        else if (toggle == false) {
-            sideBarEnabled(true);
-        }
-    }, [toggle])
-
-
-    const getName = (event) => {
-        event.preventDefault();
-        setName(event.target.value);
-    };
-
-    const getPrice = (event) => {
-        event.preventDefault();
-        setPrice(event.target.value);
-    };
-
-    const getCategory = (event) => {
-        event.preventDefault();
-        setCategory(event.target.value)
-    }
-
-    const getStock = (event) => {
-        event.preventDefault();
-        setStock(event.target.value)
-    }
-
-    const openPopupEdit = (item) => {
-        popupIsEnabled(!popupEnabled);
-        changeBrightness()
-        setEditTitle("Editing")
-        setName("");
-        setPrice("");
-        setCategory("");
-        setStock("");
-        setCurrentItem(item)
-    }
-
-    const openPopupAdd = () => {
-        popupIsEnabled(!popupEnabled);
-        changeBrightness()
-        setEditTitle("Adding")
-        setName("");
-        setPrice("");
-        setCategory("");
-        setStock("");
-        setCurrentItem()
-    }
-
-    const closePopUp = () => {
-        popupIsEnabled(!popupEnabled);
-        changeBrightness()
-    }
-
-    
 
 
 
     return (
         <div className="relative h-[100vh] w-[85vw] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+            {page != "Create" && 
             <div className="p-[0.8vw] h-[100vh] flex flex-col bg-white rounded-xl" >
                 <div className="overflow-auto">
                     <div>
-                        {categories.map(category => (
-                            <div key = {category.category}>
-                                <h1 className="text-[1.5vw]">{category.category}:</h1>
-                                
-                                <div className="flex flex-col">
-                                    <div className="mb-[0.8vw]">
-                                        <div className="grid grid-cols-5 text-[0.9vw]">
-                                            <p>Image:</p>
-                                            <p>Name:</p>
-                                            <p>price:</p>
-                                            <p>Stock:</p>
-                                            <p className="invisible">a</p>
-                                        </div>
-                                        <hr></hr>
-                                    </div>
-                                    
-                                    {items.filter(item => item.category === category.category).map(item => (
-                                        <div key={item.id}>
-                                            <div className = "mb-[0.8vw] grid grid-cols-5 bg-white text-black text-black shadow-sm text-[0.9vw]">
-                                                <img src={`/item_images/${item.id}.png`} className="w-[4vw] h-[4vw]"></img>
-                                                <p className="text-[0.9vw]"> {item.name} </p>
-                                                <p className="text-[0.9vw]">${item.price.toFixed(2)}</p>
-                                                <p className="text-[0.9vw]">{item.stock}</p>
-                                                <p className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => openPopupEdit(item)}>Edit</p>
-                                            </div>
-                
-                                        </div>
-                                        
-                                    ))}
-                                </div>
+                    <div className="flex flex-col">
+                        <div className="mb-[0.8vw]">
+                            <div className="grid grid-cols-7 text-[0.9vw]">
+                                <p>Name:</p>
+                                <p>price:</p>
+                                <p>Stock:</p>
+                                <p>Threshold</p>
+                                <p>Buy Amount</p>
+                                <p>Automatic</p>
+                                <p className="invisible">a</p>
                             </div>
-                        ))}
+                            <hr></hr>
+                        </div>
+                            {ingredients.map(ingredient => (
+                                <div key={ingredient.id}>
+                                    <div className = "mt-[0.8vw] h-[3vw] grid grid-cols-7 bg-white text-black text-black text-[0.9vw]">
+                                        <p className="text-[0.9vw]"> {ingredient.name} </p>
+                                        <p className="text-[0.9vw]">${ingredient.price.toFixed(2)} </p>
+                                        <p className="text-[0.9vw]">{ingredient.stock}</p>
+                                        <p className="text-[0.9vw]">{ingredient.threshold}</p>
+                                        <p className="text-[0.9vw]"> {ingredient.buy_amount} </p>
+                                        <p className="text-[0.9vw]"> {ingredient.automatic} </p>
+                                        <p className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => edit(item)}>Edit</p>
+                                    </div>
+                                    <hr className="bg-gray-200 h-[0.1vw] border-0"></hr>
+                                </div>
+                                
+                            ))}
+                        </div>
                     </div>    
                         
                 </div>
-                <button onClick = {openPopupAdd} className="mt-auto mb-[1.5vw] cursor-pointer bg-white rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-[3vw] text-[0.9vw]">Add Item</button>
+                <button className="mt-auto mb-[1.5vw] cursor-pointer bg-white rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-[3vw] text-[0.9vw]">Add Ingredient</button>
             </div>
-            {popupEnabled ? (
-                        <div className = "absolute bottom-0 left-[-0.2vw] top-[-0.2vw] right-0 flex justify-center items-center w-[85vw] h-[100vh] bg-black/50">
-                            <div className ="flex flex-col absolute p-12 max-w-[400px] w-full h-full max-h-[500px] bg-white">
-                                <div className="flex justify-end">
-                                    <button className="cursor-pointer text-black text-[2vw] w-[1.5vw] h-[1.5vw]" onClick = {() => closePopUp()}>X</button>
-                                </div>
-                                <h1 className="text-black text-[1.5vw] mb-4 mx-auto">{editTitle} "{currentItem ? currentItem.name : "New Item"}"</h1>
-                                {editTitle == "Editing" &&
-                                    <form onSubmit={editItem} className="flex flex-col gap-[20px] mx-auto">
-                                        <div className="mx-auto">
-                                            <label>
-                                                <input placeholder = {currentItem.name} onChange={getName} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {name} type="text"/>
-                                            </label>
-                                        </div>
-
-                                        <div className="mx-auto">
-                                            <label>
-                                                <input placeholder= {currentItem.price.toFixed(2)} step="0.01" min = "0" onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
-                                            </label>
-                                        </div>
-                                        
-                                        
-                                        <div className="mx-auto">
-                                            <label>
-                                                <input placeholder={currentItem.category} onChange={getCategory} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {category} type="text"/>
-                                            </label>
-                                        </div>
-
-                                        <div className="mx-auto">
-                                            <label>
-                                                <input placeholder={currentItem.stock} min = "0" onChange={getStock} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {stock} type="number"/>
-                                            </label>
-                                        </div>
-                                        
-                                        <div className="flex gap-[1vw] mx-auto">
-                                            <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Save Changes"/>
-                                            <input onClick = {() => deleteButton()}className="cursor-pointer m-auto bg-red-300  rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "button" value = "Delete Item"/>
-                                        </div>
-                                    </form>
-                                }
-                                {editTitle == "Adding" &&
-                                    <form onSubmit={addItem} className="flex flex-col gap-[20px] mx-auto">
-                                        <div>
-                                            <label>
-                                                <input placeholder="Enter Item Name" required onChange={getName} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {name} type="text"/>
-                                            </label>
-                                        </div>
-
-                                        <div>
-                                            <label>
-                                                <input placeholder="Enter Price" step="0.01" min = "0" required onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
-                                            </label>
-                                        </div>
-
-                                        <div>
-                                            <label>
-                                                <input placeholder="Enter Category" required onChange={getCategory} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {category} type="text"/>
-                                            </label>
-                                        </div>
-
-                                        <div className="mx-auto">
-                                            <label>
-                                                <input placeholder="stock amount" min = "0" onChange={getStock} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {stock} type="number"/>
-                                            </label>
-                                        </div>
-                                        <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = {currentItem ? "Save Changes" : "Save Item"}/>
-                                    </form>
-                                }
-                            </div>
-                        </div>
-                    ) : ("")}
+            }
+            {page ? (
+                <div>
+                    <Create accounts={accounts} setAccounts={setAccounts} setPage={setPage} page={page} name = {name} password = {password} type = {type} setName = {setName} setPassword = {setPassword} setType = {setType} id = {id} setId = {setId} editTile={editTitle}></Create>
+                </div>
+            ) : ("")}
         </div>
     );
 }

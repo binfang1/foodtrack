@@ -7,7 +7,8 @@
         name TEXT,
         price REAL,
         category TEXT,
-        ingredients TEXT
+        ingredients TEXT,
+        ingredient_num TEXT
     );
 
     CREATE TABLE raw (
@@ -15,8 +16,9 @@
         name TEXT,
         price REAL,
         threshold INT,
-        stock INT,
-        buy_amount INT
+        stock REAL,
+        buy_amount INT,
+        automatic BOOLEAN
     );
 
     CREATE TABLE IF NOT EXISTS orders (
@@ -44,20 +46,20 @@
         UNIQUE (username)
     );
 
-    INSERT INTO items VALUES (1, "Almond Chicken", 10.00, "Chicken", "[\"soy sauce\", \"chicken\", \"salt\", \"almonds\"]");
-    INSERT INTO items VALUES (2, "Beef Chow Mein", 50.00, "Misc" , "[\"soy sauce\", \"beef\", \"salt\", \"noodles\"]");
-    INSERT INTO items VALUES (3, "Fried Rice", 10.00, "Rice" , "[\"soy sauce\", \"rice\", \"salt\"]");
-    INSERT INTO items VALUES (4, "Dumplings", 5.00, "Side" , "[\"soy sauce\", \"pork\", \"salt\", \"dumping wraps\"]");
-    INSERT INTO items VALUES (5, "S&S Chicken", 12.00, "Chicken" , "[\"sugar\", \"chicken\", \"salt\", \"flour\"]");
-    INSERT INTO raw VALUES (1, "chicken", 2.00, 10, 25, 15);
-    INSERT INTO raw VALUES (2, "soy sauce", 2.00, 10, 25, 15);
-    INSERT INTO raw VALUES (3, "salt", 2.00, 10, 25, 15);
-    INSERT INTO raw VALUES (4, "almonds", 2.00,10, 25, 15);
-    INSERT INTO raw VALUES (5, "beef", 2.00, 10, 25, 15);
-    INSERT INTO raw VALUES (6, "noodles", 2.00, 10, 25, 15);
-    INSERT INTO raw VALUES (7, "sugar", 2.00, 10, 25, 15);
-    INSERT INTO raw VALUES (8, "pork", 2.00,10, 25, 15);
-    INSERT INTO raw VALUES (9, "dumplings wraps", 2.00, 10, 25, 15);
+    INSERT INTO items VALUES (1, "Almond Chicken", 10.00, "Chicken", "[\"soy sauce\", \"chicken\", \"salt\", \"almonds\"]", "[0.2, 0.3, 0.5, 0.1]");
+    INSERT INTO items VALUES (2, "Beef Chow Mein", 50.00, "Misc" , "[\"soy sauce\", \"beef\", \"salt\", \"noodles\"]", "[0.2, 0.3, 0.5, 0.1]");
+    INSERT INTO items VALUES (3, "Fried Rice", 10.00, "Rice" , "[\"soy sauce\", \"rice\", \"salt\"]", "[0.2, 0.3, 0.5, 0.1]");
+    INSERT INTO items VALUES (4, "Dumplings", 5.00, "Side" , "[\"soy sauce\", \"pork\", \"salt\", \"dumping wraps\"]", "[0.2, 0.3, 0.5, 0.1]");
+    INSERT INTO items VALUES (5, "S&S Chicken", 12.00, "Chicken" , "[\"sugar\", \"chicken\", \"salt\", \"flour\"]", "[0.2, 0.3, 0.5, 0.1]");
+    INSERT INTO raw VALUES (1, "chicken", 2.00, 10, 25, 15, true);
+    INSERT INTO raw VALUES (2, "soy sauce", 2.00, 10, 25, 15, true);
+    INSERT INTO raw VALUES (3, "salt", 2.00, 10, 25, 15, true);
+    INSERT INTO raw VALUES (4, "almonds", 2.00,10, 25, 15, false);
+    INSERT INTO raw VALUES (5, "beef", 2.00, 10, 25, 15, true);
+    INSERT INTO raw VALUES (6, "noodles", 2.00, 10, 25, 15, true);
+    INSERT INTO raw VALUES (7, "sugar", 2.00, 10, 25, 15, true);
+    INSERT INTO raw VALUES (8, "pork", 2.00,10, 25, 15, true);
+    INSERT INTO raw VALUES (9, "dumplings wraps", 2.00, 10, 25, 15, false);
     INSERT INTO accounts VALUES (1, "Admin", "Admin", "Admin");
     INSERT INTO accounts VALUES (2, "User", "User", "Server");
     INSERT INTO accounts VALUES(3, "Chef", "Chef", "Chef");

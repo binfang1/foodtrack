@@ -1,4 +1,5 @@
 "use client";
+import { GoTrash } from "react-icons/go";
 import GridItem from "../item grid section/grid-item"
 import { useState, useEffect } from "react";
 
@@ -40,8 +41,13 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
     const [name, setName] = useState("");
     const [category, setCategory] = useState("");
     const [toggle, setToggle] = useState(false);
+    const [inputFields, setInputFields] = useState([])
+    const [ingredientList, setIngredientList] = useState([])
+    const [amountList, setAmountList] = useState([])
 
 
+    let list1 = [];
+    let list2 = [];
     let categories = [];
 
     for (let i = 0; i < items.length; i++) {
@@ -74,7 +80,8 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
                     name: (name ? name : currentItem.name),
                     price: (price ? price : currentItem.price),
                     category: (category ? category : currentItem.category),
-                    stock: (stock ? stock : currentItem.stock),
+                    ingredients: JSON.stringify(list1),
+                    ingredient_num: JSON.stringify(list2),
                     id: currentItem.id
                 },
               )
@@ -139,12 +146,17 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
 
     const editItem = (event) => {
         event.preventDefault();
+        if (organizeItems()) {
+            alert("Duplicate Ingredient Found, please change");
+            return;
+        }
         putData().then((response) => alert("Item Has Been Updated!"));
         setItemsList([]);
         popupIsEnabled(!popupEnabled);
         changeBrightness();
         getData().then((response) => setItems(response));
         setCategoryPage("Default");
+
     }
 
     const addItem = (event) => {
@@ -167,8 +179,6 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
         setItems(items);
         setCategoryPage("Default");
     }
-
-
 
     const deleteButton = () => {
         deleteItem();
@@ -217,6 +227,52 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
         setCategory(event.target.value)
     }
 
+    const handleAddFields = () => {
+        setInputFields([...inputFields, {ingredient: "", amount: 0}])
+    }
+
+    const handleIngredient = (index, event) => {
+        const values = [...inputFields];
+        values[index].ingredient = event.target.value;
+        setInputFields(values)
+    }
+
+    const handleAmount = (index, event) => {
+        const values = [...inputFields];
+        values[index].amount = event.target.value;
+        setInputFields(values)
+        console.log(values[index])
+    }
+
+    const organizeItems = () => {
+        for (let i = 0; i < inputFields.length; i++) {
+            if (list1.includes(inputFields[i].ingredient)) {
+                return true;
+            }
+            list1.push(inputFields[i].ingredient);
+            list2.push(inputFields[i].amount);
+        }
+        return false;
+    }
+
+    useEffect (() => {
+        setInputFields(inputFields)
+    }, [inputFields])
+
+    useEffect (() => {
+        setIngredientList(ingredientList);
+        setAmountList(amountList);
+        console.log(ingredientList);
+        console.log(amountList);
+    }, [ingredientList, amountList])
+
+    function addToInput(ingredient, amount)  {
+        let list = [];
+        for (let i = 0; i < ingredient.length; i++) {
+            list.push({ingredient: ingredient[i], amount: amount[i]})
+        }
+        setInputFields(list);
+    }
 
     const openPopupEdit = (item) => {
         popupIsEnabled(!popupEnabled);
@@ -225,7 +281,7 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
         setName("");
         setPrice("");
         setCategory("");
- 
+        addToInput(JSON.parse(item.ingredients), JSON.parse(item.ingredient_num));
         setCurrentItem(item)
     }
 
@@ -236,7 +292,7 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
         setName("");
         setPrice("");
         setCategory("");
-
+        setInputFields([{ingredient : "", amount : ""}])
         setCurrentItem()
     }
 
@@ -276,7 +332,13 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
                                                 <img src={`/item_images/${item.id}.png`} className="w-[4vw] h-[4vw]"></img>
                                                 <p className="text-[0.9vw]"> {item.name} </p>
                                                 <p className="text-[0.9vw]">${item.price.toFixed(2)}</p>
-                                                <p className="text-[0.9vw]">{JSON.parse(item.ingredients)}</p>
+                                                <div className="flex flex-col">
+                                                {
+                                                    JSON.parse(item.ingredients).map((ingredient, index) => (
+                                                        <p key = {index} className="text-[0.9vw]">{ingredient} {JSON.parse(item.ingredient_num)[index]}</p>
+                                                    ))
+                                                }
+                                                </div>
                                                 <p className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => openPopupEdit(item)}>Edit</p>
                                             </div>
                 
@@ -293,7 +355,7 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
             </div>
             {popupEnabled ? (
                         <div className = "absolute bottom-0 left-[-0.2vw] top-[-0.2vw] right-0 flex justify-center items-center w-[85vw] h-[100vh] bg-black/50">
-                            <div className ="flex flex-col absolute p-12 max-w-[400px] w-full h-full max-h-[500px] bg-white">
+                            <div className ="flex flex-col absolute p-12 max-w-[40vw] w-full  bg-white">
                                 <div className="flex justify-end">
                                     <button className="cursor-pointer text-black text-[2vw] w-[1.5vw] h-[1.5vw]" onClick = {() => closePopUp()}>X</button>
                                 </div>
@@ -317,6 +379,27 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
                                             <label>
                                                 <input placeholder={currentItem.category} onChange={getCategory} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {category} type="text"/>
                                             </label>
+                                        </div>
+
+                                        <div className="mx-auto flex flex-col gap-4">
+                                            {inputFields.map((ingredient, index) =>
+                                            <div key = {index} className="flex gap-[0.5vw]">
+                                            <select value = {ingredient.ingredient} onChange = {(event) => handleIngredient(index, event)} className = "h-[2vw] w-[8.5vw] border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black mx-auto">
+                                                {   
+                                                    
+                                                    ingredients.map((ingredient, index) => (
+                                                            <option key = {index} className="text-[0.9vw]">{ingredient.name}</option>
+                                                    ))
+                                                }{console.log(inputFields.length)}
+                                            </select>
+                                            <input placeholder={ingredient.amount} onChange = {(event) => handleAmount(index, event)}className="text-center w-[3vw] border-gray-500 border-2 pl-[2px] pr-[2px] text-black" step="0.1" min = "0.1" type="number"></input>
+                                            <GoTrash className="text-[1.5vw] m-auto"></GoTrash>
+                                            </div>
+                                            )}
+                                        </div>
+
+                                        <div className="mx-auto">
+                                            <input onClick = {() => handleAddFields()}className="cursor-pointer m-auto  rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "button" value = "Add Ingredient"/>
                                         </div>
 
                                
