@@ -30,7 +30,7 @@ export default function ItemList({ categoryPage, setCategoryPage, itemGridEnable
                     total: total, 
                     items: JSON.stringify(itemsList), 
                     notes: notes, 
-                    status: "unpaid", 
+                    status: "Order Created", 
                     creation_datetime: `${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`, 
                     completed_datetime: null,
                     payment_status: "Unpaid",
@@ -76,7 +76,7 @@ export default function ItemList({ categoryPage, setCategoryPage, itemGridEnable
                     name: item.name,
                     price: item.price/item.quantity,
                     category: item.category,
-                    stock: item.stock-item.quantity,
+                    stock: item.stock,
                     id: item.id
                 },
               )
@@ -171,23 +171,22 @@ export default function ItemList({ categoryPage, setCategoryPage, itemGridEnable
 
     const remove = (index) => {
         const newItemsList = [...itemsList]
-        newItemsList[index].setter(true);
+        newItemsList[index].stock = newItemsList[index].quantity + newItemsList[index].stock;
         newItemsList.splice(index, 1);
         setItemsList(newItemsList);
     }  
 
     const increment = (index) => {
         const newItemsList = [...itemsList]
-        if (newItemsList[index].quantity == newItemsList[index].stock) {
-            newItemsList[index].setter(false);
+        if (newItemsList[index].stock == false) {
             return;
         }
         const oldPrice = newItemsList[index].price / newItemsList[index].quantity
         newItemsList[index].quantity += 1;
+        newItemsList[index].stock -= 1;
         newItemsList[index].price = newItemsList[index].price + oldPrice;
         setItemsList(newItemsList);
-        if (newItemsList[index].quantity == newItemsList[index].stock) {
-            newItemsList[index].setter(false);
+        if (newItemsList[index].stock == false) {
             return;
         }
     }
@@ -195,8 +194,8 @@ export default function ItemList({ categoryPage, setCategoryPage, itemGridEnable
     const decrement = (index) => {
         const newItemsList = [...itemsList]
         const oldPrice = newItemsList[index].price / newItemsList[index].quantity
-        newItemsList[index].setter(true);
         newItemsList[index].quantity -= 1;
+        newItemsList[index].stock += 1;
         newItemsList[index].price = newItemsList[index].price - oldPrice;
         if (newItemsList[index].quantity == 0) {
             newItemsList.splice(index, 1);
@@ -206,7 +205,7 @@ export default function ItemList({ categoryPage, setCategoryPage, itemGridEnable
 
     const clearAll = () => {
         for (let i = 0; i < itemsList.length; i++) {
-            itemsList[i].setter(true);
+            itemsList[i].stock = itemsList[i].stock + itemsList[i].quantity
         }
         setItemsList([]);
     }

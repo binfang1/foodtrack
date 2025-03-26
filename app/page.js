@@ -188,12 +188,12 @@ export default function Home() {
             }
             {page == "orders" &&
               <div>
-                <OrderGrid enableSideBar = {enableSideBar} sideBarEnabled = {sideBarEnabled}  mainOrder={mainOrder} setMainOrder={setMainOrder}></OrderGrid>
+                <OrderGrid page={page} setPage={setPage} categoryPage={categoryPage} setCategoryPage={setCategoryPage} mainOrder={mainOrder} setMainOrder={setMainOrder} setItemsList={setItemsList} itemsList={itemsList} items={items}></OrderGrid>
               </div>
             }
             {page == "items" &&
               <div>
-                <Items enableSideBar = {enableSideBar} sideBarEnabled = {sideBarEnabled} items={items} setItemsList={setItemsList} itemsList={itemsList} page = {page} setPage = {setPage} setItems={setItems}></Items>
+                <Items categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} enableSideBar = {enableSideBar} sideBarEnabled = {sideBarEnabled} items={items} setItemsList={setItemsList} itemsList={itemsList} page = {page} setPage = {setPage} setItems={setItems}></Items>
               </div>
 
             }

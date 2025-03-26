@@ -2,44 +2,51 @@
 import { useEffect, useState } from "react";
 
 
-export default function GridItem({ status, itemGridEnabled, enableItemGrid, id, name, price, stock, category, itemsList, setItemsList }) {
-    var value = status;
-    if (stock == 0) {
-        value = false;
-    }
+export default function GridItem({ available, itemGridEnabled, enableItemGrid, id, name, price, stock, category, itemsList, setItemsList }) {
+    const [indexedStock, setIndexedStock] = useState({"stock" : available})
+    console.log(indexedStock)
 
-    function changeStock(x) {
-        value = x;
-    }
+    useEffect (() => {
+        if (itemsList) {
 
+            const index = itemsList.findIndex(item => item.id === id);
+            if (index !== -1) {
+                setIndexedStock(itemsList[index]);
+             }
+        }
+    }, [itemsList])
+    
 
     function onClick() {
         const newItemsList = [...itemsList]
         if (newItemsList.some(item => item.name == name)) {
             const index = newItemsList.findIndex(item => item.name === name);
-            if (newItemsList[index].quantity == newItemsList[index].stock) {
-                changeStock(false);
+            if (newItemsList[index].stock == false) {
                 return;
             }
             const oldPrice = newItemsList[index].price / newItemsList[index].quantity
             newItemsList[index].quantity += 1;
+            newItemsList[index].stock -= 1;
             newItemsList[index].price = newItemsList[index].price + oldPrice;
-            if (newItemsList[index].quantity == newItemsList[index].stock) {
-                changeStock(false);
-            }
+            setIndexedStock(newItemsList[index])
         }
         else {
-            newItemsList.push({"id": id, "quantity": 1, "name": name, "price": price, "stock": stock, "category": category, "setter": function(value) {changeStock(value)}});
-            if (newItemsList[newItemsList.length -1].quantity == newItemsList[newItemsList.length -1].stock) {
-                changeStock(false);
+            if (stock == false) {
+                return;
             }
+            newItemsList.push({"id": id, "quantity": 1, "name": name, "price": price, "stock": stock - 1, "category": category });
+            if (newItemsList[newItemsList.length -1].stock == false) {
+                console.log(newItemsList[newItemsList.length -1].stock)
+                setIndexedStock(newItemsList[newItemsList.length -1].stock)
+            }
+            setIndexedStock(newItemsList[newItemsList.length -1])
         }
         setItemsList(newItemsList);
     }
 
     return (
         <div onClick={enableItemGrid ? onClick : undefined} className="cursor-pointer text-center flex flex-col justify-center h-[11.6vw] w-[9.12vw] bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] text-[0.84vw]" key={id}>
-            {value ? (
+            {indexedStock.stock ? (
             <img src={`item_images/${id}.png`}></img>
 
             ) : (

@@ -17,7 +17,7 @@ async function getData() {
     }
   }
 
-export default function Items({ enableSideBar, sideBarEnabled, items, itemsList, setItemsList, setPage, page, setItems }) {
+export default function Items({ categoryPage, setCategoryPage, enableSideBar, sideBarEnabled, items, itemsList, setItemsList, setPage, page, setItems }) {
     const [popupEnabled, popupIsEnabled] = useState(false);
     const [currentItem, setCurrentItem] = useState();
     const [editTitle, setEditTitle] = useState("")
@@ -126,6 +126,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         popupIsEnabled(!popupEnabled);
         changeBrightness();
         getData().then((response) => setItems(response));
+        setCategoryPage("Default");
     }
 
     const addItem = (event) => {
@@ -135,6 +136,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         popupIsEnabled(!popupEnabled);
         changeBrightness();
         getData().then((response) => setItems(response));
+        setCategoryPage("Default");
     }
 
     const deleteItem = () => {
@@ -145,6 +147,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
         changeBrightness();
         getData().then((response) => setItems(response));
         setItems(items);
+        setCategoryPage("Default");
     }
 
 
@@ -291,7 +294,7 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
 
                                         <div className="mx-auto">
                                             <label>
-                                                <input placeholder= {currentItem.price.toFixed(2)} min = "0" onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
+                                                <input placeholder= {currentItem.price.toFixed(2)} step="0.01" min = "0" onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
                                             </label>
                                         </div>
                                         
@@ -324,13 +327,19 @@ export default function Items({ enableSideBar, sideBarEnabled, items, itemsList,
 
                                         <div>
                                             <label>
-                                                <input placeholder="Enter Price" min = "0" required onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
+                                                <input placeholder="Enter Price" step="0.01" min = "0" required onChange={getPrice} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {price} type="number"/>
                                             </label>
                                         </div>
 
                                         <div>
                                             <label>
                                                 <input placeholder="Enter Category" required onChange={getCategory} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {category} type="text"/>
+                                            </label>
+                                        </div>
+
+                                        <div className="mx-auto">
+                                            <label>
+                                                <input placeholder="stock amount" min = "0" onChange={getStock} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  value = {stock} type="number"/>
                                             </label>
                                         </div>
                                         <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = {currentItem ? "Save Changes" : "Save Item"}/>
