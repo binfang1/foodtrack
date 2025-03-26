@@ -1,7 +1,24 @@
 
 "use client";
+import { useState, useEffect } from "react";
 
-export default function OrderItem({order, setPage, setCategoryPage, itemsList, setItemsList, mainOrder, setMainOrder, items}) {
+async function getData() {
+    const url = "http://localhost:3000/api/orders";
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+  
+      const json = await response.json();
+
+      return json;
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+export default function OrderItem({order, orders, setOrders , setPage, setCategoryPage, itemsList, setItemsList, mainOrder, setMainOrder, items}) {
     var counter = 1;
     async function updateItem(item) {
         const url = "http://localhost:3000/api/items";
@@ -43,8 +60,61 @@ export default function OrderItem({order, setPage, setCategoryPage, itemsList, s
             console.error(error.message);
         }
     }
+
     
 
+    async function statusChange (change) {
+        const url = "http://localhost:3000/api/status";
+        try {
+            const response = await fetch(url , {
+              'method': 'PUT',
+              'body': JSON.stringify(
+                  { 
+                      status: change, 
+                      id: order.id
+                   },
+                )
+            });
+            if (!response.ok) {
+              throw new Error(`Response status: ${response.status}`);
+            }
+        
+            const json = await response.json();
+            return json;
+          } catch (error) {
+            console.error(error.message);
+          }
+    }
+
+    async function deleteData () {
+        const url = "http://localhost:3000/api/orders";
+        try {
+            const response = await fetch(url , {
+            'method': 'DELETE',
+            'body': JSON.stringify(
+                {  
+                    id: order.id
+                },
+                )
+            });
+            if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+            }
+        
+            const json = await response.json();
+            return json;
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
+    function deleteOrder () {
+        reinventory().then(function(response) {
+            deleteData().then((response) => console.log(response));
+            getData().then((response) => setOrders(response));
+        })
+    }
+    
     function editPayOrder () {
         reinventory().then(function(response) {
             const returnedItems = JSON.parse(order.items);
@@ -61,20 +131,70 @@ export default function OrderItem({order, setPage, setCategoryPage, itemsList, s
         });
     }
 
+    const undo = () => {
+        if (order.status == "Order Created") {
+            return;
+        }
+        else if (order.status == "Finished") {
+            statusChange("Preparing").then((function() {
+                getData().then((response) => setOrders(response));
+            }));
+
+        }
+        else if (order.status == "Preparing") {
+            statusChange("Order Created").then((function() {
+                getData().then((response) => setOrders(response));
+            }));
+        }
+    }
+
+    const redo = () => {
+        if (order.status == "Finished") {
+            return;
+        }
+        else if (order.status == "Order Created") {
+            statusChange("Preparing").then((function() {
+                getData().then((response) => setOrders(response));
+            }));
+        }
+        else if (order.status == "Preparing") {
+            statusChange("Finished").then((function() {
+                getData().then((response) => setOrders(response));
+            }));
+        }
+    }
+
    
     return (
-        <div className="p-[12px] w-full bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9]">
-            <div className="flex">
-                <p>{order.client}</p>
-                <button onClick = {editPayOrder} className="ml-auto">edit</button>
+        <div className="relative w-full bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] ">
+            <div className="flex flex-col ">
+                <div className={`bg-blue-300 text-center h-[4vw] bg-cyan-300`}>
+                    <p className="text-[1.5vw] text-center">{order.client}</p>
+                    <p className="text-[0.9vw]">Status: {order.status}</p>
+                </div>
+                
+
+                    
+                {order.payment_status != "paid" && (
+                    <div className="flex p-[0.4vw] relative z-40">
+                        <button className="cursor-pointer hover:underline hover:text-red-400" onClick={deleteOrder}>delete</button>
+                        <button className="cursor-pointer hover:underline ml-auto" onClick={editPayOrder}>edit/pay</button>
+                    </div>
+                )}
+
+                <div className="flex flex-col p-[0.4vw]">
+                    <p className="text-[0.9vw]">Pick Up Time: {order.pickup_datetime.slice(11, 16)}</p>
+
+                    <div className="mt-[2vw] mb-[2vw] text-[0.9vw]">
+                        {JSON.parse(order.items).map(item => (
+                            <p className="mb-[0.3vw]" key = {counter++}>{item.quantity} - {item.name}</p>
+                        ))}
+                    </div>
+                </div>
             </div>
-            <p>{order.creation_datetime}</p>
-            <p>{order.pickup_datetime}</p>
-            <p>{order.status}</p>
-            <div className="py-12">
-                {JSON.parse(order.items).map(item => (
-                    <p key = {counter++}>{item.quantity}x - {item.name}</p>
-                ))}
+            <div className="absolute h-full w-full flex top-0">
+                <button className="h-full w-[50%]" onClick={undo}></button>
+                <button className="h-full w-[50%]" onClick={redo}></button>
             </div>
         </div>
     );

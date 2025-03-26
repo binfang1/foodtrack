@@ -28,14 +28,18 @@ export default function OrderGrid({ page, setPage, categoryPage, setCategoryPage
     }, []);
 
     useEffect(() => {
+      setOrders(orders)
+    }, [orders]);
+
+    useEffect(() => {
       getData().then((response) => setOrders(response))
       }, [categoryPage]);
 
     return (
-        <div className="p-[16px] w-[85vw] h-[100vh] grid grid-cols-6 grid-rows-2 gap-4 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+        <div className="p-[1.5vw] w-[85vw] h-[100vh] grid grid-cols-6 grid-rows-2 gap-4 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
                 {orders.map((order, index) => (
                     <div key = {index}>
-                        <OrderItem setMainOrder = {setMainOrder} order = {order} setCategoryPage = {setCategoryPage} setPage = {setPage} setItemsList={setItemsList} itemsList={itemsList} items = {items}></OrderItem>
+                        <OrderItem setMainOrder = {setMainOrder} orders = {orders} setOrders = {setOrders} order = {order} setCategoryPage = {setCategoryPage} setPage = {setPage} setItemsList={setItemsList} itemsList={itemsList} items = {items}></OrderItem>
                     </div>
                 ))}
         </div>

@@ -24,8 +24,6 @@ export async function GET(request) {
   }
 
   // response with the JSON object
-
-
 }
 
 export async function POST(request) {
@@ -53,16 +51,37 @@ export async function POST(request) {
   
 
 // response with the JSON object
+}
 
+export async function PUT(request) {
+  const { client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method, id } = await request.json();
+  try {
+    const [results, fields] = await connection.query(
+      'UPDATE orders SET client=?, subtotal=?, tax=?, total=?, items=?, notes=?, status=?, creation_datetime=?, completed_datetime=?, payment_status=?, pickup_datetime=?, payment_method=? WHERE id = ?', 
+      [client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, payment_status, pickup_datetime, payment_method, id]
+    )
+
+    return new Response(JSON.stringify(
+      { message: "success" },
+      {
+        headers: { "content-type": "application/json" },
+        status: 200,
+      }
+    )
+  );
+  } catch (err) {
+    console.log(err);
+  }
 
 }
+
 
 export async function DELETE(request) {
   const { id } = await request.json();
 
   try {
     const [results, fields] = await connection.query(
-      'DELETE FROM order WHERE id = ?', [id]
+      'DELETE FROM orders WHERE id = ?', [id]
     )
 
     return new Response(JSON.stringify(
@@ -76,29 +95,6 @@ export async function DELETE(request) {
   } catch (err) {
     console.log(err);
   }
-}
-
-export async function PUT(request) {
-  const { id, client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime } = await request.json();
-
-  try {
-    const [results, fields] = await connection.query(
-      'UPDATE order VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE id = ?', 
-      [client, subtotal, tax, total, items, notes, status, creation_datetime, completed_datetime, id]
-    )
-
-    return new Response(JSON.stringify(
-      { message: "success" },
-      {
-        headers: { "content-type": "application/json" },
-        status: 200,
-      }
-    )
-  );
-  } catch (err) {
-    console.log(err);
-  }
-
 }
 
 

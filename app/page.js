@@ -156,7 +156,7 @@ export default function Home() {
                       <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                       <div className='flex'>
                         <GoPulse className='mt-auto mb-auto'/>
-                        <a className="px-[1.042vw] cursor-pointer">Analytics</a>
+                        <a onClick = {enableSideBar ? () => setPage("analytics") : undefined} className="px-[1.042vw] cursor-pointer">Analytics</a>
                       </div>
                       <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                       </div>
@@ -196,6 +196,11 @@ export default function Home() {
             }
             {page == "history"
 
+            }
+            {page == "history" &&
+              <div>
+                <Analytics></Analytics>
+              </div>
             }
             {page == "accounts" && 
               <div>
