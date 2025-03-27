@@ -8,12 +8,13 @@ const connection = await mysql.createConnection({
   password: 'foodtrack'
 });
 
-export async function GET(request) {
+export async function GET(request, { params }) {
+  const { id } = await params
 
   try {
     const [results, fields] = await connection.query(
-      'SELECT * FROM `orders` WHERE `status` = "Completed" ORDER BY creation_datetime DESC'
-    );
+      'SELECT * FROM `orders` WHERE id = ?'
+    , [id]);
   
     //console.log(results); // results contains rows returned by server
     //console.log(fields); // fields contains extra meta data about results, if available
