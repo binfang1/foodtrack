@@ -69,7 +69,7 @@ async function generate_orders(count, start_date, end_date, start_hour = 11, end
 
         console.log(`Generating random item list with ${item_count} items and time ${creation_datetime}`)
 
-        postOrder(name, items_list, "", getRandomStatus(), creation_datetime, "Paid", pickup_datetime, payment_method);
+        postOrder(name, items_list, "", getRandomStatus(), creation_datetime, "paid", pickup_datetime, payment_method);
     }
 
 }

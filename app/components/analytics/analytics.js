@@ -165,7 +165,7 @@ export default function Analytics() {
                 if(creation_datetime.getFullYear() == now.getFullYear()) {
                   console.log("Entering current year")
                   // Revenue - Year
-                  if(payment_status == "Paid") {
+                  if(payment_status == "paid") {
                     console.log(`Current Month: ${creation_datetime.getMonth()}, Current Total: ${temp_month_revenue[creation_datetime.getMonth()]}, Adding: ${temp_orders[i].total}`)
                     temp_month_revenue[creation_datetime.getMonth()] = temp_month_revenue[creation_datetime.getMonth()] + temp_orders[i].total;
                   }
@@ -202,7 +202,7 @@ export default function Analytics() {
                   if(creation_datetime.getMonth() == now.getMonth()) {
                     console.log("Entering current month")
                     // Revenue - Month
-                    if(payment_status == "Paid") {
+                    if(payment_status == "paid") {
                       temp_day_revenue[creation_datetime.getDate() - 1] = temp_day_revenue[creation_datetime.getDate() - 1] + temp_orders[i].total;
                     }
                     // Count - Month
@@ -240,7 +240,7 @@ export default function Analytics() {
                     if(creation_datetime <= now && creation_datetime > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)) {
                       console.log("Entering current week")
                       // Revenue - Week
-                      if(payment_status == "Paid") {
+                      if(payment_status == "paid") {
                         temp_week_revenue[creation_datetime.getDay()] = temp_week_revenue[creation_datetime.getDay()] + temp_orders[i].total;
                       }
                         // Count - Week
@@ -278,7 +278,7 @@ export default function Analytics() {
                       if(creation_datetime.getHours() >= 11 && creation_datetime.getHours() <= 22 && creation_datetime.getDate() == now.getDate()) {
                         console.log("Entering current day")
                         // Revenue - Hour
-                        if(payment_status == "Paid") {
+                        if(payment_status == "paid") {
                           temp_hour_revenue[creation_datetime.getHours() - 11] = temp_hour_revenue[creation_datetime.getHours() - 11] + temp_orders[i].total;
                           console.log(`Hour: ${creation_datetime.getHours()}`);
                           console.log(`Inserting into index: ${creation_datetime.getHours() - 11}`);
