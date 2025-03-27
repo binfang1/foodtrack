@@ -151,6 +151,7 @@ export default function Analytics() {
             console.log(`Incoming Array: ${temp_orders}`);
     
             for(let i = 0; i < temp_orders.length; i++) {
+                let offset = now.getTimezoneOffset()
                 let creation_datetime = new Date(temp_orders[i].creation_datetime);
                 console.log(`Sorting ${creation_datetime} at index ${i}`);
                 items = JSON.parse(temp_orders[i].items);
