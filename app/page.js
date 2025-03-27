@@ -141,15 +141,15 @@ export default function Home() {
 
                     {loggedIn.type != "Chef" &&
                       <div>
-                      <div className='flex'>
+                      <div className={`flex ${page === "home" ? "opacity-50" : "bg-white"}`}>
                         <GoHome className='mt-auto mb-auto'/>
-                        <a onClick = {enableSideBar ? () => setPage("home") : undefined} className="px-[0.84vw] cursor-pointer">Home</a>
+                        <a onClick = {enableSideBar ? () => setPage("home") : undefined} className={`px-[0.84vw] cursor-pointer`}>Home</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                       </div>
                       } 
                         
-                      <div className='flex'>
+                        <div className={`flex ${page === "orders" ? "opacity-50" : "bg-white"}`}>
                         <GoChecklist className='mt-auto mb-auto'/>
                         <a onClick = {enableSideBar ? () => setPage("orders") : undefined} className="px-[0.84vw] cursor-pointer">Orders</a>
                       </div>
@@ -158,7 +158,7 @@ export default function Home() {
 
                       {loggedIn.type != "Chef" &&
                       <div>
-                      <div className='flex'>
+                      <div className={`flex ${page === "history" ? "opacity-50" : "bg-white"}`}>
                         <GoHistory className='mt-auto mb-auto'/>
                         <a onClick = {enableSideBar ? () => setPage("history") : undefined} className="px-[1.042vw] cursor-pointer">History</a>
                       </div>
@@ -170,22 +170,22 @@ export default function Home() {
 
                       {(loggedIn.type == "Admin" || loggedIn.type == "Manager") && 
                       <div>
-                      <div className='flex'>
+                      <div className={`flex ${page === "items" ? "opacity-50" : "bg-white"}`}>
                         <GoNote className='mt-auto mb-auto'/>
                         <a onClick = {enableSideBar ? () => setPage("items") : undefined} className="px-[0.84vw] cursor-pointer">Items</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
-                      <div className='flex'>
+                        <div className={`flex ${page === "inventory" ? "opacity-50" : "bg-white"}`}>
                         <GoBriefcase className='mt-auto mb-auto'/>
                         <a onClick = {enableSideBar ? () => setPage("inventory") : undefined} className="px-[1.042vw] cursor-pointer">Inventory</a>
                       </div>
                       <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
-                      <div className='flex'>
+                      <div className={`flex ${page === "accounts" ? "opacity-50" : "bg-white"}`}>
                         <GoPerson className='mt-auto mb-auto'/>
                         <a onClick = {enableSideBar ? () => setPage("accounts") : undefined} className="px-[1.042vw] cursor-pointer">Accounts</a>
                       </div>
                       <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
-                      <div className='flex'>
+                      <div className={`flex ${page === "analytics" ? "opacity-50" : "bg-white"}`}>
                         <GoPulse className='mt-auto mb-auto'/>
                         <a onClick = {enableSideBar ? () => setPage("analytics") : undefined} className="px-[1.042vw] cursor-pointer">Analytics</a>
                       </div>
