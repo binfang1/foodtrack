@@ -66,7 +66,7 @@ export default function Inventory({ setCategoryPage, ingredients, setIngredients
                         <div className="mb-[0.8vw]">
                             <div className="grid grid-cols-6 text-[0.9vw]">
                                 <p>Name:</p>
-                                <p>price:</p>
+                                <p>Price:</p>
                                 <p>Stock:</p>
                                 <p>Threshold</p>
                                 <p>Buy Amount</p>

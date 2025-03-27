@@ -195,37 +195,37 @@ export default function OrderItem({order, orders, setOrders , setPage, setCatego
     }
 
     const undo = () => {
-        if (order.status == "Order Created") {
+        if (order.status == "Waiting") {
             return;
         }
-        else if (order.status == "Finished") {
+        else if (order.status == "Completed") {
             time = null;
-            statusChange("Preparing").then((function() {
+            statusChange("In-Progress").then((function() {
                 getData().then((response) => setOrders(response));
             }));
 
         }
-        else if (order.status == "Preparing") {
+        else if (order.status == "In-Progress") {
             time = null;
-            statusChange("Order Created").then((function() {
+            statusChange("Waiting").then((function() {
                 getData().then((response) => setOrders(response));
             }));
         }
     }
 
     const redo = () => {
-        if (order.status == "Finished") {
+        if (order.status == "Completed") {
             return;
         }
-        else if (order.status == "Order Created") {
+        else if (order.status == "Waiting") {
             time = null;
-            statusChange("Preparing").then((function() {
+            statusChange("In-Progress").then((function() {
                 getData().then((response) => setOrders(response));
             }));
         }
-        else if (order.status == "Preparing") {
+        else if (order.status == "In-Progress") {
             time = `${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`
-            statusChange("Finished").then((function() {
+            statusChange("Completed").then((function() {
                 getData().then((response) => setOrders(response));
             }));
         }
@@ -237,7 +237,7 @@ export default function OrderItem({order, orders, setOrders , setPage, setCatego
             <div className="flex flex-col ">
                 <div className={`bg-blue-300 text-center h-[4vw] bg-cyan-300`}>
                     <p className="text-[1.5vw] text-center">{order.client}</p>
-                    <p className="text-[0.9vw]">Status: {order.status}</p>
+                    <p className="text-[0.9vw]">{order.status}</p>
                 </div>
                 
 

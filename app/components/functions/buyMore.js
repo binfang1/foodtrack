@@ -42,7 +42,7 @@ export default function BuyMore(ingredients ) {
                     total: value * 1.05 * -1, 
                     items: JSON.stringify([]), 
                     notes: `Restocking on ${notes}`, 
-                    status: "Order Created", 
+                    status: "Finished", 
                     creation_datetime: `${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`, 
                     completed_datetime: `${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`,
                     payment_status: "paid",

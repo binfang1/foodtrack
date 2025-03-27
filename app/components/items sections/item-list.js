@@ -84,7 +84,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     total: total, 
                     items: JSON.stringify(itemsList), 
                     notes: notes, 
-                    status: "Order Created",
+                    status: "Waiting",
                     creation_datetime: `${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`, 
                     completed_datetime: null,
                     payment_status: "paid",
@@ -107,6 +107,8 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
 
     async function orderPay() {
         const url = "http://localhost:3000/api/orders";
+        const create_date = new Date(`${mainOrder.creation_datetime.slice(0, 10)} ${mainOrder.creation_datetime.slice(11, 16)} UTC`);
+        const pickup_date = new Date(`${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)} UTC`);
         try {
           const response = await fetch(url , {
             'method': 'PUT',
@@ -118,10 +120,10 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     items: JSON.stringify(itemsList), 
                     notes: mainOrder.notes, 
                     status: mainOrder.status, 
-                    creation_datetime: `${mainOrder.creation_datetime.slice(0, 10)} ${mainOrder.creation_datetime.slice(11, 16)}`, 
+                    creation_datetime: `${String(create_date.getFullYear()).padStart(2, '0')}-${String(create_date.getMonth() + 1).padStart(2, '0')}-${String(create_date.getDate()).padStart(2, '0')} ${create_date.getHours()}:${String(create_date.getMinutes()).padStart(2,'0')}:${String(create_date.getSeconds()).padStart(2,'0')}`, 
                     completed_datetime: null,
                     payment_status: "paid",
-                    pickup_datetime: `${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)}`,
+                    pickup_datetime: `${String(pickup_date.getFullYear()).padStart(2, '0')}-${String(pickup_date.getMonth() + 1).padStart(2, '0')}-${String(pickup_date.getDate()).padStart(2, '0')} ${pickup_date.getHours()}:${String(pickup_date.getMinutes()).padStart(2,'0')}:${String(pickup_date.getSeconds()).padStart(2,'0')}`,
                     payment_method: paymentType,
                     amount: paymentTotal,
                     id: mainOrder.id
@@ -141,6 +143,8 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
 
     async function updateOrder() {
         const url = "http://localhost:3000/api/orders";
+        const create_date = new Date(`${mainOrder.creation_datetime.slice(0, 10)} ${mainOrder.creation_datetime.slice(11, 16)} UTC`);
+        const pickup_date = new Date(`${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)} UTC`)
         try {
           const response = await fetch(url , {
             'method': 'PUT',
@@ -152,10 +156,10 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     items: JSON.stringify(itemsList), 
                     notes: (notes ? notes : mainOrder.notes), 
                     status: mainOrder.status, 
-                    creation_datetime: `${mainOrder.creation_datetime.slice(0, 10)} ${mainOrder.creation_datetime.slice(11, 16)}`, 
+                    creation_datetime: `${String(create_date.getFullYear()).padStart(2, '0')}-${String(create_date.getMonth() + 1).padStart(2, '0')}-${String(create_date.getDate()).padStart(2, '0')} ${create_date.getHours()}:${String(create_date.getMinutes()).padStart(2,'0')}:${String(create_date.getSeconds()).padStart(2,'0')}`, 
                     completed_datetime: null,
                     payment_status: "unpaid",
-                    pickup_datetime: `${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)}`,
+                    pickup_datetime: `${String(pickup_date.getFullYear()).padStart(2, '0')}-${String(pickup_date.getMonth() + 1).padStart(2, '0')}-${String(pickup_date.getDate()).padStart(2, '0')} ${pickup_date.getHours()}:${String(pickup_date.getMinutes()).padStart(2,'0')}:${String(pickup_date.getSeconds()).padStart(2,'0')}`,
                     payment_method: paymentType,
                     amount: null,
                     id: mainOrder.id
@@ -241,6 +245,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
     useEffect(() => {
         if (mainOrder) {
             setMode("Edit")
+            setPaymentTotal(total)
             setTime(new Date(`${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)}`));
             console.log(mainOrder.pickup_datetime);
         }
@@ -269,6 +274,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
         if (itemsList.length != 0) {
             popupIsEnabled(!popupEnabled);
             setMode("Pay");
+            setPaymentTotal(total);
             setTime(new Date(currentTime.getTime() + 30 * 60 * 1000));
             setPaymentType("");
             changeBrightness();
@@ -600,7 +606,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                             <p className="text-center">Payment Method</p>
                             <div className="flex justify-between w-[22vw]">
                                 <button onClick={(event) => changeType(event)} className= {`${paymentType === "cash" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[5vw] h-[2.5vw]`}>Cash</button>
-                                <button onClick={(event) => changeType(event)} className= {`${paymentType === "amex" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[5vw] h-[2.5vw]`}>AMAX</button>
+                                <button onClick={(event) => changeType(event)} className= {`${paymentType === "amex" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[5vw] h-[2.5vw]`}>AMEX</button>
                                 <button onClick={(event) => changeType(event)} className= {`${paymentType === "mastercard" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[5vw] h-[2.5vw]`}>MasterCard</button>
                                 <button onClick={(event) => changeType(event)} className= {`${paymentType === "visa" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[5vw] h-[2.5vw]`}>VISA</button>
                             </div>

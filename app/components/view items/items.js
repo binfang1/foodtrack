@@ -333,7 +333,7 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
                                             <p>Image:</p>
                                             <p>Name:</p>
                                             <p>price:</p>
-                                            <p>ingredients:</p>
+                                            <p>Ingredients:</p>
                                             <p className="invisible">a</p>
                                         </div>
                                         <hr></hr>

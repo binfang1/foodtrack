@@ -777,7 +777,7 @@ const month_payment_data = {
 
     return (
         <div className="flex h-screen w-full bg-white rounded-xl">
-            <div className='flex h-full flex-col w-128'>
+            <div className='flex h-full flex-col w[85vw] p-[2vw]'>
               <select value={page} onChange={e => setPage(e.target.value)} default="today" className='m-6 mr-2 text-center text-2xl outline-1 rounded-l'>
                 <option value="today">Today</option>
                 <option value="week">Week</option>
