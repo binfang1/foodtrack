@@ -443,7 +443,7 @@ export default function Analytics() {
         });
 
 
-    }, []);
+    }, [page]);
 
 
     const month_labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

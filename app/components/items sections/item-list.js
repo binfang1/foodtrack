@@ -84,7 +84,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     total: total, 
                     items: JSON.stringify(itemsList), 
                     notes: notes, 
-                    status: "Order Created",
+                    status: "Waiting",
                     creation_datetime: `${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`, 
                     completed_datetime: null,
                     payment_status: "paid",
@@ -172,8 +172,6 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
           console.error(error.message);
         }
     }
-
-    
 
     async function updateItem(list) {
         const url = "http://localhost:3000/api/raw";

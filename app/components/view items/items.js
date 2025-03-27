@@ -332,8 +332,8 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
                                         <div className="grid grid-cols-5 text-[0.9vw]">
                                             <p>Image:</p>
                                             <p>Name:</p>
-                                            <p>price:</p>
-                                            <p>ingredients:</p>
+                                            <p>Price:</p>
+                                            <p>Ingredients:</p>
                                             <p className="invisible">a</p>
                                         </div>
                                         <hr></hr>
@@ -348,7 +348,7 @@ export default function Items({ categoryPage, setCategoryPage, enableSideBar, si
                                                 <div className="flex flex-col">
                                                 {
                                                     JSON.parse(item.ingredients).map((ingredient, index) => (
-                                                        <p key = {index} className="text-[0.9vw]">{ingredient} {JSON.parse(item.ingredient_num)[index]}</p>
+                                                        <p key = {index} className="text-[0.9vw] capitalize">{ingredient} {JSON.parse(item.ingredient_num)[index]}</p>
                                                     ))
                                                 }
                                                 </div>

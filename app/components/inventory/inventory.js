@@ -66,7 +66,7 @@ export default function Inventory({ setCategoryPage, ingredients, setIngredients
                         <div className="mb-[0.8vw]">
                             <div className="grid grid-cols-6 text-[0.9vw]">
                                 <p>Name:</p>
-                                <p>price:</p>
+                                <p>Price:</p>
                                 <p>Stock:</p>
                                 <p>Threshold</p>
                                 <p>Buy Amount</p>
@@ -77,7 +77,7 @@ export default function Inventory({ setCategoryPage, ingredients, setIngredients
                             {ingredients.map(ingredient => (
                                 <div key={ingredient.id}>
                                     <div className = "mt-[0.8vw] h-[3vw] grid grid-cols-6 bg-white text-black text-black text-[0.9vw]">
-                                        <p className="text-[0.9vw]"> {ingredient.name} </p>
+                                        <p className="text-[0.9vw] capitalize"> {ingredient.name} </p>
                                         <p className="text-[0.9vw]">${ingredient.price.toFixed(2)} </p>
                                         <p className="text-[0.9vw]">{ingredient.stock}</p>
                                         <p className="text-[0.9vw]">{ingredient.threshold}</p>
