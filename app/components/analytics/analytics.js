@@ -50,22 +50,30 @@ export default function Analytics() {
     const [hour_list, setHourList] = useState([]);
 
     const [month_cash_total, setMonthCashTotal] = useState(0);
-    const [month_credit_total, setMonthCreditTotal] = useState(0);
+    const [month_amex_total, setMonthAmexTotal] = useState(0);
+    const [month_mastercard_total, setMonthMastercardTotal] = useState(0);
+    const [month_visa_total, setMonthVisaTotal] = useState(0);
     const [month_subtotal, setMonthSubtotal] = useState(0);
     const [month_tax, setMonthTax] = useState(0);
 
     const [day_cash_total, setDayCashTotal] = useState(0);
-    const [day_credit_total, setDayCreditTotal] = useState(0);
+    const [day_amex_total, setDayAmexTotal] = useState(0);
+    const [day_mastercard_total, setDayMastercardTotal] = useState(0);
+    const [day_visa_total, setDayVisaTotal] = useState(0);
     const [day_subtotal, setDaySubtotal] = useState(0);
     const [day_tax, setDayTax] = useState(0);
 
     const [week_cash_total, setWeekCashTotal] = useState(0);
-    const [week_credit_total, setWeekCreditTotal] = useState(0);
+    const [week_amex_total, setWeekAmexTotal] = useState(0);
+    const [week_mastercard_total, setWeekMastercardTotal] = useState(0);
+    const [week_visa_total, setWeekVisaTotal] = useState(0);
     const [week_subtotal, setWeekSubtotal] = useState(0);
     const [week_tax, setWeekTax] = useState(0);
 
     const [hour_cash_total, setHourCashTotal] = useState(0);
-    const [hour_credit_total, setHourCreditTotal] = useState(0);
+    const [hour_amex_total, setHourAmexTotal] = useState(0);
+    const [hour_mastercard_total, setHourMastercardTotal] = useState(0);
+    const [hour_visa_total, setHourVisaTotal] = useState(0);
     const [hour_subtotal, setHourSubtotal] = useState(0);
     const [hour_tax, setHourTax] = useState(0);
 
@@ -85,6 +93,8 @@ export default function Analytics() {
     
     const [hour_top, setHourTop] = useState([]);
     const [hour_top_quantity, setHourTopQuantity] = useState([]);
+
+
 
     const [year_title, setYearTitle] = useState("");
     const [month_title, setMonthTitle] = useState("");
@@ -108,22 +118,30 @@ export default function Analytics() {
             console.log(`Temp Hour List: ${temp_hour_list}`);
 
             var temp_month_cash_total = 0;
-            var temp_month_credit_total = 0;
+            var temp_month_amex_total = 0;
+            var temp_month_mastercard_total = 0;
+            var temp_month_visa_total = 0;
             var temp_month_subtotal = 0;
             var temp_month_tax = 0; 
 
             var temp_day_cash_total = 0;
-            var temp_day_credit_total = 0;
+            var temp_day_amex_total = 0;
+            var temp_day_mastercard_total = 0;
+            var temp_day_visa_total = 0;
             var temp_day_subtotal = 0;
             var temp_day_tax = 0;
 
             var temp_week_cash_total = 0;
-            var temp_week_credit_total = 0;
+            var temp_week_amex_total = 0;
+            var temp_week_mastercard_total = 0;
+            var temp_week_visa_total = 0;
             var temp_week_subtotal = 0;
             var temp_week_tax = 0;
 
             var temp_hour_cash_total = 0;
-            var temp_hour_credit_total = 0;
+            var temp_hour_amex_total = 0;
+            var temp_hour_mastercard_total = 0;
+            var temp_hour_visa_total = 0;
             var temp_hour_subtotal = 0;
             var temp_hour_tax = 0;
 
@@ -175,10 +193,14 @@ export default function Analytics() {
                   // Cash/Credit - Year
                   if(temp_orders[i].payment_method == null) {
 
-                  } else if(temp_orders[i].payment_method.localeCompare("Cash")) {
-                      temp_month_cash_total = temp_month_cash_total + temp_orders[i].total;
-                  } else if (temp_orders[i].payment_method.localeCompare("Credit")) {
-                      temp_month_credit_total = temp_month_credit_total + temp_orders[i].total;
+                  } else if (temp_orders[i].payment_method.localeCompare("Cash") === 0) {
+                    temp_month_cash_total = temp_month_cash_total + temp_orders[i].total;
+                  } else if (temp_orders[i].payment_method.localeCompare("amex") === 0) {
+                      temp_month_amex_total = temp_month_amex_total + temp_orders[i].total;
+                  } else if (temp_orders[i].payment_method.localeCompare("mastercard") === 0) {
+                      temp_month_mastercard_total = temp_month_mastercard_total + temp_orders[i].total;
+                  } else if (temp_orders[i].payment_method.localeCompare("visa") === 0) {
+                      temp_month_visa_total = temp_month_visa_total + temp_orders[i].total;
                   }
                   // Top Sellers - Year
                   for(let j = 0; j < items.length; j++) {
@@ -211,10 +233,14 @@ export default function Analytics() {
                     // Cash/Credit - Month
                     if(temp_orders[i].payment_method == null) {
 
-                    } else if(temp_orders[i].payment_method.localeCompare("Cash")) {
-                        temp_day_cash_total = temp_day_cash_total + temp_orders[i].total;
-                    } else if (temp_orders[i].payment_method.localeCompare("Credit")) {
-                        temp_day_credit_total = temp_day_credit_total + temp_orders[i].total;
+                    } else if (temp_orders[i].payment_method.localeCompare("Cash") === 0) {
+                      temp_day_cash_total = temp_day_cash_total + temp_orders[i].total;
+                    } else if (temp_orders[i].payment_method.localeCompare("amex") === 0) {
+                        temp_day_amex_total = temp_day_amex_total + temp_orders[i].total;
+                    } else if (temp_orders[i].payment_method.localeCompare("mastercard") === 0) {
+                        temp_day_mastercard_total = temp_day_mastercard_total + temp_orders[i].total;
+                    } else if (temp_orders[i].payment_method.localeCompare("visa") === 0) {
+                        temp_day_visa_total = temp_day_visa_total + temp_orders[i].total;
                     }
                     // Top Sellers - Month
 
@@ -249,10 +275,14 @@ export default function Analytics() {
                       // Cash/Credit - Week
                       if(temp_orders[i].payment_method == null) {
 
-                      } else if(temp_orders[i].payment_method.localeCompare("Cash")) {
-                          temp_week_cash_total = temp_week_cash_total + temp_orders[i].total;
-                      } else if (temp_orders[i].payment_method.localeCompare("Credit")) {
-                          temp_week_credit_total = temp_week_credit_total + temp_orders[i].total;
+                      } else if (temp_orders[i].payment_method.localeCompare("Cash") === 0) {
+                        temp_week_cash_total = temp_week_cash_total + temp_orders[i].total;
+                      } else if (temp_orders[i].payment_method.localeCompare("amex") === 0) {
+                          temp_week_amex_total = temp_week_amex_total + temp_orders[i].total;
+                      } else if (temp_orders[i].payment_method.localeCompare("mastercard") === 0) {
+                          temp_week_mastercard_total = temp_week_mastercard_total + temp_orders[i].total;
+                      } else if (temp_orders[i].payment_method.localeCompare("visa") === 0) {
+                          temp_week_visa_total = temp_week_visa_total + temp_orders[i].total;
                       }
                       // Top Sellers - Week
 
@@ -290,10 +320,14 @@ export default function Analytics() {
                         // Cash/Credit - Day
                         if(temp_orders[i].payment_method == null) {
 
-                        } else if(temp_orders[i].payment_method.localeCompare("Cash")) {
-                            temp_hour_cash_total = temp_hour_cash_total + temp_orders[i].total;
-                        } else if (temp_orders[i].payment_method.localeCompare("Credit")) {
-                            temp_hour_credit_total = temp_hour_credit_total + temp_orders[i].total;
+                        } else if (temp_orders[i].payment_method.localeCompare("Cash") === 0) {
+                          temp_hour_cash_total = temp_hour_cash_total + temp_orders[i].total;
+                        } else if (temp_orders[i].payment_method.localeCompare("amex") === 0) {
+                            temp_hour_amex_total = temp_hour_amex_total + temp_orders[i].total;
+                        } else if (temp_orders[i].payment_method.localeCompare("mastercard") === 0) {
+                            temp_hour_mastercard_total = temp_hour_mastercard_total + temp_orders[i].total;
+                        } else if (temp_orders[i].payment_method.localeCompare("visa") === 0) {
+                            temp_hour_visa_total = temp_hour_visa_total + temp_orders[i].total;
                         }
 
                         for(let j = 0; j < items.length; j++) {
@@ -362,13 +396,21 @@ export default function Analytics() {
             setHourList(temp_hour_list);
 
             setMonthCashTotal(temp_month_cash_total);
-            setMonthCreditTotal(temp_month_credit_total);
+            setMonthAmexTotal(temp_month_amex_total);
+            setMonthMastercardTotal(temp_month_mastercard_total);
+            setMonthVisaTotal(temp_month_visa_total);
             setDayCashTotal(temp_day_cash_total);
-            setDayCreditTotal(temp_day_credit_total);
+            setDayAmexTotal(temp_day_amex_total);
+            setDayMastercardTotal(temp_day_mastercard_total);
+            setDayVisaTotal(temp_day_visa_total);
             setWeekCashTotal(temp_week_cash_total);
-            setWeekCreditTotal(temp_week_credit_total);
+            setWeekAmexTotal(temp_week_amex_total);
+            setWeekMastercardTotal(temp_week_mastercard_total);
+            setWeekVisaTotal(temp_week_visa_total);
             setHourCashTotal(temp_hour_cash_total);
-            setHourCreditTotal(temp_hour_credit_total);
+            setHourAmexTotal(temp_hour_amex_total);
+            setHourMastercardTotal(temp_hour_mastercard_total);
+            setHourVisaTotal(temp_hour_visa_total);
 
             setMonthRevenue(temp_month_revenue);
             setDayRevenue(temp_day_revenue);
@@ -408,7 +450,7 @@ export default function Analytics() {
     const day_labels = ['1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th', '9th', '10th', '11th', '12th', '13th', '14th', '15th', '16th', '17th', '18th', '19th', '20th', '21st', '22nd', '23rd', '24th', '25th', '26th', '27th', '28th', '29th', '30th', '31th'];
     const hour_labels = ['11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '5PM', '6 PM', '7PM', '8PM', '9PM', '10PM'];
     const week_labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const payment_labels = ['Cash', 'Credit'];
+    const payment_labels = ['Cash', 'Amex', 'Mastercard', "Visa"];
 
     const month_count_data = {
         labels: month_labels,
@@ -562,7 +604,7 @@ export default function Analytics() {
         labels: payment_labels,
         datasets: [
         {
-            data: [hour_cash_total, hour_credit_total]
+            data: [hour_cash_total, hour_amex_total, hour_mastercard_total, hour_visa_total]
         }
         ],
     };
@@ -571,7 +613,7 @@ export default function Analytics() {
       labels: payment_labels,
       datasets: [
       {
-          data: [week_cash_total, week_credit_total]
+          data: [week_cash_total, week_amex_total, week_mastercard_total, week_visa_total]
       }
       ],
   };
@@ -580,7 +622,7 @@ export default function Analytics() {
     labels: payment_labels,
     datasets: [
     {
-        data: [day_cash_total, day_credit_total]
+        data: [day_cash_total, day_amex_total, day_mastercard_total, day_visa_total]
     }
     ],
 };
@@ -589,7 +631,7 @@ const month_payment_data = {
   labels: payment_labels,
   datasets: [
   {
-      data: [month_cash_total, month_credit_total]
+      data: [month_cash_total, month_amex_total, month_mastercard_total, month_visa_total]
   }
   ],
 };
@@ -686,29 +728,31 @@ const month_payment_data = {
     function switch_text(page) {
       switch(page) {
         case "today":
-          return generate_data_text(hour_list, hour_cash_total, hour_credit_total, hour_subtotal, hour_tax);
+          return generate_data_text(hour_list, hour_cash_total, hour_subtotal, hour_tax, hour_amex_total, hour_mastercard_total, hour_visa_total);
         case "week":
-          return generate_data_text(week_list, week_cash_total, week_credit_total, week_subtotal, week_tax);
+          return generate_data_text(week_list, week_cash_total, week_subtotal, week_tax, week_amex_total, week_mastercard_total, week_visa_total);
         case "month":
-          return generate_data_text(day_list, day_cash_total, day_credit_total, day_subtotal, day_tax);
+          return generate_data_text(day_list, day_cash_total, day_subtotal, day_tax, day_amex_total, day_mastercard_total, day_visa_total);
         case "year":
-          return generate_data_text(month_list, month_cash_total, month_credit_total, month_subtotal, month_tax);
+          return generate_data_text(month_list, month_cash_total, month_subtotal, month_tax, month_amex_total, month_mastercard_total, month_visa_total);
         }
     }
 
-    function generate_data_text(count_list, cash_total, credit_total, subtotal, tax) {
+    function generate_data_text(count_list, cash_total, subtotal, tax, amex, mastercard, visa) {
         let orders_count = count_list.reduce((a, b) => a + b, 0);
-        let total = cash_total + credit_total;
+        let total = cash_total + amex + mastercard + visa;
 
         return (
           <div className='grid grid-cols-2 text-right mr-8 mt-8'>
             <p className='text-2xl'>Subtotal</p><p className='text-2xl'>${subtotal.toFixed(2)}</p>
             <p className='text-2xl'>Tax</p><p className='text-2xl'>${tax.toFixed(2)}</p>
-
             <p className='text-2xl'>Total</p><p className='text-2xl'>${total.toFixed(2)}</p>
-            <p className='text-2xl'>Cash</p><p className='text-2xl'>${cash_total.toFixed(2)}</p>
 
-            <p className='text-2xl'>Credit</p><p className='text-2xl'>${credit_total.toFixed(2)}</p>
+            <p className='text-2xl'>Cash</p><p className='text-2xl'>${cash_total.toFixed(2)}</p>
+            <p className='text-2xl'>Amex</p><p className='text-2xl'>${amex.toFixed(2)}</p>
+            <p className='text-2xl'>Mastercard</p><p className='text-2xl'>${mastercard.toFixed(2)}</p>
+            <p className='text-2xl'>Visa</p><p className='text-2xl'>${visa.toFixed(2)}</p>
+            <p className='text-2xl'>Credit</p><p className='text-2xl'>${(amex + mastercard + visa).toFixed(2)}</p>
             <p className='text-2xl'>Orders</p><p className='text-2xl'>{orders_count}</p>
 
             <p className='text-2xl'>Avg / Order</p><p className='text-2xl'>${(total / orders_count).toFixed(2)}</p>
