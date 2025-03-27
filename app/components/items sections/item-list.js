@@ -177,8 +177,6 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
         }
     }
 
-    
-
     async function updateItem(list) {
         const url = "http://localhost:3000/api/raw";
         try {

@@ -35,10 +35,10 @@ async function postOrder(name, items, notes="", status, creation_datetime, payme
                 items: JSON.stringify(items), 
                 notes: notes, 
                 status: status, 
-                creation_datetime: creation_datetime.toISOString().slice(0, 19).replace('T', ' '), 
-                completed_datetime: creation_datetime.toISOString().slice(0, 19).replace('T', ' '),
+                creation_datetime: creation_datetime.toISOString(), 
+                completed_datetime: creation_datetime.toISOString(),
                 payment_status: payment_status,
-                pickup_datetime: pickup_datetime.toISOString().slice(0, 19).replace('T', ' '),
+                pickup_datetime: pickup_datetime.toISOString(),
                 payment_method: payment_method
                 },
             )
@@ -80,7 +80,7 @@ function getRandomName() {
 }
 
 function getRandomPaymentMethod() {
-    let methods = ["Cash", "Credit"];
+    let methods = ["Cash", "amex", "mastercard", "visa"];
     return methods[Math.floor(Math.random() * methods.length)];
 }
 
@@ -126,7 +126,7 @@ function getRandomItemsList(count, items) {
 
 
 // Edit this to generate orders
-generate_orders(100, new Date("January 1, 2025 00:00:00"), new Date("March 25, 2025 00:00:00"));
+generate_orders(1000, new Date("January 1, 2025 00:00:00"), new Date("March 31, 2025 00:00:00"));
 
 
 
