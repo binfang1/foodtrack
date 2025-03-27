@@ -18,26 +18,39 @@ async function getData() {
     }
   }
 
+async function getIngredient() {
+    const url = "http://localhost:3000/api/raw";
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+  
+      const json = await response.json();
+      return json;
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
 export default function OrderItem({order, orders, setOrders , setPage, setCategoryPage, itemsList, setItemsList, mainOrder, setMainOrder, items}) {
     var counter = 1;
     var time = (`${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`);
-    async function updateItem(item) {
-        const url = "http://localhost:3000/api/items";
+    
+    async function updateItem(list) {
+        const url = "http://localhost:3000/api/raw";
 
         try {
-            var index;
-        if (items.some(itemMain => itemMain.id == item.id)) { 
-            index = items.findIndex(itemMain => itemMain.id == item.id);
-        }
           const response = await fetch(url , {
             'method': 'PUT',
             'body': JSON.stringify(
                 {  
-                    name: item.name,
-                    price: item.price/item.quantity,
-                    category: item.category,
-                    stock: items[index].stock + item.quantity,
-                    id: item.id
+                    name: list.object.name, 
+                    price: list.object.price, 
+                    threshold: list.object.threshold, 
+                    stock: Number(list.object.stock) + Number(list.value), 
+                    buy_amount: list.object.buy_amount,
+                    id: list.object.id
                 },
               )
           });
@@ -52,9 +65,10 @@ export default function OrderItem({order, orders, setOrders , setPage, setCatego
         }
     }
 
-    async function reinventory () {
+    async function reinventory (list) {
         try {
-            for (const item of JSON.parse(order.items)) {
+            for (const item of list) {
+                console.log(item)
                 await updateItem(item);
             }
         } catch (error) {
@@ -111,26 +125,73 @@ export default function OrderItem({order, orders, setOrders , setPage, setCatego
     }
 
     function deleteOrder () {
-        reinventory().then(function(response) {
-            deleteData().then((response) => console.log(response));
-            getData().then((response) => setOrders(response));
-        })
+        const returnedItems = JSON.parse(order.items);
+        getIngredient().then(function(response) {
+            let list = [];
+            console.log(response);
+            console.log(returnedItems)
+            for (let i = 0; i < response.length; i++) {
+                
+                for (let j = 0; j < returnedItems.length; j++) {
+                    for (let k = 0; k < returnedItems[j].ingredients.length; k++) {
+                        if (response[i].name == returnedItems[j].ingredients[k]) {
+                            const food = new Object;
+                            if (list.some(item => item.name == returnedItems[j].ingredients[k])) {
+                                const index = list.findIndex(item => item.name == returnedItems[j].ingredients[k]);
+                                list[index].value = Number(Number(list[index].value) + (returnedItems[j].quantity * Number(returnedItems[j].num_of[k]))).toFixed(1);
+                            }
+                            else {
+                                food.name = returnedItems[j].ingredients[k];
+                                food.value = Number(returnedItems[j].quantity * Number(returnedItems[j].num_of[k])).toFixed(1);
+                                food.object = response[i];
+                                list.push(food);
+                            }
+                        }
+                    }
+                }
+            }
+            reinventory(list).then(function(response) {    
+                deleteData().then((response) => console.log(response));
+                getData().then((response) => setOrders(response));
+            });
+        });
     }
     
     function editPayOrder () {
-        reinventory().then(function(response) {
-            const returnedItems = JSON.parse(order.items);
-            setPage("home");
-            setCategoryPage("Default");
-            console.log(order)
-            for (let i = 0; i < items.length; i++) {
-                if (returnedItems.some(item => item.id == items[i].id)) {
-                    const index = returnedItems.findIndex(item => item.id === items[i].id);
-                    returnedItems[index].stock = items[i].stock
-            }}
-            setItemsList(returnedItems);
-            setMainOrder(order);
+        const returnedItems = JSON.parse(order.items);
+        getIngredient().then(function(response) {
+            let list = [];
+            console.log(response);
+            console.log(returnedItems)
+            for (let i = 0; i < response.length; i++) {
+                
+                for (let j = 0; j < returnedItems.length; j++) {
+                    for (let k = 0; k < returnedItems[j].ingredients.length; k++) {
+                        if (response[i].name == returnedItems[j].ingredients[k]) {
+                            const food = new Object;
+                            if (list.some(item => item.name == returnedItems[j].ingredients[k])) {
+                                const index = list.findIndex(item => item.name == returnedItems[j].ingredients[k]);
+                                list[index].value = Number(Number(list[index].value) + (returnedItems[j].quantity * Number(returnedItems[j].num_of[k]))).toFixed(1);
+                            }
+                            else {
+                                food.name = returnedItems[j].ingredients[k];
+                                food.value = Number(returnedItems[j].quantity * Number(returnedItems[j].num_of[k])).toFixed(1);
+                                food.object = response[i];
+                                list.push(food);
+                            }
+                        }
+                    }
+                }
+            }
+            reinventory(list).then(function(response) {
+                console.log(response);
+                setPage("home");
+                setCategoryPage("Default");
+                setItemsList(returnedItems);
+                setMainOrder(order);
+            });
         });
+
     }
 
     const undo = () => {

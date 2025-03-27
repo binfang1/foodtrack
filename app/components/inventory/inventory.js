@@ -1,5 +1,5 @@
 "use client";
-import GridItem from "../item grid section/grid-item"
+import Create from "./creation";
 import { useState, useEffect } from "react";
 
 async function getData() {
@@ -33,11 +33,25 @@ export default function Inventory({ setCategoryPage, ingredients, setIngredients
     }, [page]);
 
     const change = () => {
-
+        setPage("Create");
+        setEditTitle("Add Ingredient")
+        setName("");
+        setPrice("");
+        setStock("");
+        setThreshold("");
+        setId("");
+        setBuy("");
     }
 
     const edit = (data) => {
-
+        setPage("Create");
+        setEditTitle(`Editing "${data.name}"`)
+        setName(data.name);
+        setPrice(data.price);
+        setStock(data.stock);
+        setThreshold(data.threshold);
+        setId(data.id);
+        setBuy(data.buy_amount);
     }
 
 
@@ -50,27 +64,25 @@ export default function Inventory({ setCategoryPage, ingredients, setIngredients
                     <div>
                     <div className="flex flex-col">
                         <div className="mb-[0.8vw]">
-                            <div className="grid grid-cols-7 text-[0.9vw]">
+                            <div className="grid grid-cols-6 text-[0.9vw]">
                                 <p>Name:</p>
                                 <p>price:</p>
                                 <p>Stock:</p>
                                 <p>Threshold</p>
                                 <p>Buy Amount</p>
-                                <p>Automatic</p>
                                 <p className="invisible">a</p>
                             </div>
                             <hr></hr>
                         </div>
                             {ingredients.map(ingredient => (
                                 <div key={ingredient.id}>
-                                    <div className = "mt-[0.8vw] h-[3vw] grid grid-cols-7 bg-white text-black text-black text-[0.9vw]">
+                                    <div className = "mt-[0.8vw] h-[3vw] grid grid-cols-6 bg-white text-black text-black text-[0.9vw]">
                                         <p className="text-[0.9vw]"> {ingredient.name} </p>
                                         <p className="text-[0.9vw]">${ingredient.price.toFixed(2)} </p>
                                         <p className="text-[0.9vw]">{ingredient.stock}</p>
                                         <p className="text-[0.9vw]">{ingredient.threshold}</p>
                                         <p className="text-[0.9vw]"> {ingredient.buy_amount} </p>
-                                        <p className="text-[0.9vw]"> {ingredient.automatic} </p>
-                                        <p className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => edit(item)}>Edit</p>
+                                        <p className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => edit(ingredient)}>Edit</p>
                                     </div>
                                     <hr className="bg-gray-200 h-[0.1vw] border-0"></hr>
                                 </div>
@@ -80,12 +92,13 @@ export default function Inventory({ setCategoryPage, ingredients, setIngredients
                     </div>    
                         
                 </div>
-                <button className="mt-auto mb-[1.5vw] cursor-pointer bg-white rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-[3vw] text-[0.9vw]">Add Ingredient</button>
+                <button onClick={change} className="mt-auto mb-[1.5vw] cursor-pointer bg-white rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-[3vw] text-[0.9vw]">Add Ingredient</button>
             </div>
             }
             {page ? (
                 <div>
-                    <Create accounts={accounts} setAccounts={setAccounts} setPage={setPage} page={page} name = {name} password = {password} type = {type} setName = {setName} setPassword = {setPassword} setType = {setType} id = {id} setId = {setId} editTile={editTitle}></Create>
+                    <Create currentItem ={currentItem} editTitle={editTitle} price={price} setPrice={setPrice} name={name} setName={setName} stock={stock}
+                    setStock={setStock} setPage={setPage} threshold={threshold} setThreshold={setThreshold} id={id} setId={setId} buy={buy} setBuy={setBuy}></Create>
                 </div>
             ) : ("")}
         </div>
