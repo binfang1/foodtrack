@@ -14,7 +14,7 @@ async function getItems() {
     }
 }
 
-async function postOrder(name, items, notes="", status, creation_datetime, payment_status="Unpaid", pickup_datetime, payment_method) {
+async function postOrder(name, items, notes="", status, creation_datetime, payment_status="Paid", pickup_datetime, payment_method) {
     const url = "http://localhost:3000/api/orders";
 
     let subTotal = 0.00;
@@ -54,7 +54,7 @@ async function postOrder(name, items, notes="", status, creation_datetime, payme
     }
 }
 
-async function generate_orders(count, start_date, end_date, start_hour = 11, end_hour = 20) {
+async function generate_orders(count, start_date, end_date, start_hour = 11, end_hour = 22) {
     let items = await getItems();
 
     for(let i = 0; i < count; i++) {
@@ -66,6 +66,8 @@ async function generate_orders(count, start_date, end_date, start_hour = 11, end
         let creation_datetime = getRandomDate(start_date, end_date, start_hour, end_hour);
         let pickup_datetime = addTimeToDate(creation_datetime, 30);
         let payment_method = getRandomPaymentMethod();
+
+        console.log(`Generating random item list with ${item_count} items and time ${creation_datetime}`)
 
         postOrder(name, items_list, "", getRandomStatus(), creation_datetime, "Paid", pickup_datetime, payment_method);
     }
@@ -88,9 +90,15 @@ function addTimeToDate(date, minutes) {
 
 function getRandomDate(start_date, end_date, start_hour, end_hour) {
     let date = new Date(+start_date + Math.random() * (end_date - start_date));
-    let hour = start_hour + Math.random() * (end_hour - start_hour) | 0;
+    let hour = getRandomIntInclusive(start_hour, end_hour);
     date.setHours(hour);
     return date;
+}
+
+function getRandomIntInclusive(min, max) {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
 }
 
 function getRandomStatus() {
@@ -99,7 +107,6 @@ function getRandomStatus() {
 }
 
 function getRandomItemsList(count, items) {
-    console.log(`Generating random item list with ${count} items`)
     let finalItems = [];
     for(let i = 0; i < count; i++) {
         const randomItem = items[Math.floor(Math.random() * items.length)];
@@ -119,7 +126,7 @@ function getRandomItemsList(count, items) {
 
 
 // Edit this to generate orders
-generate_orders(10, new Date("January 1, 2025 00:00:00"), new Date("March 21, 2025 00:00:00"));
+generate_orders(100, new Date("January 1, 2025 00:00:00"), new Date("March 25, 2025 00:00:00"));
 
 
 
