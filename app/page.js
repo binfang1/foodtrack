@@ -8,6 +8,7 @@ import OrderGrid from "./components/order section/order-grid.js";
 import Items from "./components/view items/items.js"
 import Accounts from "./components/accounts/accounts.js"
 import Inventory from './components/inventory/inventory.js';
+import BuyMore from './components/functions/buyMore.js';
 import { GoHome } from "react-icons/go";
 import { GoNote } from "react-icons/go";
 import { GoHistory } from "react-icons/go";
@@ -106,6 +107,13 @@ export default function Home() {
   useEffect(() => {
     setPage(page);
   }, [page]);
+
+  useEffect(() => {
+    getingredients().then(function(response) {
+      BuyMore(response);
+      setIngredients(response);
+    })
+  }, [page, categoryPage])
 
 
 

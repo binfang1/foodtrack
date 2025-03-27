@@ -243,9 +243,9 @@ export default function OrderItem({order, orders, setOrders , setPage, setCatego
 
                     
                 {order.payment_status != "paid" && (
-                    <div className="flex p-[0.4vw] relative z-40">
+                    <div className="flex p-[0.4vw] relative z-40 text-[0.9vw]">
                         <button className="cursor-pointer hover:underline hover:text-red-400" onClick={deleteOrder}>delete</button>
-                        <button className="cursor-pointer hover:underline ml-auto" onClick={editPayOrder}>edit/pay</button>
+                        <button className="cursor-pointer hover:underline ml-auto " onClick={editPayOrder}>edit/pay</button>
                     </div>
                 )}
 
