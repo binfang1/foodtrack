@@ -12,12 +12,12 @@ export async function GET(request) {
 
   try {
     const [results, fields] = await connection.query(
-      'SELECT * FROM `items`'
+      'SELECT * FROM `raw`'
     );
   
     //console.log(results); // results contains rows returned by server
     //console.log(fields); // fields contains extra meta data about results, if available
-    console.log("Connected to Items!")
+    console.log("Connected to Raw!")
     return NextResponse.json(results)
   } catch (err) {
     console.log(err);
@@ -29,11 +29,11 @@ export async function GET(request) {
 
 export async function POST(request) {
     try {
-        const { name, price, category, ingredients, ingredient_num } = await request.json()
+        const { name, price, threshold, stock, buy_amount } = await request.json()
 
         const [results, fields] = await connection.query(
-            'INSERT INTO items (name, price, category, ingredients, ingredient_num) VALUES (?,?,?,?,?)',
-            [name, price, category, ingredients, ingredient_num]
+            'INSERT INTO raw (name, price, threshold, stock, buy_amount) VALUES (?,?,?,?,?)',
+            [name, price, threshold, stock, buy_amount]
         );
 
         return new Response(JSON.stringify(
@@ -51,12 +51,12 @@ export async function POST(request) {
 }
 
 export async function PUT(request) {
-  const { id, name, price, ingredients, ingredient_num, category } = await request.json();
+  const { id, name, price, threshold, stock, buy_amount } = await request.json();
 
   try {
     const [results, fields] = await connection.query(
-      'UPDATE items SET name = ?, price = ?, category = ?, ingredients = ?, ingredient_num = ? WHERE id = ?', 
-      [name, price, category, ingredients, ingredient_num, id]
+      'UPDATE raw SET name = ?, price = ?, threshold = ?, stock = ?, buy_amount = ? WHERE id = ?', 
+      [name, price, threshold, stock, buy_amount, id]
     )
 
     return new Response(JSON.stringify(
@@ -77,7 +77,7 @@ export async function DELETE(request) {
 
   try {
     const [results, fields] = await connection.query(
-      'DELETE FROM items WHERE id = ?', [id]
+      'DELETE FROM raw WHERE id = ?', [id]
     )
 
     return new Response(JSON.stringify(

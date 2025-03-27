@@ -4,7 +4,20 @@ import { useEffect, useState } from "react";
 import { GoTrash } from "react-icons/go";
 import Items from "../view items/items";
 
-
+async function getIngredient() {
+    const url = "http://localhost:3000/api/raw";
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+  
+      const json = await response.json();
+      return json;
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 
 
 export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, setCategoryPage, itemGridEnabled, sideBarEnabled, itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList, mainOrder, setMainOrder}) {
@@ -17,20 +30,22 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
     const [time, setTime] = useState(new Date(currentTime.getTime() + 30 * 60 * 1000));
     const [changeTime, setChangeTime] = useState(`${String(time.getHours()).padStart(2,'0')}:${String(time.getMinutes()).padStart(2,'0')}`)
     const [paymentType, setPaymentType] = useState("");
+    const [enough, setEnough] = useState("enough");
+    const [paymentTotal, setPaymentTotal] = useState("")
 
 
     const changeType = (event) => {
         event.preventDefault()
         setPaymentType(event.target.innerText.toLowerCase());
-      };
+    };
 
     async function postData() {
-        const url = "http://127.0.0.1:3000/api/orders";
+        const url = "http://localhost:3000/api/orders";
         try {
           const response = await fetch(url , {
             'method': 'POST',
             'body': JSON.stringify(
-                { client: name, 
+                { client: (name ? name : "Order"), 
                     subtotal: subTotal, 
                     tax: tax, 
                     total: total, 
@@ -39,9 +54,10 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     status: "Waiting", 
                     creation_datetime: `${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`, 
                     completed_datetime: null,
-                    payment_status: "Unpaid",
+                    payment_status: "unpaid",
                     pickup_datetime: `${String(time.getFullYear()).padStart(2, '0')}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDate()).padStart(2, '0')} ${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}:${String(time.getSeconds()).padStart(2,'0')}` ,
-                    payment_method: null
+                    payment_method: null,
+                    amount: null
                  },
               )
           });
@@ -54,36 +70,124 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
         } catch (error) {
           console.error(error.message);
         }
-      }
+    }
 
-    async function pay() {
+    async function payData() {
+        const url = "http://localhost:3000/api/orders";
         try {
-            const response = await fetch("http://127.0.0.1:3000/api/items", {
-                'method': 'POST',
-                'body' : JSON.stringify({
-                    'h': 'h'
-
-                })
-            });
-
-
+          const response = await fetch(url , {
+            'method': 'POST',
+            'body': JSON.stringify(
+                { client: (name ? name : "Order"), 
+                    subtotal: subTotal, 
+                    tax: tax, 
+                    total: total, 
+                    items: JSON.stringify(itemsList), 
+                    notes: notes, 
+                    status: "Order Created",
+                    creation_datetime: `${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`, 
+                    completed_datetime: null,
+                    payment_status: "paid",
+                    pickup_datetime: `${String(time.getFullYear()).padStart(2, '0')}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDate()).padStart(2, '0')} ${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}:${String(time.getSeconds()).padStart(2,'0')}` ,
+                    payment_method: paymentType,
+                    amount: paymentTotal
+                 },
+              )
+          });
+          if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+          }
+      
+          const json = await response.json();
+          return json;
         } catch (error) {
-            console.error(error.message);
+          console.error(error.message);
         }
     }
 
-    async function updateItem(item) {
-        const url = "http://localhost:3000/api/items";
+    async function orderPay() {
+        const url = "http://localhost:3000/api/orders";
+        try {
+          const response = await fetch(url , {
+            'method': 'PUT',
+            'body': JSON.stringify(
+                { client: mainOrder.client, 
+                    subtotal: subTotal, 
+                    tax: tax, 
+                    total: total, 
+                    items: JSON.stringify(itemsList), 
+                    notes: mainOrder.notes, 
+                    status: mainOrder.status, 
+                    creation_datetime: `${mainOrder.creation_datetime.slice(0, 10)} ${mainOrder.creation_datetime.slice(11, 16)}`, 
+                    completed_datetime: null,
+                    payment_status: "paid",
+                    pickup_datetime: `${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)}`,
+                    payment_method: paymentType,
+                    amount: paymentTotal,
+                    id: mainOrder.id
+                 },
+              )
+          });
+          if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+          }
+      
+          const json = await response.json();
+          return json;
+        } catch (error) {
+          console.error(error.message);
+        }
+    }
+
+    async function updateOrder() {
+        const url = "http://localhost:3000/api/orders";
+        try {
+          const response = await fetch(url , {
+            'method': 'PUT',
+            'body': JSON.stringify(
+                { client: (name ? name : mainOrder.client), 
+                    subtotal: subTotal, 
+                    tax: tax, 
+                    total: total, 
+                    items: JSON.stringify(itemsList), 
+                    notes: (notes ? notes : mainOrder.notes), 
+                    status: mainOrder.status, 
+                    creation_datetime: `${mainOrder.creation_datetime.slice(0, 10)} ${mainOrder.creation_datetime.slice(11, 16)}`, 
+                    completed_datetime: null,
+                    payment_status: "unpaid",
+                    pickup_datetime: `${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)}`,
+                    payment_method: paymentType,
+                    amount: null,
+                    id: mainOrder.id
+                 },
+              )
+          });
+          if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+          }
+      
+          const json = await response.json();
+          return json;
+        } catch (error) {
+          console.error(error.message);
+        }
+    }
+
+    
+
+    async function updateItem(list) {
+        const url = "http://localhost:3000/api/raw";
         try {
           const response = await fetch(url , {
             'method': 'PUT',
             'body': JSON.stringify(
                 {  
-                    name: item.name,
-                    price: item.price/item.quantity,
-                    category: item.category,
-                    stock: item.stock,
-                    id: item.id
+                    name: list.object.name, 
+                    price: list.object.price, 
+                    threshold: list.object.threshold, 
+                    stock: Number(list.object.stock) - Number(list.value), 
+                    buy_amount: list.object.buy_amount,
+                    id: list.object.id
                 },
               )
           });
@@ -98,9 +202,9 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
         }
     }
 
-    async function removeStock() {
+    async function removeStock(list) {
         try {
-            for (const item of itemsList) {
+            for (const item of list) {
                 await updateItem(item);
             }
         } catch (error) {
@@ -137,8 +241,15 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
     useEffect(() => {
         if (mainOrder) {
             setMode("Edit")
+            setTime(new Date(`${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)}`));
+            console.log(mainOrder.pickup_datetime);
         }
     }, [mainOrder])
+
+    const getTotal = (event) => {
+        event.preventDefault();
+        setPaymentTotal(event.target.value);
+    }
 
     const saveButton = () => {
         if (itemsList.length != 0) {
@@ -159,20 +270,154 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
             popupIsEnabled(!popupEnabled);
             setMode("Pay");
             setTime(new Date(currentTime.getTime() + 30 * 60 * 1000));
+            setPaymentType("");
             changeBrightness();
         }
     }
 
     const payOrder = () => {
+        event.preventDefault();
+        if (paymentTotal < total) {
+            setEnough("Not Enough");
+            return;
+        }
+        else {
+            if (mainOrder) {
+                getIngredient().then(function(response) {
+                    let list = [];
+                    for (let i = 0; i < response.length; i++) {
+                        for (let j = 0; j < itemsList.length; j++) {
+                            for (let k = 0; k < itemsList[j].ingredients.length; k++) {
+                                if (response[i].name == itemsList[j].ingredients[k]) {
+                                    const food = new Object;
+                                    if (list.some(item => item.name == itemsList[j].ingredients[k])) {
+                                        const index = list.findIndex(item => item.name == itemsList[j].ingredients[k]);
+                                        list[index].value = Number(Number(list[index].value) + (itemsList[j].quantity * Number(itemsList[j].num_of[k]))).toFixed(1);
+                
+                                    }
+                                    else {
+                                        food.name = itemsList[j].ingredients[k];
+                                        food.value = Number(itemsList[j].quantity * Number(itemsList[j].num_of[k])).toFixed(1);
+                                        food.object = response[i];
+                                        list.push(food);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    removeStock(list).then((response) => console.log(response));
+                })
+                orderPay().then((response) => console.log(response));
+                setMainOrder("");
+                setItemsList([]);
+                alert("Order has been paid")
+                setPaymentType("");
+                closePopUp();
+                setCategoryPage("Default")
+                return;
+            }
+            else {
+                getIngredient().then(function(response) {
+                    let list = [];
+                    for (let i = 0; i < response.length; i++) {
+                        for (let j = 0; j < itemsList.length; j++) {
+                            for (let k = 0; k < itemsList[j].ingredients.length; k++) {
+                                if (response[i].name == itemsList[j].ingredients[k]) {
+                                    const food = new Object;
+                                    if (list.some(item => item.name == itemsList[j].ingredients[k])) {
+                                        const index = list.findIndex(item => item.name == itemsList[j].ingredients[k]);
+                                        list[index].value = Number(Number(list[index].value) + (itemsList[j].quantity * Number(itemsList[j].num_of[k]))).toFixed(1);
+                                    }
+                                    else {
+                                        food.name = itemsList[j].ingredients[k];
+                                        food.value = Number(itemsList[j].quantity * Number(itemsList[j].num_of[k])).toFixed(1);
+                                        food.object = response[i];
+                                        list.push(food);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    removeStock(list).then((response) => console.log(response));
+                })
+                payData().then((response) => console.log(response));
+                setItemsList([]);
+                alert("Order has been paid and added")
+                setPaymentType("");
+                closePopUp();
+                setCategoryPage("Default")
+            }
+        }
 
     }
 
+    useEffect (() => {
+        setEnough(enough);
+    }, [enough])
+
     const saveOrder = () => {
         event.preventDefault();
+        getIngredient().then(function(response) {
+            let list = [];
+            for (let i = 0; i < response.length; i++) {
+                for (let j = 0; j < itemsList.length; j++) {
+                    for (let k = 0; k < itemsList[j].ingredients.length; k++) {
+                        if (response[i].name == itemsList[j].ingredients[k]) {
+                            const food = new Object;
+                            if (list.some(item => item.name == itemsList[j].ingredients[k])) {
+                                const index = list.findIndex(item => item.name == itemsList[j].ingredients[k]);
+                                list[index].value = Number(Number(list[index].value) + (itemsList[j].quantity * Number(itemsList[j].num_of[k]))).toFixed(1);
+        
+                            }
+                            else {
+                                food.name = itemsList[j].ingredients[k];
+                                food.value = Number(itemsList[j].quantity * Number(itemsList[j].num_of[k])).toFixed(1);
+                                food.object = response[i];
+                                list.push(food);
+                            }
+                        }
+                    }
+                }
+            }
+            removeStock(list).then((response) => console.log(response));
+        })
         postData().then((response) => console.log(response));
-        removeStock().then((response) => console.log(response));
         setItemsList([]);
         alert("Order has been added")
+        closePopUp();
+        setCategoryPage("Default")
+    }
+
+    const saveChanges = () => {
+        event.preventDefault();
+        getIngredient().then(function(response) {
+            let list = [];
+            for (let i = 0; i < response.length; i++) {
+                for (let j = 0; j < itemsList.length; j++) {
+                    for (let k = 0; k < itemsList[j].ingredients.length; k++) {
+                        if (response[i].name == itemsList[j].ingredients[k]) {
+                            const food = new Object;
+                            if (list.some(item => item.name == itemsList[j].ingredients[k])) {
+                                const index = list.findIndex(item => item.name == itemsList[j].ingredients[k]);
+                                list[index].value = Number(Number(list[index].value) + (itemsList[j].quantity * Number(itemsList[j].num_of[k]))).toFixed(1);
+        
+                            }
+                            else {
+                                food.name = itemsList[j].ingredients[k];
+                                food.value = Number(itemsList[j].quantity * Number(itemsList[j].num_of[k])).toFixed(1);
+                                food.object = response[i];
+                                list.push(food);
+                            }
+                        }
+                    }
+                }
+            }
+            removeStock(list).then((response) => console.log(response));
+        })
+        updateOrder().then((response) => console.log(response));
+        setItemsList([]);
+        alert("Order has been edited and saved")
+        setMainOrder("");
         closePopUp();
         setCategoryPage("Default")
     }
@@ -197,31 +442,23 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
 
     const remove = (index) => {
         const newItemsList = [...itemsList]
-        newItemsList[index].stock = newItemsList[index].quantity + newItemsList[index].stock;
         newItemsList.splice(index, 1);
         setItemsList(newItemsList);
     }  
 
     const increment = (index) => {
         const newItemsList = [...itemsList]
-        if (newItemsList[index].stock == false) {
-            return;
-        }
         const oldPrice = newItemsList[index].price / newItemsList[index].quantity
         newItemsList[index].quantity += 1;
-        newItemsList[index].stock -= 1;
         newItemsList[index].price = newItemsList[index].price + oldPrice;
         setItemsList(newItemsList);
-        if (newItemsList[index].stock == false) {
-            return;
-        }
+        console.log(itemsList);
     }
 
     const decrement = (index) => {
         const newItemsList = [...itemsList]
         const oldPrice = newItemsList[index].price / newItemsList[index].quantity
         newItemsList[index].quantity -= 1;
-        newItemsList[index].stock += 1;
         newItemsList[index].price = newItemsList[index].price - oldPrice;
         if (newItemsList[index].quantity == 0) {
             newItemsList.splice(index, 1);
@@ -230,9 +467,6 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
     }
 
     const clearAll = () => {
-        for (let i = 0; i < itemsList.length; i++) {
-            itemsList[i].stock = itemsList[i].stock + itemsList[i].quantity
-        }
         setItemsList([]);
     }
 
@@ -283,9 +517,9 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     <div key={index} className="w-full pr-[1.7vw]">
                         <div className="flex">
                             <div className="flex flex-col">
-                                <button type = "button w-full" className="p-[0.104vw] cursor-pointer rounded-xl border-solid border-[0.8px] border-black" onClick = {() => increment(index)}>+</button>
+                                <button type = "button w-full" className="p-[0.104vw] cursor-pointer rounded-xl border-solid border-[0.1vw] border-black" onClick = {() => increment(index)}>+</button>
                                 <p className="p-[0.21vw] w-[1.83vw] text-center">{item.quantity}</p>
-                                <button type = "button w-full" className="p-[0.052vw] cursor-pointer rounded-xl border-solid border-[0.8px] border-black" onClick = {() => decrement(index)}>-</button>
+                                <button type = "button w-full" className="p-[0.052vw] cursor-pointer rounded-xl border-solid border-[0.1vw] border-black" onClick = {() => decrement(index)}>-</button>
                             </div>
                             <div className="flex flex-col w-full h-full mt-auto mb-auto">
                                 <div className="invisible">a</div>
@@ -328,28 +562,28 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
         </div>
         {popupEnabled ? (
             <div className = "absolute bottom-0 left-[-0.01vw] top-[-0.01vw] right-0 flex justify-center items-center w-[85vw] h-[100vh] bg-black/50">
-                <div className ="absolute flex flex-col top-[-35%%] left-[-35%] absolute p-12 max-w-[400px] w-full h-full max-h-[500px] bg-white">
+                <div className ="absolute flex flex-col top-[-35%%] left-[-35%] absolute p-12 max-w-[27vw] w-full h-full max-h-[35vw] bg-white">
                     <div className="flex justify-end">
                         <button className="cursor-pointer text-black text-3xl w-10 h-10" onClick = {() => closePopUp()}>X</button>
                     </div>
                     <h1 className="text-black text-center text-2xl mb-4">{mode}</h1>
                     {mode == "Save" &&
-                        <form onSubmit={saveOrder} className="flex flex-col gap-[20px] mx-auto">
+                        <form onSubmit={saveOrder} className="flex flex-col gap-[5vw] mx-auto">
                             <div>
                                 <label>
-                                    <input placeholder="Enter Order Name" required onChange={getName} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black" type="text"/>
+                                    <input placeholder="Enter Order Name" onChange={getName} className = "border-gray-500 border-2 pl-[0.5vw] pr-[0.5vw] text-black" type="text"/>
                                 </label>
                             </div>
 
                             <div>
                                 <label>
-                                    <input placeholder="Enter Notes" onChange={getNotes} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  type="text"/>
+                                    <input placeholder="Enter Notes" onChange={getNotes} className = "border-gray-500 border-2 pl-[0.5vw] pr-[0.5vw] text-black"  type="text"/>
                                 </label>
                             </div>
 
                             <div>
                                 <label>
-                                    <input onChange={getTime} value = {changeTime} className = "w-full border-gray-500 border-2 pl-[2px] pr-[2px] text-black"  type="time"/>
+                                    <input onChange={getTime} value = {changeTime} className = "w-full border-gray-500 border-2 pl-[0.5vw] pr-[0.5vw] text-black"  type="time"/>
                                 </label>
                             </div>
 
@@ -357,41 +591,50 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                         </form>
                     }
                     {mode == "Pay" &&
-                        <form onSubmit={payOrder} className="flex flex-col gap-[20px] mx-auto w-full">
+                        <form onSubmit={payOrder} className="flex flex-col gap-[3vw] mx-auto w-full justify-center">
                             <div className="mx-auto">
                                 <label>
-                                    <input placeholder="Enter Order Name" onChange={getName} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black max-auto" type="text"/>
+                                    <input placeholder="Enter Order Name" onChange={getName} className = "border-gray-500 border-2 pl-[0.5vw] pr-[0.5vw] text-black max-auto" type="text"/>
                                 </label>
                             </div>
                             <p className="text-center">Payment Method</p>
-                            <div className="flex justify-between gap-[2vw] mx-auto">
-                                <button onClick={(event) => changeType(event)} className= {`${paymentType === "cash" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-24 h-12`}>Cash</button>
-                                <button onClick={(event) => changeType(event)} className= {`${paymentType === "amax" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-24 h-12`}>AMAX</button>
-                                <button onClick={(event) => changeType(event)} className= {`${paymentType === "mastercard" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-24 h-12`}>MasterCard</button>
-                                <button onClick={(event) => changeType(event)} className= {`${paymentType === "visa" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-24 h-12`}>VISA</button>
+                            <div className="flex justify-between w-[22vw]">
+                                <button onClick={(event) => changeType(event)} className= {`${paymentType === "cash" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[5vw] h-[2.5vw]`}>Cash</button>
+                                <button onClick={(event) => changeType(event)} className= {`${paymentType === "amax" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[5vw] h-[2.5vw]`}>AMAX</button>
+                                <button onClick={(event) => changeType(event)} className= {`${paymentType === "mastercard" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[5vw] h-[2.5vw]`}>MasterCard</button>
+                                <button onClick={(event) => changeType(event)} className= {`${paymentType === "visa" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[5vw] h-[2.5vw]`}>VISA</button>
                             </div>
 
                             {paymentType ? (
-                                <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Pay"/>
+                                <div className="flex flex-col gap-[2vw]">
+                                    <input step="0.01" onChange = {getTotal} placeholder={total.toFixed(2)} className = "h-[2vw] border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="number"/>
+                                    <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Pay"/>
+                                </div>
                             ) : ("")}
                         </form>
                     }
                     {mode == "Edit" &&
-                        <form onSubmit={payOrder} className="flex flex-col gap-[20px] mx-auto">
-                            <div>
-                                <label>
-                                    <input placeholder="Enter Order Name" required onChange={getName} className = "border-gray-500 border-2 pl-[2px] pr-[2px] text-black" type="text"/>
-                                </label>
-                            </div>
-                            <p className="text-center">Payment Method</p>
-                            <div className="flex justify-between">
-                                <button className="border-1 border-solid border-black">Cash</button>
-                                <button>Credit</button>
-                            </div>
+                        <form onSubmit={saveChanges} className="flex flex-col gap-[5vw] mx-auto">
+                        <div>
+                            <label>
+                                <input placeholder={mainOrder.client} onChange={getName} className = "border-gray-500 border-2 pl-[0.5vw] pr-[0.5vw] text-black" type="text"/>
+                            </label>
+                        </div>
 
-            
-                            <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Pay"/>
-                        </form>
+                        <div>
+                            <label>
+                                <input placeholder={mainOrder.notes ? mainOrder.notes : "Enter Notes"} onChange={getNotes} className = "border-gray-500 border-2 pl-[0.5vw] pr-[0.5vw] text-black"  type="text"/>
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>
+                                <input onChange={getTime} value = {changeTime} className = "w-full border-gray-500 border-2 pl-[0.5vw] pr-[0.5vw] text-black"  type="time"/>
+                            </label>
+                        </div>
+
+                        <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Save Changes"/>
+                    </form>
                     }
                 </div>
             </div>
