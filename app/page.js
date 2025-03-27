@@ -9,6 +9,7 @@ import Items from "./components/view items/items.js"
 import Accounts from "./components/accounts/accounts.js"
 import Inventory from './components/inventory/inventory.js';
 import BuyMore from './components/functions/buyMore.js';
+import History from './components/history/order-grid.js'
 import { GoHome } from "react-icons/go";
 import { GoNote } from "react-icons/go";
 import { GoHistory } from "react-icons/go";
@@ -153,19 +154,17 @@ export default function Home() {
                         <a onClick = {enableSideBar ? () => setPage("orders") : undefined} className="px-[0.84vw] cursor-pointer">Orders</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
-
+                    
 
                       {loggedIn.type != "Chef" &&
                       <div>
                       <div className='flex'>
                         <GoHistory className='mt-auto mb-auto'/>
-                        <a className="px-[1.042vw] cursor-pointer">History</a>
+                        <a onClick = {enableSideBar ? () => setPage("history") : undefined} className="px-[1.042vw] cursor-pointer">History</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                       </div>
                       }
-
-
 
 
 
@@ -229,6 +228,11 @@ export default function Home() {
             {page == "inventory" &&
               <div>
                 <Inventory setCategoryPage = {setCategoryPage} ingredients = {ingredients} setIngredients = {setIngredients}></Inventory>
+              </div>
+            }
+            {page == "history" &&
+              <div>
+                <History page={page} setPage={setPage} categoryPage={categoryPage} setCategoryPage={setCategoryPage} mainOrder={mainOrder} setMainOrder={setMainOrder} setItemsList={setItemsList} itemsList={itemsList} items={items}></History>
               </div>
             }
             {page == "accounts" && 
