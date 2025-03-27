@@ -73,7 +73,7 @@ export default function BuyMore(ingredients ) {
                 increase += ingredients[i].buy_amount;
                 counter++;
             }
-            putData(ingredients[i], increase).then(postData(counter * purchase, ingredients[i].name));
+            putData(ingredients[i], increase).then((response) => console.log("meme"));
         }
     }
 }

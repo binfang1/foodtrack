@@ -19,7 +19,7 @@ async function getData() {
     }
   }
 
-export default function OrderGrid({ page, setPage, categoryPage, setCategoryPage, mainOrder, setMainOrder, itemsList, setItemsList, items }) {
+export default function History({ page, setPage, categoryPage, setCategoryPage, mainOrder, setMainOrder, itemsList, setItemsList, items }) {
 
     const [orders, setOrders] = useState([]);
     useEffect(() => {
@@ -38,7 +38,7 @@ export default function OrderGrid({ page, setPage, categoryPage, setCategoryPage
         <div className="p-[1.5vw] w-[85vw]  h-[100vh]  grid-rows-2 gap-4 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
                 <div className="overflow-auto flex flex-wrap  gap-[2vw] h-[90vh]">
                   {orders.map((order, index) => ( 
-                      order.status != "Completed" ? (
+                      order.status == "Completed" ? (
                       <div className="w-[10vw]" key = {index}>
                           <OrderItem setMainOrder = {setMainOrder} orders = {orders} setOrders = {setOrders} order = {order} setCategoryPage = {setCategoryPage} setPage = {setPage} setItemsList={setItemsList} itemsList={itemsList} items = {items}></OrderItem>
                       </div>

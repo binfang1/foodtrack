@@ -76,8 +76,6 @@ export default function OrderItem({order, orders, setOrders , setPage, setCatego
         }
     }
 
-    
-
     async function statusChange (change) {
         const url = "http://localhost:3000/api/status";
         try {
@@ -235,7 +233,7 @@ export default function OrderItem({order, orders, setOrders , setPage, setCatego
     return (
         <div className="relative w-full bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] ">
             <div className="flex flex-col ">
-            {order.status == "Completed" && 
+                {order.status == "Completed" && 
                 <div className={`text-center h-[4vw] bg-green-300`}>
                     <p className="text-[1.5vw] text-center">{order.client}</p>
                     <p className="text-[0.9vw]">{order.status}</p>
@@ -253,6 +251,7 @@ export default function OrderItem({order, orders, setOrders , setPage, setCatego
                     <p className="text-[0.9vw]">{order.status}</p>
                 </div>
                 }
+
                 
 
                     
