@@ -747,14 +747,15 @@ const month_payment_data = {
             <p className='text-2xl'>Subtotal</p><p className='text-2xl'>${subtotal.toFixed(2)}</p>
             <p className='text-2xl'>Tax</p><p className='text-2xl'>${tax.toFixed(2)}</p>
             <p className='text-2xl'>Total</p><p className='text-2xl'>${total.toFixed(2)}</p>
-
+            <div className='p-4'></div><div className='p-4'></div>
             <p className='text-2xl'>Cash</p><p className='text-2xl'>${cash_total.toFixed(2)}</p>
+            <p className='text-2xl'>Credit</p><p className='text-2xl'>${(amex + mastercard + visa).toFixed(2)}</p>
+            <div className='p-4'></div><div className='p-4'></div>
             <p className='text-2xl'>Amex</p><p className='text-2xl'>${amex.toFixed(2)}</p>
             <p className='text-2xl'>Mastercard</p><p className='text-2xl'>${mastercard.toFixed(2)}</p>
             <p className='text-2xl'>Visa</p><p className='text-2xl'>${visa.toFixed(2)}</p>
-            <p className='text-2xl'>Credit</p><p className='text-2xl'>${(amex + mastercard + visa).toFixed(2)}</p>
+            <div className='p-4'></div><div className='p-4'></div>
             <p className='text-2xl'>Orders</p><p className='text-2xl'>{orders_count}</p>
-
             <p className='text-2xl'>Avg / Order</p><p className='text-2xl'>${(total / orders_count).toFixed(2)}</p>
             </div>
         );
