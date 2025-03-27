@@ -10,11 +10,11 @@ const connection = await mysql.createConnection({
 
 
 export async function PUT(request) {
-  const { status, id } = await request.json();
+  const { status, completed_datetime, id } = await request.json();
   try {
-    const [results, fields] = await connection.query(
-      'UPDATE orders SET status=? WHERE id = ?', 
-      [status, id]
+    const [results,  fields] = await connection.query(
+      'UPDATE orders SET status=?, completed_datetime=? WHERE id = ?', 
+      [status, completed_datetime, id]
     )
 
     return new Response(JSON.stringify(

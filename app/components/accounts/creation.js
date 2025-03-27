@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { IconName } from "react-icons/go";
 import { GoMoveToStart } from "react-icons/go";
+import { GoTrash } from "react-icons/go";
 
 
 
@@ -141,7 +142,7 @@ export default function Create({accounts , setAccounts, setPage, page, name, pas
                         <option>Server</option>
                         <option>Chef</option>
                         <option>Manager</option>
-                </select>
+                    </select>
                 </label>
                 {id ? (
                     <div className="flex m-auto gap-[2vw]">

@@ -4,7 +4,20 @@ import { useEffect, useState } from "react";
 import { GoTrash } from "react-icons/go";
 import Items from "../view items/items";
 
-
+async function getIngredient() {
+    const url = "http://localhost:3000/api/raw";
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+  
+      const json = await response.json();
+      return json;
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 
 
 export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, setCategoryPage, itemGridEnabled, sideBarEnabled, itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList, mainOrder, setMainOrder}) {
@@ -43,7 +56,8 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     completed_datetime: null,
                     payment_status: "unpaid",
                     pickup_datetime: `${String(time.getFullYear()).padStart(2, '0')}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDate()).padStart(2, '0')} ${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}:${String(time.getSeconds()).padStart(2,'0')}` ,
-                    payment_method: null
+                    payment_method: null,
+                    amount: null
                  },
               )
           });
@@ -70,12 +84,13 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     total: total, 
                     items: JSON.stringify(itemsList), 
                     notes: notes, 
-                    status: "Order Created", 
+                    status: "Order Created",
                     creation_datetime: `${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`, 
                     completed_datetime: null,
                     payment_status: "paid",
                     pickup_datetime: `${String(time.getFullYear()).padStart(2, '0')}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDate()).padStart(2, '0')} ${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}:${String(time.getSeconds()).padStart(2,'0')}` ,
-                    payment_method: paymentType
+                    payment_method: paymentType,
+                    amount: paymentTotal
                  },
               )
           });
@@ -108,6 +123,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     payment_status: "paid",
                     pickup_datetime: `${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)}`,
                     payment_method: paymentType,
+                    amount: paymentTotal,
                     id: mainOrder.id
                  },
               )
@@ -141,6 +157,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     payment_status: "unpaid",
                     pickup_datetime: `${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)}`,
                     payment_method: paymentType,
+                    amount: null,
                     id: mainOrder.id
                  },
               )
@@ -156,18 +173,21 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
         }
     }
 
-    async function updateItem(item) {
-        const url = "http://localhost:3000/api/items";
+    
+
+    async function updateItem(list) {
+        const url = "http://localhost:3000/api/raw";
         try {
           const response = await fetch(url , {
             'method': 'PUT',
             'body': JSON.stringify(
                 {  
-                    name: item.name,
-                    price: item.price/item.quantity,
-                    category: item.category,
-                    stock: item.stock,
-                    id: item.id
+                    name: list.object.name, 
+                    price: list.object.price, 
+                    threshold: list.object.threshold, 
+                    stock: Number(list.object.stock) - Number(list.value), 
+                    buy_amount: list.object.buy_amount,
+                    id: list.object.id
                 },
               )
           });
@@ -182,9 +202,9 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
         }
     }
 
-    async function removeStock() {
+    async function removeStock(list) {
         try {
-            for (const item of itemsList) {
+            for (const item of list) {
                 await updateItem(item);
             }
         } catch (error) {
@@ -250,6 +270,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
             popupIsEnabled(!popupEnabled);
             setMode("Pay");
             setTime(new Date(currentTime.getTime() + 30 * 60 * 1000));
+            setPaymentType("");
             changeBrightness();
         }
     }
@@ -262,20 +283,67 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
         }
         else {
             if (mainOrder) {
+                getIngredient().then(function(response) {
+                    let list = [];
+                    for (let i = 0; i < response.length; i++) {
+                        for (let j = 0; j < itemsList.length; j++) {
+                            for (let k = 0; k < itemsList[j].ingredients.length; k++) {
+                                if (response[i].name == itemsList[j].ingredients[k]) {
+                                    const food = new Object;
+                                    if (list.some(item => item.name == itemsList[j].ingredients[k])) {
+                                        const index = list.findIndex(item => item.name == itemsList[j].ingredients[k]);
+                                        list[index].value = Number(Number(list[index].value) + (itemsList[j].quantity * Number(itemsList[j].num_of[k]))).toFixed(1);
+                
+                                    }
+                                    else {
+                                        food.name = itemsList[j].ingredients[k];
+                                        food.value = Number(itemsList[j].quantity * Number(itemsList[j].num_of[k])).toFixed(1);
+                                        food.object = response[i];
+                                        list.push(food);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    removeStock(list).then((response) => console.log(response));
+                })
                 orderPay().then((response) => console.log(response));
-                removeStock().then((response) => console.log(response));
                 setMainOrder("");
                 setItemsList([]);
                 alert("Order has been paid")
+                setPaymentType("");
                 closePopUp();
                 setCategoryPage("Default")
                 return;
             }
             else {
+                getIngredient().then(function(response) {
+                    let list = [];
+                    for (let i = 0; i < response.length; i++) {
+                        for (let j = 0; j < itemsList.length; j++) {
+                            for (let k = 0; k < itemsList[j].ingredients.length; k++) {
+                                if (response[i].name == itemsList[j].ingredients[k]) {
+                                    const food = new Object;
+                                    if (list.some(item => item.name == itemsList[j].ingredients[k])) {
+                                        const index = list.findIndex(item => item.name == itemsList[j].ingredients[k]);
+                                        list[index].value = Number(Number(list[index].value) + (itemsList[j].quantity * Number(itemsList[j].num_of[k]))).toFixed(1);
+                                    }
+                                    else {
+                                        food.name = itemsList[j].ingredients[k];
+                                        food.value = Number(itemsList[j].quantity * Number(itemsList[j].num_of[k])).toFixed(1);
+                                        food.object = response[i];
+                                        list.push(food);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    removeStock(list).then((response) => console.log(response));
+                })
                 payData().then((response) => console.log(response));
-                removeStock().then((response) => console.log(response));
                 setItemsList([]);
                 alert("Order has been paid and added")
+                setPaymentType("");
                 closePopUp();
                 setCategoryPage("Default")
             }
@@ -289,8 +357,31 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
 
     const saveOrder = () => {
         event.preventDefault();
+        getIngredient().then(function(response) {
+            let list = [];
+            for (let i = 0; i < response.length; i++) {
+                for (let j = 0; j < itemsList.length; j++) {
+                    for (let k = 0; k < itemsList[j].ingredients.length; k++) {
+                        if (response[i].name == itemsList[j].ingredients[k]) {
+                            const food = new Object;
+                            if (list.some(item => item.name == itemsList[j].ingredients[k])) {
+                                const index = list.findIndex(item => item.name == itemsList[j].ingredients[k]);
+                                list[index].value = Number(Number(list[index].value) + (itemsList[j].quantity * Number(itemsList[j].num_of[k]))).toFixed(1);
+        
+                            }
+                            else {
+                                food.name = itemsList[j].ingredients[k];
+                                food.value = Number(itemsList[j].quantity * Number(itemsList[j].num_of[k])).toFixed(1);
+                                food.object = response[i];
+                                list.push(food);
+                            }
+                        }
+                    }
+                }
+            }
+            removeStock(list).then((response) => console.log(response));
+        })
         postData().then((response) => console.log(response));
-        removeStock().then((response) => console.log(response));
         setItemsList([]);
         alert("Order has been added")
         closePopUp();
@@ -299,8 +390,31 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
 
     const saveChanges = () => {
         event.preventDefault();
+        getIngredient().then(function(response) {
+            let list = [];
+            for (let i = 0; i < response.length; i++) {
+                for (let j = 0; j < itemsList.length; j++) {
+                    for (let k = 0; k < itemsList[j].ingredients.length; k++) {
+                        if (response[i].name == itemsList[j].ingredients[k]) {
+                            const food = new Object;
+                            if (list.some(item => item.name == itemsList[j].ingredients[k])) {
+                                const index = list.findIndex(item => item.name == itemsList[j].ingredients[k]);
+                                list[index].value = Number(Number(list[index].value) + (itemsList[j].quantity * Number(itemsList[j].num_of[k]))).toFixed(1);
+        
+                            }
+                            else {
+                                food.name = itemsList[j].ingredients[k];
+                                food.value = Number(itemsList[j].quantity * Number(itemsList[j].num_of[k])).toFixed(1);
+                                food.object = response[i];
+                                list.push(food);
+                            }
+                        }
+                    }
+                }
+            }
+            removeStock(list).then((response) => console.log(response));
+        })
         updateOrder().then((response) => console.log(response));
-        removeStock().then((response) => console.log(response));
         setItemsList([]);
         alert("Order has been edited and saved")
         setMainOrder("");
@@ -328,31 +442,23 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
 
     const remove = (index) => {
         const newItemsList = [...itemsList]
-        newItemsList[index].stock = newItemsList[index].quantity + newItemsList[index].stock;
         newItemsList.splice(index, 1);
         setItemsList(newItemsList);
     }  
 
     const increment = (index) => {
         const newItemsList = [...itemsList]
-        if (newItemsList[index].stock == false) {
-            return;
-        }
         const oldPrice = newItemsList[index].price / newItemsList[index].quantity
         newItemsList[index].quantity += 1;
-        newItemsList[index].stock -= 1;
         newItemsList[index].price = newItemsList[index].price + oldPrice;
         setItemsList(newItemsList);
-        if (newItemsList[index].stock == false) {
-            return;
-        }
+        console.log(itemsList);
     }
 
     const decrement = (index) => {
         const newItemsList = [...itemsList]
         const oldPrice = newItemsList[index].price / newItemsList[index].quantity
         newItemsList[index].quantity -= 1;
-        newItemsList[index].stock += 1;
         newItemsList[index].price = newItemsList[index].price - oldPrice;
         if (newItemsList[index].quantity == 0) {
             newItemsList.splice(index, 1);
@@ -361,9 +467,6 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
     }
 
     const clearAll = () => {
-        for (let i = 0; i < itemsList.length; i++) {
-            itemsList[i].stock = itemsList[i].stock + itemsList[i].quantity
-        }
         setItemsList([]);
     }
 

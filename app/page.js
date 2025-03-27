@@ -7,6 +7,8 @@ import Login from "./components/login/login.js";
 import OrderGrid from "./components/order section/order-grid.js";
 import Items from "./components/view items/items.js"
 import Accounts from "./components/accounts/accounts.js"
+import Inventory from './components/inventory/inventory.js';
+import BuyMore from './components/functions/buyMore.js';
 import { GoHome } from "react-icons/go";
 import { GoNote } from "react-icons/go";
 import { GoHistory } from "react-icons/go";
@@ -14,13 +16,28 @@ import { GoChecklist } from "react-icons/go";
 import { GoGear } from "react-icons/go";
 import { GoPerson } from "react-icons/go";
 import { GoPulse } from "react-icons/go";
+import { GoBriefcase } from "react-icons/go";
+
 
 
 
 import Analytics from './components/analytics/analytics.js';
 
 
+async function getingredients() {
+  const url = "http://localhost:3000/api/raw";
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
 
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    console.error(error.message);
+  }
+}
 
 
 async function getData() {
@@ -67,6 +84,7 @@ export default function Home() {
   const [enableSideBar, sideBarEnabled] = useState(true);
   const [enableItemGrid, itemGridEnabled] = useState(true);
   const [categoryPage, setCategoryPage] = useState("Default");
+  const [ingredients, setIngredients] = useState([]);
 
   function LogOut() {
     setItemsList([]);
@@ -76,17 +94,26 @@ export default function Home() {
 
 
   useEffect(() => {
-    getData().then((response) => setItems(response))
+    getData().then((response) => setItems(response));
+    getingredients().then((response) => setIngredients(response));
   }, [categoryPage]);
 
   useEffect(() => {
-    getAccounts().then((response) => setAccounts(response))
-    getData().then((response) => setItems(response))
+    getAccounts().then((response) => setAccounts(response));
+    getingredients().then((response) => setIngredients(response));
+    getData().then((response) => setItems(response));
   }, []);
 
   useEffect(() => {
     setPage(page);
   }, [page]);
+
+  useEffect(() => {
+    getingredients().then(function(response) {
+      BuyMore(response);
+      setIngredients(response);
+    })
+  }, [page, categoryPage])
 
 
 
@@ -142,13 +169,18 @@ export default function Home() {
 
 
 
-                      {loggedIn.type == "Admin" && 
+                      {(loggedIn.type == "Admin" || loggedIn.type == "Manager") && 
                       <div>
                       <div className='flex'>
                         <GoNote className='mt-auto mb-auto'/>
                         <a onClick = {enableSideBar ? () => setPage("items") : undefined} className="px-[0.84vw] cursor-pointer">Items</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
+                      <div className='flex'>
+                        <GoBriefcase className='mt-auto mb-auto'/>
+                        <a onClick = {enableSideBar ? () => setPage("inventory") : undefined} className="px-[1.042vw] cursor-pointer">Inventory</a>
+                      </div>
+                      <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                       <div className='flex'>
                         <GoPerson className='mt-auto mb-auto'/>
                         <a onClick = {enableSideBar ? () => setPage("accounts") : undefined} className="px-[1.042vw] cursor-pointer">Accounts</a>
@@ -190,14 +222,16 @@ export default function Home() {
             }
             {page == "items" &&
               <div>
-                <Items categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} enableSideBar = {enableSideBar} sideBarEnabled = {sideBarEnabled} items={items} setItemsList={setItemsList} itemsList={itemsList} page = {page} setPage = {setPage} setItems={setItems}></Items>
+                <Items categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} enableSideBar = {enableSideBar} sideBarEnabled = {sideBarEnabled} items={items} setItemsList={setItemsList} itemsList={itemsList} page = {page} setPage = {setPage} setItems={setItems} setIngredients={setIngredients} ingredients={ingredients}></Items>
               </div>
 
             }
-            {page == "history"
-
+            {page == "inventory" &&
+              <div>
+                <Inventory setCategoryPage = {setCategoryPage} ingredients = {ingredients} setIngredients = {setIngredients}></Inventory>
+              </div>
             }
-            {page == "history" &&
+            {page == "analytics" &&
               <div>
                 <Analytics></Analytics>
               </div>
