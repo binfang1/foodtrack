@@ -35,10 +35,10 @@ async function postOrder(name, items, notes="", status, creation_datetime, payme
                 items: JSON.stringify(items), 
                 notes: notes, 
                 status: status, 
-                creation_datetime: creation_datetime.toISOString(), 
-                completed_datetime: creation_datetime.toISOString(),
+                creation_datetime: `${String(creation_datetime.getFullYear()).padStart(2, '0')}-${String(creation_datetime.getMonth() + 1).padStart(2, '0')}-${String(creation_datetime.getDate()).padStart(2, '0')} ${creation_datetime.getHours()}:${String(creation_datetime.getMinutes()).padStart(2,'0')}:${String(creation_datetime.getSeconds()).padStart(2,'0')}`, 
+                completed_datetime: `${String(pickup_datetime.getFullYear()).padStart(2, '0')}-${String(pickup_datetime.getMonth() + 1).padStart(2, '0')}-${String(pickup_datetime.getDate()).padStart(2, '0')} ${pickup_datetime.getHours()}:${String(pickup_datetime.getMinutes()).padStart(2,'0')}:${String(pickup_datetime.getSeconds()).padStart(2,'0')}`,
                 payment_status: payment_status,
-                pickup_datetime: pickup_datetime.toISOString(),
+                pickup_datetime: `${String(pickup_datetime.getFullYear()).padStart(2, '0')}-${String(pickup_datetime.getMonth() + 1).padStart(2, '0')}-${String(pickup_datetime.getDate()).padStart(2, '0')} ${pickup_datetime.getHours()}:${String(pickup_datetime.getMinutes()).padStart(2,'0')}:${String(pickup_datetime.getSeconds()).padStart(2,'0')}`,
                 payment_method: payment_method
                 },
             )
@@ -126,7 +126,7 @@ function getRandomItemsList(count, items) {
 
 
 // Edit this to generate orders
-generate_orders(1000, new Date("January 1, 2025 00:00:00"), new Date("March 31, 2025 00:00:00"));
+generate_orders(100, new Date("January 1, 2025 00:00:00"), new Date("March 31, 2025 00:00:00"));
 
 
 
