@@ -231,11 +231,6 @@ export default function Home() {
                 <Inventory setCategoryPage = {setCategoryPage} ingredients = {ingredients} setIngredients = {setIngredients}></Inventory>
               </div>
             }
-            {page == "analytics" &&
-              <div>
-                <Analytics></Analytics>
-              </div>
-            }
             {page == "accounts" && 
               <div>
                 <Accounts accounts = {accounts} setAccounts={setAccounts}></Accounts>
