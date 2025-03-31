@@ -60,28 +60,35 @@ export default function Inventory({ setCategoryPage, ingredients, setIngredients
         <div className="relative h-[100vh] w-[85vw] bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
             {page != "Create" && 
             <div className="p-[0.8vw] h-[100vh] flex flex-col bg-white rounded-xl" >
+                <div className="mb-[0.8vw]">
+                    <div className="grid grid-cols-7 text-[0.9vw]">
+                        <p>Name:</p>
+                        <p>Price:</p>
+                        <p>Stock:</p>
+                        <p>Threshold</p>
+                        <p>Buy Amount</p>
+                        <p>Status</p>
+                        <p className="invisible">a</p>
+                    </div>
+                    <hr></hr>
+                </div>
                 <div className="overflow-auto">
                     <div>
                     <div className="flex flex-col">
-                        <div className="mb-[0.8vw]">
-                            <div className="grid grid-cols-6 text-[0.9vw]">
-                                <p>Name:</p>
-                                <p>Price:</p>
-                                <p>Stock:</p>
-                                <p>Threshold</p>
-                                <p>Buy Amount</p>
-                                <p className="invisible">a</p>
-                            </div>
-                            <hr></hr>
-                        </div>
                             {ingredients.map(ingredient => (
                                 <div key={ingredient.id}>
-                                    <div className = "mt-[0.8vw] h-[3vw] grid grid-cols-6 bg-white text-black text-black text-[0.9vw]">
+                                    <div className = "mt-[0.8vw] h-[3vw] grid grid-cols-7 bg-white text-black text-black text-[0.9vw]">
                                         <p className="text-[0.9vw] capitalize"> {ingredient.name} </p>
                                         <p className="text-[0.9vw]">${ingredient.price.toFixed(2)} </p>
                                         <p className="text-[0.9vw]">{ingredient.stock}</p>
                                         <p className="text-[0.9vw]">{ingredient.threshold}</p>
                                         <p className="text-[0.9vw]"> {ingredient.buy_amount} </p>
+                                        {ingredient.stock > ingredient.threshold && (
+                                            <p className="text-[0.9vw]">In Stock</p>
+                                        )}
+                                          {ingredient.stock <= ingredient.threshold && (
+                                            <p className="text-[0.9vw]">Low Stock</p>
+                                        )}
                                         <p className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => edit(ingredient)}>Edit</p>
                                     </div>
                                     <hr className="bg-gray-200 h-[0.1vw] border-0"></hr>

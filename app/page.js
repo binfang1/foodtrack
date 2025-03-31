@@ -40,6 +40,22 @@ async function getingredients() {
   }
 }
 
+async function getOrders() {
+  const url = "http://localhost:3000/api/orders";
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+
+    return json;
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
 
 async function getData() {
   const url = "http://localhost:3000/api/items";
@@ -86,6 +102,7 @@ export default function Home() {
   const [enableItemGrid, itemGridEnabled] = useState(true);
   const [categoryPage, setCategoryPage] = useState("Default");
   const [ingredients, setIngredients] = useState([]);
+  const [orders, setOrders] = useState([]);
 
   function LogOut() {
     setItemsList([]);
@@ -97,24 +114,20 @@ export default function Home() {
   useEffect(() => {
     getData().then((response) => setItems(response));
     getingredients().then((response) => setIngredients(response));
-  }, [categoryPage]);
+    getAccounts().then((response) => setAccounts(response))
+    getOrders().then((response) => setOrders(response));
+  }, [categoryPage, page]);
 
   useEffect(() => {
     getAccounts().then((response) => setAccounts(response));
     getingredients().then((response) => setIngredients(response));
     getData().then((response) => setItems(response));
+    getOrders().then((response) => setOrders(response));
   }, []);
 
   useEffect(() => {
     setPage(page);
   }, [page]);
-
-  useEffect(() => {
-    getingredients().then(function(response) {
-      BuyMore(response);
-      setIngredients(response);
-    })
-  }, [page, categoryPage])
 
 
 
@@ -156,7 +169,7 @@ export default function Home() {
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                     
 
-                      {loggedIn.type != "Chef" &&
+               
                       <div>
                       <div className={`flex ${page === "history" ? "opacity-50" : "bg-white"}`}>
                         <GoHistory className='mt-auto mb-auto'/>
@@ -164,7 +177,7 @@ export default function Home() {
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                       </div>
-                      }
+                      
 
 
 
@@ -216,7 +229,7 @@ export default function Home() {
             }
             {page == "orders" &&
               <div>
-                <OrderGrid page={page} setPage={setPage} categoryPage={categoryPage} setCategoryPage={setCategoryPage} mainOrder={mainOrder} setMainOrder={setMainOrder} setItemsList={setItemsList} itemsList={itemsList} items={items}></OrderGrid>
+                <OrderGrid orders = {orders} setOrders = {setOrders} page={page} setPage={setPage} categoryPage={categoryPage} setCategoryPage={setCategoryPage} mainOrder={mainOrder} setMainOrder={setMainOrder} setItemsList={setItemsList} itemsList={itemsList} items={items}></OrderGrid>
               </div>
             }
             {page == "items" &&
@@ -232,7 +245,7 @@ export default function Home() {
             }
             {page == "history" &&
               <div>
-                <History page={page} setPage={setPage} categoryPage={categoryPage} setCategoryPage={setCategoryPage} mainOrder={mainOrder} setMainOrder={setMainOrder} setItemsList={setItemsList} itemsList={itemsList} items={items}></History>
+                <History orders = {orders} setOrders = {setOrders} page={page} setPage={setPage} categoryPage={categoryPage} setCategoryPage={setCategoryPage} mainOrder={mainOrder} setMainOrder={setMainOrder} setItemsList={setItemsList} itemsList={itemsList} items={items}></History>
               </div>
             }
             {page == "accounts" && 
@@ -241,7 +254,7 @@ export default function Home() {
               </div>
             }
             {page == "analytics" && 
-              <div className='w-full'>
+              <div>
                 <Analytics></Analytics>
               </div>
             }

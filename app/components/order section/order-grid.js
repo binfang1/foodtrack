@@ -19,9 +19,9 @@ async function getData() {
     }
   }
 
-export default function OrderGrid({ page, setPage, categoryPage, setCategoryPage, mainOrder, setMainOrder, itemsList, setItemsList, items }) {
+export default function OrderGrid({orders, setOrders, page, setPage, categoryPage, setCategoryPage, mainOrder, setMainOrder, itemsList, setItemsList, items }) {
 
-    const [orders, setOrders] = useState([]);
+    console.log(orders);
     useEffect(() => {
       getData().then((response) => setOrders(response))
     }, []);

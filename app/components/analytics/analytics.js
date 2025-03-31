@@ -747,20 +747,25 @@ const month_payment_data = {
         let total = cash_total + amex + mastercard + visa;
 
         return (
-          <div className='grid grid-cols-2 text-right mr-8 mt-8'>
-            <p className='text-2xl'>Subtotal</p><p className='text-2xl'>${subtotal.toFixed(2)}</p>
-            <p className='text-2xl'>Tax</p><p className='text-2xl'>${tax.toFixed(2)}</p>
-            <p className='text-2xl'>Total</p><p className='text-2xl'>${total.toFixed(2)}</p>
-            <div className='p-4'></div><div className='p-4'></div>
-            <p className='text-2xl'>Cash</p><p className='text-2xl'>${cash_total.toFixed(2)}</p>
-            <p className='text-2xl'>Credit</p><p className='text-2xl'>${(amex + mastercard + visa).toFixed(2)}</p>
-            <div className='p-4'></div><div className='p-4'></div>
-            <p className='text-2xl'>Amex</p><p className='text-2xl'>${amex.toFixed(2)}</p>
-            <p className='text-2xl'>Mastercard</p><p className='text-2xl'>${mastercard.toFixed(2)}</p>
-            <p className='text-2xl'>Visa</p><p className='text-2xl'>${visa.toFixed(2)}</p>
-            <div className='p-4'></div><div className='p-4'></div>
-            <p className='text-2xl'>Orders</p><p className='text-2xl'>{orders_count}</p>
-            <p className='text-2xl'>Avg / Order</p><p className='text-2xl'>${(total / orders_count).toFixed(2)}</p>
+          <div className='grid grid-cols-2 text-right m-auto mt-[2vw]'>
+            <p className='text-[1.3vw] mr-[4vw]'>Subtotal:</p><p className='text-[1.3vw]'>${subtotal.toFixed(2)}</p>
+            <p className='text-[1.3vw] mr-[4vw]'>Tax:</p><p className='text-[1.3vw]'>${tax.toFixed(2)}</p>
+            <p className='text-[1.3vw] mr-[4vw]'>Total:</p><p className='text-[1.3vw]'>${total.toFixed(2)}</p>
+            <hr className='mb-[1.5vw]'/>
+            <hr className='mb-[1.5vw]'/>
+            <p className='text-[1.3vw] mr-[4vw]'>Cash:</p><p className='text-[1.3vw]'>${cash_total.toFixed(2)}</p>
+            <p className='text-[1.3vw] mr-[4vw]'>Credit:</p><p className='text-[1.3vw]'>${(amex + mastercard + visa).toFixed(2)}</p>
+            <hr className='mb-[1.5vw]'/>
+            <hr className='mb-[1.5vw]'/>
+            <p className='text-[1.3vw] mr-[4vw]'>Amex:</p><p className='text-[1.3vw]'>${amex.toFixed(2)}</p>
+            <p className='text-[1.3vw] mr-[4vw]'>Mastercard:</p><p className='text-[1.3vw]'>${mastercard.toFixed(2)}</p>
+            <p className='text-[1.3vw] mr-[4vw]'>Visa:</p><p className='text-[1.3vw]'>${visa.toFixed(2)}</p>
+            <hr className='mb-[1.5vw]'/>
+            <hr className='mb-[1.5vw]'/>
+            <p className='text-[1.3vw] mr-[4vw]'>Orders:</p><p className='text-[1.3vw]'>{orders_count}</p>
+            <p className='text-[1.3vw] mr-[4vw]'>Avg / Order:</p><p className='text-[1.3vw]'>${(total / orders_count).toFixed(2)}</p>
+            <hr className='mb-[1.5vw]'/>
+            <hr className='mb-[1.5vw]'/>
             </div>
         );
     }
@@ -768,32 +773,32 @@ const month_payment_data = {
     function switch_title(page) {
       switch(page) {
         case "today":
-          return (<p className='text-center text-3xl'>{`${month_labels[now.getMonth()]} ${now.getDate()}`}</p>);
+          return (<p className='text-center text-[1.5vw]'>{`${month_labels[now.getMonth()]} ${now.getDate()}`}</p>);
         case "week":
           let last = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-          return (<p className='text-center text-3xl'>Last 7 Days</p>);
+          return (<p className='text-center text-[1.5vw]'>Last 7 Days</p>);
           //return (<p className='text-center'>{`${month_labels[now.getMonth()]} ${now.getDate()} - ${month_labels[last.getMonth()]} ${last.getDate()}`}</p>);
         case "month":
-          return (<p className='text-center text-3xl'>{month_labels[now.getMonth()]}</p>);
+          return (<p className='text-center text-[1.5vw]'>{month_labels[now.getMonth()]}</p>);
         case "year":
-          return (<p className='text-center text-3xl'>{now.getFullYear()}</p>);
+          return (<p className='text-center text-[1.5vw]'>{now.getFullYear()}</p>);
       }
     }
 
     return (
-      <div className="flex h-screen w-[full] bg-white rounded-xl">
-             <div className='flex h-full flex-col w-128'>
-              <select value={page} onChange={e => setPage(e.target.value)} default="today" className='m-6 mr-2 text-center text-2xl outline-1 rounded-l'>
+      <div className="p-[1.5vw] flex h-[100vh] w-[85vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+            <div className='flex h-full flex-col w-full'>
+              <select value={page} onChange={e => setPage(e.target.value)} default="today" className='m-[2vw] text-center text-[1.5vw] outline-1 rounded-l'>
                 <option value="today">Today</option>
                 <option value="week">Week</option>
                 <option value="month">Month</option>
                 <option value="year">Year</option>
               </select>
-              <div className='mt-24'></div>
+              <div className='mt-[2.4vw]'></div>
               {switch_title(page)}
               {switch_text(page)}
             </div>
-            <div className='flex h-full w-full m-8'>
+            <div className='flex h-full w-full m-[1vw]'>
               {switch_page(page)}
             </div>
 
