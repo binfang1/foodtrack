@@ -101,7 +101,7 @@ export default function Analytics() {
     const [week_title, setWeekTitle] = useState("");
     const [day_title, setDayTitle] = useState("");
 
-    const [page, setPage] = useState("frequency");
+    const [page, setPage] = useState("today");
 
     var temp_orders;
 
@@ -304,7 +304,9 @@ export default function Analytics() {
                         temp_week_subtotal = temp_week_subtotal + subtotal;
                         temp_week_tax = temp_week_tax + tax;
                       }
-
+                    
+                      console.log(creation_datetime);
+                      console.log(now);
                       // Hour
                       if(creation_datetime.getHours() >= 11 && creation_datetime.getHours() <= 22 && creation_datetime.getDate() == now.getDate()) {
                         console.log("Entering current day")
@@ -637,15 +639,17 @@ const month_payment_data = {
 };
 
     function switch_page(page) {
+      let width = "";
+
       switch(page) {
         case "today":
           return (
             <div className='flex flex-col h-full w-full'>
               <div className='flex flex-row h-1/2 w-full'>
-                <div className='flex w-1/2 h-128 flex-grow self-center justify-center mt-6'>
+                <div className='flex w-128 h-128 flex-grow self-center justify-center mt-6'>
                     <Bar labels={hour_labels} data={hour_revenue_data}></Bar>
                 </div>
-                <div className='flex w-1/2 h- flex-grow self-center justify-center mt-6'>
+                <div className='flex w-128 h- flex-grow self-center justify-center mt-6'>
                   <Doughnut labels={payment_labels} data={hour_payment_data}></Doughnut>
                 </div>
               </div>

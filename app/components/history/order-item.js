@@ -229,7 +229,7 @@ export default function OrderItem({order, orders, setOrders , setPage, setCatego
         }
     }
 
-   
+
     return (
         <div className="relative w-full bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] ">
             <div className="flex flex-col ">
@@ -257,13 +257,13 @@ export default function OrderItem({order, orders, setOrders , setPage, setCatego
                     
                 {order.payment_status != "paid" && (
                     <div className="flex p-[0.4vw] relative z-40 text-[0.9vw]">
-                        <button className="cursor-pointer hover:underline hover:text-red-400" onClick={deleteOrder}>delete</button>
-                        <button className="cursor-pointer hover:underline ml-auto " onClick={editPayOrder}>edit/pay</button>
+                        <button className="cursor-pointer hover:underline hover:text-red-400" onClick={deleteOrder}>Delete</button>
+                        <button className="cursor-pointer hover:underline ml-auto " onClick={editPayOrder}>Edit/Pay</button>
                     </div>
                 )}
 
                 <div className="flex flex-col p-[0.4vw]">
-                    <p className="text-[0.9vw]">Pick Up Time: {order.pickup_datetime.slice(11, 16)}</p>
+                  
 
                     <div className="mt-[2vw] mb-[2vw] text-[0.9vw]">
                         {JSON.parse(order.items).map(item => (

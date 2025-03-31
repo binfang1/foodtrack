@@ -102,7 +102,7 @@ function getRandomIntInclusive(min, max) {
 }
 
 function getRandomStatus() {
-    let status = ["Waiting", "In-Progress", "Completed"]
+    let status = ["Completed"]
     return status[Math.floor(Math.random() * status.length)];
 }
 
