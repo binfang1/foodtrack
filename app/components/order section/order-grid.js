@@ -35,7 +35,7 @@ export default function OrderGrid({orders, setOrders, page, setPage, categoryPag
       }, [categoryPage]);
 
     return (
-        <div className="p-[1.5vw] w-[85vw]  h-[100vh]  grid-rows-2 gap-4 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+        <div className="p-[1.5vw] w-[85vw] h-[100vh]  grid-rows-2 gap-4 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
                 <div className="overflow-auto flex flex-wrap  gap-[2vw] h-[90vh]">
                   {orders.map((order, index) => ( 
                       order.status != "Completed" ? (

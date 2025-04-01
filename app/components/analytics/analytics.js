@@ -101,7 +101,7 @@ export default function Analytics() {
     const [week_title, setWeekTitle] = useState("");
     const [day_title, setDayTitle] = useState("");
 
-    const [page, setPage] = useState("today");
+    const [page, setPage] = useState("year");
 
     var temp_orders;
 
@@ -707,24 +707,30 @@ const month_payment_data = {
           );
         case "year":
           return (
-            <div className='flex flex-col h-full w-full'>
-            <div className='flex flex-row h-1/2 w-full'>
-              <div className='flex w-1/2 h-128 flex-grow self-center justify-center mt-6'>
-                  <Bar labels={month_labels} data={month_revenue_data}></Bar>
+            <div className='flex flex-col'>
+
+              <div className='flex items-center justify-between h-[80vh] mt-[2vw]'>
+
+                <div className='flex flex-col w-[30vw]  gap-[1vw] h-full'>
+                  <div className='flex w-full h-1/3'>
+                      <Bar labels={month_labels} data={month_revenue_data}></Bar>
+                  </div>
+
+                  <div className='flex w-full h-1/3'>
+                    <Bar labels={month_labels} data={month_count_data} className=''></Bar>
+                  </div>
+
+                  <div className='flex w-full h-1/3'>
+                    <Bar labels={month_top} data={month_top_data}></Bar>
+                  </div>
+                </div>
+
+                <div className='flex w-1/2 m-auto'>
+                  <Doughnut labels={payment_labels} data={month_payment_data}></Doughnut>
+                </div>
               </div>
-              <div className='flex w-1/2 h-128 flex-grow self-center justify-center mt-6'>
-                <Doughnut labels={payment_labels} data={month_payment_data}></Doughnut>
-              </div>
+
             </div>
-            <div className='flex flex-row h-1/2 w-full'>
-              <div className='flex w-128 flex-grow mb-6 justify-center self-center'>
-                  <Bar labels={month_labels} data={month_count_data} className=''></Bar>
-              </div>
-              <div className='flex w-128 flex-grow justify-center self-center mb-6'>
-                  <Bar labels={month_top} data={month_top_data}></Bar>
-              </div>
-            </div>
-          </div>
         );
       }
     }
@@ -747,7 +753,7 @@ const month_payment_data = {
         let total = cash_total + amex + mastercard + visa;
 
         return (
-          <div className='grid grid-cols-2 text-right m-auto mt-[2vw]'>
+          <div className='grid grid-cols-2 text-right m-auto mt-[2vw] '>
             <p className='text-[1.3vw] mr-[4vw]'>Subtotal:</p><p className='text-[1.3vw]'>${subtotal.toFixed(2)}</p>
             <p className='text-[1.3vw] mr-[4vw]'>Tax:</p><p className='text-[1.3vw]'>${tax.toFixed(2)}</p>
             <p className='text-[1.3vw] mr-[4vw]'>Total:</p><p className='text-[1.3vw]'>${total.toFixed(2)}</p>
@@ -786,9 +792,9 @@ const month_payment_data = {
     }
 
     return (
-      <div className="p-[1.5vw] flex h-[100vh] w-[85vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+      <div className="p-[1.5vw] flex h-[100vh] w-[85vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] gap-[2vw]">
             <div className='flex h-full flex-col w-full'>
-              <select value={page} onChange={e => setPage(e.target.value)} default="today" className='m-[2vw] text-center text-[1.5vw] outline-1 rounded-l'>
+              <select value={page} onChange={e => setPage(e.target.value)} default="today" className='m-[2vw] w-[20vw] text-center text-[1.5vw] outline-1 rounded-l mx-auto'>
                 <option value="today">Today</option>
                 <option value="week">Week</option>
                 <option value="month">Month</option>
@@ -798,7 +804,7 @@ const month_payment_data = {
               {switch_title(page)}
               {switch_text(page)}
             </div>
-            <div className='flex h-full w-full m-[1vw]'>
+            <div className='flex h-full w-full'>
               {switch_page(page)}
             </div>
 

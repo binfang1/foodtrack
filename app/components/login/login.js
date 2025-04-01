@@ -38,16 +38,17 @@ export default function Login({loggedIn, setLoggedIn, accounts, page, setPage}) 
 
     return (
         <div className="w-[100vw] h-[100vh] flex">
-            <div className="w-[15.625vw] h-[15.625vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] m-auto">
-                <form onSubmit={checkLogin} className="flex flex-col m-auto gap-[1.7vw] text-center">
-                    <h1 className="text-[1.7vw]">Login</h1>
-                    <label className="text-[0.7vw]">
-                        <input placeholder="Username" onChange={getUser} className = "text-[1.7vw]border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="text" required/>
+            <div className="w-[25vw] h-[30vw] p-[2vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] m-auto">
+                <h1 className="text-[1.5vw] text-left mb-[1vw]">FoodTrack</h1>
+                <form onSubmit={checkLogin} className="flex flex-col m-auto">
+                    <h1 className="text-[2vw] text-left">Login</h1>
+                    <label className="text-[1.5vw]">Username:
+                        <input placeholder="Username" onChange={getUser} className = "mb-[1vw] w-full border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="text" required/>
                     </label>
-                    <label className="text-[0.7vw]">
-                        <input placeholder="password" onChange={getPass} className = "border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="password" required/>
+                    <label className="text-[1.5vw]">Password:
+                        <input placeholder="password" onChange={getPass} className = "mb-[3vw] w-full border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="password" required/>
                     </label>
-                    <input className="text-[0.7vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[4.7vw] h-[1.6vw] m-auto" type = "submit" value = "Login"/>
+                    <input className="cursor-pointer w-full h-[3vw] text-[1.5vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md  m-auto" type = "submit" value = "Login"/>
                 </form>
             </div>
         </div>

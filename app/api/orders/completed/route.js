@@ -12,7 +12,7 @@ export async function GET(request) {
 
   try {
     const [results, fields] = await connection.query(
-      'SELECT * FROM `orders` WHERE `status` = "Completed" ORDER BY creation_datetime DESC'
+      'SELECT * FROM `orders` WHERE `status` = "Completed" ORDER BY completed_datetime DESC'
     );
   
     //console.log(results); // results contains rows returned by server

@@ -4,7 +4,7 @@ import OrderItem from "./order-item";
 import { useState, useEffect } from "react";
 
 async function getData() {
-    const url = "http://localhost:3000/api/orders";
+    const url = "http://localhost:3000/api/orders/completed";
     try {
       const response = await fetch(url);
       if (!response.ok) {
