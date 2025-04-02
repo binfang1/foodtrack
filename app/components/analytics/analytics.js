@@ -101,7 +101,7 @@ export default function Analytics() {
     const [week_title, setWeekTitle] = useState("");
     const [day_title, setDayTitle] = useState("");
 
-    const [page, setPage] = useState("year");
+    const [page, setPage] = useState("today");
 
     var temp_orders;
 
@@ -644,66 +644,87 @@ const month_payment_data = {
       switch(page) {
         case "today":
           return (
-            <div className='flex flex-col h-full w-full'>
-              <div className='flex flex-row h-1/2 w-full'>
-                <div className='flex w-128 h-128 flex-grow self-center justify-center mt-6'>
+            <div className='flex flex-col'>
+
+              <div className='flex items-center justify-between h-[80vh] mt-[2vw]'>
+
+                <div className='flex flex-col w-[30vw]  gap-[1vw] h-full'>
+                  <div className='flex w-full h-1/3'>
                     <Bar labels={hour_labels} data={hour_revenue_data}></Bar>
+                  </div>
+
+                  <div className='flex w-full h-1/3'>
+                    <Bar labels={hour_labels} data={hour_count_data} className=''></Bar>
+                  </div>
+
+                  <div className='flex w-full h-1/3'>
+                    <Bar labels={hour_top} data={hour_top_data}></Bar>
+                  </div>
                 </div>
-                <div className='flex w-128 h- flex-grow self-center justify-center mt-6'>
+
+                <div className='flex w-1/2 m-auto'>
                   <Doughnut labels={payment_labels} data={hour_payment_data}></Doughnut>
                 </div>
               </div>
-              <div className='flex flex-row h-1/2 w-full '>
-                <div className='flex w-128 flex-grow mb-6 justify-center self-center'>
-                    <Bar labels={hour_labels} data={hour_count_data} className=''></Bar>
-                </div>
-                <div className='flex w-128 flex-grow justify-center self-center mb-6'>
-                    <Bar labels={hour_top} data={hour_top_data}></Bar>
-                </div>
-              </div>
+
             </div>
           );
         case "week":
           return (
-            <div className='flex flex-col h-full w-full'>
-              <div className='flex flex-row h-1/2 w-full'>
-                <div className='flex w-1/2 h-128 flex-grow self-center justify-center mt-6'>
+            <div className='flex flex-col'>
+
+              <div className='flex items-center justify-between h-[80vh] mt-[2vw]'>
+
+                <div className='flex flex-col w-[30vw]  gap-[1vw] h-full'>
+                  <div className='flex w-full h-1/3'>
                     <Bar labels={week_labels} data={week_revenue_data}></Bar>
+                  </div>
+
+                  <div className='flex w-full h-1/3'>
+                    <Bar labels={week_labels} data={week_count_data} className=''></Bar>
+                  </div>
+
+                  <div className='flex w-full h-1/3'>
+                    <Bar labels={week_top} data={week_top_data}></Bar>
+                  </div>
                 </div>
-                <div className='flex w-1/2 h-128 flex-grow self-center justify-center mt-6'>
+
+                <div className='flex w-1/2 m-auto'>
                   <Doughnut labels={payment_labels} data={week_payment_data}></Doughnut>
                 </div>
               </div>
-              <div className='flex flex-row h-1/2 w-full '>
-                <div className='flex w-128 flex-grow mb-6 justify-center self-center '>
-                    <Bar labels={week_labels} data={week_count_data} className=''></Bar>
-                </div>
-                <div className='flex w-128 flex-grow justify-center self-center mb-6 '>
-                    <Bar labels={week_top} data={week_top_data}></Bar>
-                </div>
-              </div>
+
             </div>
+
           );
         case "month":
           return (
-            <div className='flex flex-col h-full w-full'>
-            <div className='flex flex-row h-1/2 w-full'>
-              <div className='flex w-1/2 h-128 flex-grow self-center justify-center mt-6'>
-                  <Bar labels={day_labels} data={day_revenue_data}></Bar>
+            <div className='flex flex-col'>
+
+              <div className='flex items-center justify-between h-[80vh] mt-[2vw]'>
+
+                <div className='flex flex-col w-[30vw]  gap-[1vw] h-full'>
+                  <div className='flex w-full h-1/3'>
+                    <Bar labels={day_labels} data={day_revenue_data}></Bar>
+                  </div>
+
+                  <div className='flex w-full h-1/3'>
+                    <Bar labels={day_labels} data={day_count_data} className=''></Bar>
+                  </div>
+
+                  <div className='flex w-full h-1/3'>
+                    <Bar labels={day_top} data={day_top_data}></Bar>
+                  </div>
+                </div>
+
+                <div className='flex w-1/2 m-auto'>
+                  <Doughnut labels={payment_labels} data={day_payment_data}></Doughnut>
+                </div>
               </div>
-              <div className='flex w-1/2 h-128 flex-grow self-center justify-center mt-6'>
-                <Doughnut labels={payment_labels} data={day_payment_data}></Doughnut>
-              </div>
+
             </div>
-            <div className='flex flex-row h-1/2 w-full '>
-              <div className='flex w-128 flex-grow mb-6 justify-center self-center'>
-                  <Bar labels={day_labels} data={day_count_data} className=''></Bar>
-              </div>
-              <div className='flex w-128 flex-grow justify-center self-center mb-6'>
-                  <Bar labels={day_top} data={day_top_data}></Bar>
-              </div>
-            </div>
-          </div>
+           
+          
           );
         case "year":
           return (
