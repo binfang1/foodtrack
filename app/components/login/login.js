@@ -41,7 +41,7 @@ export default function Login({loggedIn, setLoggedIn, accounts, page, setPage}) 
             <div className="w-[25vw] h-[30vw] p-[2vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] m-auto">
                 <h1 className="text-[1.5vw] text-left mb-[1vw]">FoodTrack</h1>
                 <form onSubmit={checkLogin} className="flex flex-col m-auto">
-                    <h1 className="text-[2vw] text-left">Login</h1>
+                    <h1 className="text-[2vw] text-left mb-[1vw]">Login</h1>
                     <label className="text-[1.5vw]">Username:
                         <input placeholder="Username" onChange={getUser} className = "mb-[1vw] w-full border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="text" required/>
                     </label>
