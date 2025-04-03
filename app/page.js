@@ -14,7 +14,7 @@ import { GoHome } from "react-icons/go";
 import { GoNote } from "react-icons/go";
 import { GoHistory } from "react-icons/go";
 import { GoChecklist } from "react-icons/go";
-import { GoGear } from "react-icons/go";
+import { GoSignOut } from "react-icons/go";
 import { GoPerson } from "react-icons/go";
 import { GoPulse } from "react-icons/go";
 import { GoBriefcase } from "react-icons/go";
@@ -145,8 +145,10 @@ export default function Home() {
             <div className="w-[15vw] bg-[#E4E4EF] max-[769px]:w-[30vw]" id = 'darken'>
                 <div className="bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] p-[0.84vw]  flex flex-col">
                     <div className="text-[0.85vw]">
+                        <img className = "mb-[1vw] mt-[0.8vw]" src='/foodtrack-logo-transparent.png'></img>
                         <h1 className="text-[#757575]">Welcome, {loggedIn.username}</h1>
-                        <h2 className="font-semibold text-[1.1vw] mb-[-0.52vw]">FoodTrack</h2>
+              
+                        
                         <hr className="border-[#D9D9D9] my-[1.1vw]"></hr>
                     </div>
                     <div className = "text-[0.94vw] h-full">
@@ -156,7 +158,7 @@ export default function Home() {
                       <div>
                       <div className={`flex ${page === "home" ? "opacity-50" : "bg-white"}`}>
                         <GoHome className='mt-auto mb-auto'/>
-                        <a onClick = {enableSideBar ? () => setPage("home") : undefined} className={`px-[0.84vw] cursor-pointer`}>Home</a>
+                        <a onClick = {enableSideBar ? () => setPage("home") : undefined} className={`px-[1.042vw] cursor-pointer`}>Home</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                       </div>
@@ -164,7 +166,7 @@ export default function Home() {
                         
                         <div className={`flex ${page === "orders" ? "opacity-50" : "bg-white"}`}>
                         <GoChecklist className='mt-auto mb-auto'/>
-                        <a onClick = {enableSideBar ? () => setPage("orders") : undefined} className="px-[0.84vw] cursor-pointer">Orders</a>
+                        <a onClick = {enableSideBar ? () => setPage("orders") : undefined} className="px-[1.042vw] cursor-pointer">Orders</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                     
@@ -185,7 +187,7 @@ export default function Home() {
                       <div>
                       <div className={`flex ${page === "items" ? "opacity-50" : "bg-white"}`}>
                         <GoNote className='mt-auto mb-auto'/>
-                        <a onClick = {enableSideBar ? () => setPage("items") : undefined} className="px-[0.84vw] cursor-pointer">Items</a>
+                        <a onClick = {enableSideBar ? () => setPage("items") : undefined} className="px-[1.042vw] cursor-pointer">Items</a>
                       </div>
                         <hr className="border-[#D9D9D9] my-[1.042vw]"></hr>
                         <div className={`flex ${page === "inventory" ? "opacity-50" : "bg-white"}`}>
@@ -207,7 +209,7 @@ export default function Home() {
                        }
                     </div>
                     <div className='flex mb-[1.25vw] text-[0.94vw]'>
-                        <GoGear className='mt-auto mb-auto'/>
+                        <GoSignOut className='mt-auto mb-auto'/>
                         <a className="px-[0.84vw] cursor-pointer" onClick = {enableSideBar ? () => LogOut() : undefined}>Log Out</a>
                       </div>
                 </div>

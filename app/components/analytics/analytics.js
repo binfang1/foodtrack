@@ -646,7 +646,7 @@ const month_payment_data = {
           return (
             <div className='flex flex-col'>
 
-              <div className='flex items-center justify-between h-[80vh] mt-[2vw]'>
+              <div className='flex items-center justify-between h-[80vh] mt-[2vw] border-solid border-gray-300 border-1 p-[2vw]'>
 
                 <div className='flex flex-col w-[30vw]  gap-[1vw] h-full'>
                   <div className='flex w-full h-1/3'>
@@ -730,7 +730,7 @@ const month_payment_data = {
           return (
             <div className='flex flex-col'>
 
-              <div className='flex items-center justify-between h-[80vh] mt-[2vw]'>
+              <div className='flex items-center justify-between h-[80vh] mt-[2vw] border-solid border-gray-300 border-1 p-[2vw]'>
 
                 <div className='flex flex-col w-[30vw]  gap-[1vw] h-full'>
                   <div className='flex w-full h-1/3'>
@@ -747,7 +747,7 @@ const month_payment_data = {
                 </div>
 
                 <div className='flex w-1/2 m-auto'>
-                  <Doughnut labels={payment_labels} data={month_payment_data}></Doughnut>
+                  <Doughnut className='m-auto' labels={payment_labels} data={month_payment_data}></Doughnut>
                 </div>
               </div>
 
@@ -774,7 +774,7 @@ const month_payment_data = {
         let total = cash_total + amex + mastercard + visa;
 
         return (
-          <div className='grid grid-cols-2 text-right m-auto mt-[2vw] '>
+          <div className='grid grid-cols-2 text-right m-auto mt-[2vw]'>
             <p className='text-[1.3vw] mr-[4vw]'>Subtotal:</p><p className='text-[1.3vw]'>${subtotal.toFixed(2)}</p>
             <p className='text-[1.3vw] mr-[4vw]'>Tax:</p><p className='text-[1.3vw]'>${tax.toFixed(2)}</p>
             <p className='text-[1.3vw] mr-[4vw]'>Total:</p><p className='text-[1.3vw]'>${total.toFixed(2)}</p>
@@ -813,8 +813,8 @@ const month_payment_data = {
     }
 
     return (
-      <div className="p-[1.5vw] flex h-[100vh] w-[85vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] gap-[2vw]">
-            <div className='flex h-full flex-col w-full'>
+      <div className="p-[1.5vw] flex h-[100vh] w-[85vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] ">
+            <div className='flex h-full flex-col w-full my-[2vw]'>
               <select value={page} onChange={e => setPage(e.target.value)} default="today" className='m-[2vw] w-[20vw] text-center text-[1.5vw] outline-1 rounded-l mx-auto'>
                 <option value="today">Today</option>
                 <option value="week">Week</option>

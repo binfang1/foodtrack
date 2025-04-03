@@ -39,8 +39,8 @@ export default function Login({loggedIn, setLoggedIn, accounts, page, setPage}) 
     return (
         <div className="w-[100vw] h-[100vh] flex">
             <div className="w-[25vw] h-[30vw] p-[2vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] m-auto">
-                <h1 className="text-[1.5vw] text-left mb-[1vw]">FoodTrack</h1>
-                <form onSubmit={checkLogin} className="flex flex-col m-auto gap-[2vw] mt-[5vw]">
+                <img className="mt-[1.2vw] mb-[3vw]" src="/foodtrack-logo-transparent.png"></img>
+                <form onSubmit={checkLogin} className="flex flex-col m-auto gap-[2vw]">
                     <label className="text-[1.5vw]">
                         <input placeholder="Username" onChange={getUser} className = "rounded-md mb-[1vw] w-full h-[3vw]  border-gray-500 border-2 pl-[1vw] pr-[0.1vw] text-black" type="text" required/>
                     </label>

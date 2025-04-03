@@ -1,6 +1,8 @@
 "use client";
 import Create from "./creation";
 import { useState, useEffect } from "react";
+import { GoPencil } from "react-icons/go";
+
 
 async function getData() {
     const url = "http://localhost:3000/api/raw";
@@ -89,7 +91,7 @@ export default function Inventory({ setCategoryPage, ingredients, setIngredients
                                           {ingredient.stock <= ingredient.threshold && (
                                             <p className="text-[0.9vw] text-red-400">Low Stock</p>
                                         )}
-                                        <p className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => edit(ingredient)}>Edit</p>
+                                        <GoPencil className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => edit(ingredient)}/>
                                     </div>
                                     <hr className="bg-gray-200 h-[0.1vw] border-0"></hr>
                                 </div>
@@ -99,7 +101,7 @@ export default function Inventory({ setCategoryPage, ingredients, setIngredients
                     </div>    
                         
                 </div>
-                <button onClick={change} className="mt-auto mb-[1.5vw] cursor-pointer bg-white rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-[3vw] text-[0.9vw]">Add Ingredient</button>
+                <button onClick={change} className="mt-auto mb-[1.5vw] cursor-pointer bg-white rounded-xl border-solid border-3 border-[#D9D9D9] text-gray-500 rounded-lg shadow-md h-[3vw] text-[2vw]">+</button>
             </div>
             }
             {page ? (

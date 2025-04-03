@@ -527,11 +527,11 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     <div key={index} className="w-full pr-[1.7vw]">
                         <div className="flex">
                             <div className="flex flex-col">
-                                <button type = "button w-full" className="p-[0.104vw] cursor-pointer rounded-xl border-solid border-[0.1vw] border-black" onClick = {() => increment(index)}>+</button>
-                                <p className="p-[0.21vw] w-[1.83vw] text-center">{item.quantity}</p>
-                                <button type = "button w-full" className="p-[0.052vw] cursor-pointer rounded-xl border-solid border-[0.1vw] border-black" onClick = {() => decrement(index)}>-</button>
+                                <button type = "button w-full" className="p-[0.104vw] cursor-pointer " onClick = {() => increment(index)}>+</button>
+                                <p className="p-[0.21vw] w-[1.83vw] text-[1vw] text-center">{item.quantity}</p>
+                                <button type = "button w-full" className="p-[0.052vw] cursor-pointer" onClick = {() => decrement(index)}>-</button>
                             </div>
-                            <div className="flex flex-col w-full h-full mt-auto mb-auto">
+                            <div className="flex flex-col w-full h-full mt-auto mb-auto text-[1vw]">
                                 <div className="invisible">a</div>
                                 <div className="flex">
                                     <p className="ml-[0.21vw]">{item.name}:</p>
