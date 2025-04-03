@@ -159,7 +159,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     creation_datetime: `${String(create_date.getFullYear()).padStart(2, '0')}-${String(create_date.getMonth() + 1).padStart(2, '0')}-${String(create_date.getDate()).padStart(2, '0')} ${create_date.getHours()}:${String(create_date.getMinutes()).padStart(2,'0')}:${String(create_date.getSeconds()).padStart(2,'0')}`, 
                     completed_datetime: null,
                     payment_status: "unpaid",
-                    pickup_datetime: `${String(pickup_date.getFullYear()).padStart(2, '0')}-${String(pickup_date.getMonth() + 1).padStart(2, '0')}-${String(pickup_date.getDate()).padStart(2, '0')} ${pickup_date.getHours()}:${String(pickup_date.getMinutes()).padStart(2,'0')}:${String(pickup_date.getSeconds()).padStart(2,'0')}`,
+                    pickup_datetime: `${String(time.getFullYear()).padStart(2, '0')}-${String(time.getMonth() + 1).padStart(2, '0')}-${String(time.getDate()).padStart(2, '0')} ${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}:${String(time.getSeconds()).padStart(2,'0')}`,
                     payment_method: paymentType,
                     amount: null,
                     id: mainOrder.id
@@ -259,11 +259,17 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
             popupIsEnabled(!popupEnabled);
             if (mainOrder) {
                 setMode("Edit")
+                const pickup_date = new Date(`${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)} UTC`)
+                console.log(pickup_date)
+                setTime(pickup_date)
+
             }
             else {
                 setMode("Save");
+                setTime(new Date(currentTime.getTime() + 30 * 60 * 1000));
+
             }
-            setTime(new Date(currentTime.getTime() + 30 * 60 * 1000));
+            
             changeBrightness();
         }
     }
