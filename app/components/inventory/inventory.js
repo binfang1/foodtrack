@@ -3,6 +3,21 @@ import Create from "./creation";
 import { useState, useEffect } from "react";
 import { GoPencil } from "react-icons/go";
 
+async function getIngredients() {
+    const url = "http://localhost:3000/api/raw";
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+  
+      const json = await response.json();
+      return json;
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
 
 async function getData() {
     const url = "http://localhost:3000/api/raw";
