@@ -33,7 +33,7 @@ async function getIngredient() {
     }
   }
 
-export default function OrderItem({order, orders, setOrders , setPage, setCategoryPage, itemsList, setItemsList, mainOrder, setMainOrder, items}) {
+export default function OrderItem({loggedIn, order, orders, setOrders , setPage, setCategoryPage, itemsList, setItemsList, mainOrder, setMainOrder, items}) {
     var counter = 1;
     var time = (`${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`);
     
@@ -255,7 +255,7 @@ export default function OrderItem({order, orders, setOrders , setPage, setCatego
                 
 
                     
-                {order.payment_status != "paid" && (
+                {order.payment_status != "paid" && loggedIn.type != "Chef" && (
                     <div className="flex p-[0.4vw] relative z-40 text-[0.9vw]">
                         <button className="cursor-pointer hover:underline hover:text-red-400" onClick={deleteOrder}>Delete</button>
                         <button className="cursor-pointer hover:underline ml-auto " onClick={editPayOrder}>Edit/Pay</button>

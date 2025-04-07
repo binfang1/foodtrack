@@ -71,7 +71,7 @@ export default function Items({ accounts , setAccounts }) {
                         ))}
                     </div>    
                 </div>
-                <button onClick = {() => change()} className="mt-auto mb-[1.5vw] cursor-pointer bg-white rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md h-[3vw] text-[0.9vw]">Add New Account</button>
+                <button onClick = {() => change()} className="mt-auto mb-[1.5vw] cursor-pointer bg-white drop-shadow-sm border-solid border-2 border-[#D9D9D9] text-black h-[3vw] text-[0.9vw]">Add New Account</button>
             </div>
             }
             {page ? (

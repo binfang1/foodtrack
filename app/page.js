@@ -231,7 +231,7 @@ export default function Home() {
             }
             {page == "orders" &&
               <div>
-                <OrderGrid orders = {orders} setOrders = {setOrders} page={page} setPage={setPage} categoryPage={categoryPage} setCategoryPage={setCategoryPage} mainOrder={mainOrder} setMainOrder={setMainOrder} setItemsList={setItemsList} itemsList={itemsList} items={items}></OrderGrid>
+                <OrderGrid loggedIn = {loggedIn} orders = {orders} setOrders = {setOrders} page={page} setPage={setPage} categoryPage={categoryPage} setCategoryPage={setCategoryPage} mainOrder={mainOrder} setMainOrder={setMainOrder} setItemsList={setItemsList} itemsList={itemsList} items={items}></OrderGrid>
               </div>
             }
             {page == "items" &&
@@ -247,7 +247,7 @@ export default function Home() {
             }
             {page == "history" &&
               <div>
-                <History orders = {orders} setOrders = {setOrders} page={page} setPage={setPage} categoryPage={categoryPage} setCategoryPage={setCategoryPage} mainOrder={mainOrder} setMainOrder={setMainOrder} setItemsList={setItemsList} itemsList={itemsList} items={items}></History>
+                <History loggedIn = {loggedIn} orders = {orders} setOrders = {setOrders} page={page} setPage={setPage} categoryPage={categoryPage} setCategoryPage={setCategoryPage} mainOrder={mainOrder} setMainOrder={setMainOrder} setItemsList={setItemsList} itemsList={itemsList} items={items}></History>
               </div>
             }
             {page == "accounts" && 

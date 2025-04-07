@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { IconName } from "react-icons/go";
 import { GoMoveToStart } from "react-icons/go";
 
@@ -20,7 +20,7 @@ async function getData() {
 
 
 export default function Create({currentItem, editTile, price, setPrice, name, setName, stock, setStock, setPage, threshold, setThreshold, id, setId, buy, setBuy}) {
-    
+    const oldName = useRef(name);
     
     async function updateItem(item) {
         const url = "http://localhost:3000/api/items";
@@ -69,7 +69,7 @@ export default function Create({currentItem, editTile, price, setPrice, name, se
             'method': 'PUT',
             'body': JSON.stringify(
                 {  
-                    name: name, 
+                    name: name.toLowerCase(), 
                     price: price, 
                     threshold: threshold, 
                     stock: stock, 
@@ -171,8 +171,28 @@ export default function Create({currentItem, editTile, price, setPrice, name, se
 
     const saveChanges = () => {
         event.preventDefault();
-        putData().then((response) => console.log("Account Updated"))
-        back()
+        getData().then(function(response) {
+            var list = []
+            for (let i = 0; i < response.length; i++) {
+                var ingredient_check = JSON.parse(response[i].ingredients);
+                for (let j = 0; j < ingredient_check.length; j++) {
+                    console.log(oldName.current)
+                    if (ingredient_check[j] == oldName.current) {
+                        console.log(response[i])
+                        let index = ingredient_check.indexOf(oldName);
+                        ingredient_check[j] = name.toLowerCase();
+                        response[i].ingredients = ingredient_check;
+                        response[i].ingredient_num = JSON.parse(response[i].ingredient_num);
+                        list.push(response[i]);
+                        break
+                    }
+                }
+            }
+            reinventory(list).then(putData().then(function() {
+                alert("Updated");
+                back()
+            }));
+        }); 
     }
 
     const addItem = () => {

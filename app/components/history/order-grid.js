@@ -19,7 +19,7 @@ async function getData() {
     }
   }
 
-export default function History({ page, setPage, categoryPage, setCategoryPage, mainOrder, setMainOrder, itemsList, setItemsList, items }) {
+export default function History({loggedIn, page, setPage, categoryPage, setCategoryPage, mainOrder, setMainOrder, itemsList, setItemsList, items }) {
 
     const [orders, setOrders] = useState([]);
     useEffect(() => {
@@ -40,7 +40,7 @@ export default function History({ page, setPage, categoryPage, setCategoryPage, 
                   {orders.map((order, index) => ( 
                       order.status == "Completed" ? (
                       <div className="w-[10vw]" key = {index}>
-                          <OrderItem setMainOrder = {setMainOrder} orders = {orders} setOrders = {setOrders} order = {order} setCategoryPage = {setCategoryPage} setPage = {setPage} setItemsList={setItemsList} itemsList={itemsList} items = {items}></OrderItem>
+                          <OrderItem loggedIn = {loggedIn} setMainOrder = {setMainOrder} orders = {orders} setOrders = {setOrders} order = {order} setCategoryPage = {setCategoryPage} setPage = {setPage} setItemsList={setItemsList} itemsList={itemsList} items = {items}></OrderItem>
                       </div>
                     ) : ("")))}
                 </div>

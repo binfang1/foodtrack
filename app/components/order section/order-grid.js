@@ -19,7 +19,7 @@ async function getData() {
     }
   }
 
-export default function OrderGrid({orders, setOrders, page, setPage, categoryPage, setCategoryPage, mainOrder, setMainOrder, itemsList, setItemsList, items }) {
+export default function OrderGrid({loggedIn, orders, setOrders, page, setPage, categoryPage, setCategoryPage, mainOrder, setMainOrder, itemsList, setItemsList, items }) {
 
     console.log(orders);
     useEffect(() => {
@@ -40,7 +40,7 @@ export default function OrderGrid({orders, setOrders, page, setPage, categoryPag
                   {orders.map((order, index) => ( 
                       order.status != "Completed" ? (
                       <div className="w-[10vw]" key = {index}>
-                          <OrderItem setMainOrder = {setMainOrder} orders = {orders} setOrders = {setOrders} order = {order} setCategoryPage = {setCategoryPage} setPage = {setPage} setItemsList={setItemsList} itemsList={itemsList} items = {items}></OrderItem>
+                          <OrderItem loggedIn = {loggedIn} setMainOrder = {setMainOrder} orders = {orders} setOrders = {setOrders} order = {order} setCategoryPage = {setCategoryPage} setPage = {setPage} setItemsList={setItemsList} itemsList={itemsList} items = {items}></OrderItem>
                       </div>
                     ) : ("")))}
                 </div>
