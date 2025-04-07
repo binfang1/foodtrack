@@ -16,6 +16,17 @@
     width: auto;
 }
 
+.general_entry {
+    border-radius: 6px;
+    width: 30vw;
+    height: 3vw;
+    border-color: oklch(0.551 0.027 264.364);
+    border-width: 2;
+    padding-left: 1vw;
+    padding-right: 0.1vw;
+    color: black;
+}
+
 
 
 
