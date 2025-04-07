@@ -1,4 +1,5 @@
 "use client";
+import { GoPencil } from "react-icons/go";
 import Create from "./creation";
 import { useState, useEffect } from "react";
 
@@ -130,7 +131,7 @@ export default function Items({items, setItems, itemsList, setItemsList, ingredi
                                                     ))
                                                 }
                                                 </div>
-                                                <p className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => openEdit(item)}>Edit</p>
+                                                <GoPencil className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => openEdit(item)}>Edit</GoPencil>
                                             </div>
                 
                                         </div>

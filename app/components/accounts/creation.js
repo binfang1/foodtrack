@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { IconName } from "react-icons/go";
 import { GoMoveToStart } from "react-icons/go";
 import { GoTrash } from "react-icons/go";
+import styles from "../../styles/styles.module.css";
 
 
 
@@ -121,13 +122,13 @@ export default function Create({accounts , setAccounts, setPage, page, name, pas
 
 
     return (
-        <div className="h-[100vh]">
-            <GoMoveToStart onClick={() => back()} className="cursor-pointer text-[3vw] p-[0.4vw] border-1 rounded-3xl solid mt-[1vw] ml-[1vw]"/>
+        <div className="h-[100vh] p-[0.7vw]">
+            <GoMoveToStart onClick={() => back()} className={`${styles.general_button} ${styles.back_button}`}/>
             <form  onSubmit = {() => addAccount()} className="flex flex-col m-auto gap-[1.7vw] w-[75vw] h-[32vw] text-center">
                 <h1 className="text-[3vw]">{editTile}</h1>
 
                 <label className="text-[1vw] flex flex-col text-left mx-auto">
-                    <p>User name:</p>
+                    <p>Username:</p>
                     <input value = {name} onChange = {getUser} placeholder="Username"className = "w-[30vw] h-[2vw] border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="text" required/>
                 </label>
 
@@ -137,7 +138,7 @@ export default function Create({accounts , setAccounts, setPage, page, name, pas
                 </label>
                 
                 <label className="text-[1vw] flex flex-col text-left mx-auto">
-                    <p>Select Account Type:</p>
+                    <p>Account Type:</p>
                     <select value = {type} onChange = {getType} className = "w-[30vw] h-[2vw] border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black mx-auto">
                         <option>Server</option>
                         <option>Chef</option>

@@ -2,6 +2,7 @@
 import GridItem from "../item grid section/grid-item"
 import { useState, useEffect } from "react";
 import Create from "./creation";
+import { GoPencil } from "react-icons/go";
 
 async function getData() {
     const url = "http://localhost:3000/api/accounts";
@@ -60,10 +61,10 @@ export default function Items({ accounts , setAccounts }) {
                                         <div className = "flex mt-4 p-[0.5vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[15vw] h-[3.5vw]" key={account.id}>
                                             <div className="flex">
                                                 <div className="p-[0.3vw]">
-                                                    <p>UserName: {account.username} </p>
+                                                    <p>{account.username} </p>
                                                 </div>
                                             </div>
-                                            <p onClick = {() => edit(account)} className="cursor-pointer ml-auto justify-self-center hover:underline">Edit</p>
+                                            <GoPencil onClick = {() => edit(account)} className="cursor-pointer ml-auto justify-self-center hover:underline">Edit</GoPencil>
                                         </div>
                                     ))}
                                 </div>

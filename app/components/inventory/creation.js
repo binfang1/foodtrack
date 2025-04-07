@@ -1,6 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 import { IconName } from "react-icons/go";
 import { GoMoveToStart } from "react-icons/go";
+import styles from "../../styles/styles.module.css";
+
 
 async function getData() {
     const url = "http://localhost:3000/api/items";
@@ -230,9 +232,9 @@ export default function Create({currentItem, editTile, price, setPrice, name, se
 
 
     return (
-        <div className="h-[100vh]">
-            <GoMoveToStart onClick={() => back()} className="cursor-pointer text-[3vw] p-[0.4vw] border-1 rounded-3xl solid mt-[1vw] ml-[1vw]"/>
-            <form  onSubmit = {() => addItem()} className="flex flex-col m-auto gap-[1.7vw] w-[75vw] h-[32vw] text-center">
+        <div className="h-[100vh] p-[0.7vw]">
+                <GoMoveToStart onClick={() => back()} className={`${styles.general_button} ${styles.back_button}`}/>            
+                <form  onSubmit = {() => addItem()} className="flex flex-col m-auto gap-[1.7vw] w-[75vw] h-[32vw] text-center">
                 <h1 className="text-[3vw]">{editTile}</h1>
 
                 <label className="text-[1vw] flex flex-col text-left mx-auto">

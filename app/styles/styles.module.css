@@ -1,0 +1,21 @@
+
+.general_button {
+    margin-top: auto;
+    margin-bottom: 1.5vw;
+    cursor: pointer;
+    background-color: white;
+    filter: drop-shadow(0 3px 3px rgb(0 0 0 / 0.12));
+    border: solid 0.2vw #D9D9D9;
+    color: black;
+    height: 3vw;
+}
+
+.back_button {
+    font-size: 2.5vw;
+    padding: 0.5vw 5vw;
+    width: auto;
+}
+
+
+
+
