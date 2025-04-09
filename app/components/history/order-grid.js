@@ -35,15 +35,17 @@ export default function History({loggedIn, page, setPage, categoryPage, setCateg
       }, [categoryPage]);
 
     return (
-        <div className="p-[1.5vw] w-[85vw]  h-[100vh]  grid-rows-2 gap-4 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
-                <div className="overflow-auto flex flex-wrap  gap-[2vw] h-[90vh]">
+        <div className="p-[1.5vw] w-[85vw] h-[100vh]  grid-rows-2 gap-4 bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9]">
+            <div className="">
+                <div className="overflow-auto flex flex-wrap gap-[2vw] max-h-[94vh] h-[100%] rounded-md border-solid border-gray-300 border-1 p-[0.8vw]">
                   {orders.map((order, index) => ( 
                       order.status == "Completed" ? (
-                      <div className="w-[10vw]" key = {index}>
+                      <div key = {index}>
                           <OrderItem loggedIn = {loggedIn} setMainOrder = {setMainOrder} orders = {orders} setOrders = {setOrders} order = {order} setCategoryPage = {setCategoryPage} setPage = {setPage} setItemsList={setItemsList} itemsList={itemsList} items = {items}></OrderItem>
                       </div>
                     ) : ("")))}
                 </div>
+            </div>
         </div>
     );
 }

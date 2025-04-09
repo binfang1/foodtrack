@@ -1,6 +1,7 @@
 "use client";
 import Create from "./creation";
 import { useState, useEffect } from "react";
+import { GoPencil } from "react-icons/go";
 
 async function getData() {
     const url = "http://localhost:3000/api/items";
@@ -17,7 +18,7 @@ async function getData() {
     }
   }
 
-export default function Items({items, setItems, itemsList, setItemsList, ingredients, setCategoryPage}) {
+export default function Items({setMessage, items, setItems, itemsList, setItemsList, ingredients, setCategoryPage}) {
     const [page, setPage] = useState("");
     const [currentItem, setCurrentItem] = useState();
     const [editTitle, setEditTitle] = useState("")
@@ -70,7 +71,7 @@ export default function Items({items, setItems, itemsList, setItemsList, ingredi
     }
 
     const openEdit = (item) => {
-        setEditTitle(`Editing`)
+        setEditTitle(`Editing "${item.name}"`)
         setName(item.name);
         setPrice(item.price);
         setCategory(item.category);
@@ -85,8 +86,7 @@ export default function Items({items, setItems, itemsList, setItemsList, ingredi
         setName("");
         setPrice("");
         setCategory("");
-        let value = ingredients[0].name
-        setInputFields([{ingredient : value, amount : "0"}])
+        setInputFields("")
         setCurrentItem("")
         setPage("Create")
     }
@@ -130,7 +130,7 @@ export default function Items({items, setItems, itemsList, setItemsList, ingredi
                                                     ))
                                                 }
                                                 </div>
-                                                <p className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => openEdit(item)}>Edit</p>
+                                                <GoPencil className="cursor-pointer hover:underline ml-auto mr-[1vw] text-[0.9vw]" onClick = {() => openEdit(item)}/>
                                             </div>
                 
                                         </div>
@@ -142,12 +142,12 @@ export default function Items({items, setItems, itemsList, setItemsList, ingredi
                     </div>    
                         
                 </div>
-                <button onClick = {openAdd} className="mt-auto mb-[1.5vw] cursor-pointer bg-white drop-shadow-sm border-solid border-2 border-[#D9D9D9] text-gray-500 h-[3vw] text-[0.9vw]">Add Item</button>
+                <button onClick = {openAdd} className="mt-auto mb-[1.5vw] cursor-pointer bg-white drop-shadow-sm border-solid border-2 border-[#D9D9D9] text-gray-black h-[3vw] text-[2vw]">+</button>
             </div>
             }
             {page ? (
                 <div>
-                    <Create setCategoryPage={setCategoryPage} setItemsList={setItemsList} ingredients = {ingredients} inputFields={inputFields} setInputFields={setInputFields} setPage = {setPage} currentItem={currentItem} editTile={editTitle} setEditTitle={setEditTitle} price={price} setPrice={setPrice} name={name} setName={setName} category={category} setCategory={setCategory} id={id} setId={setId}></Create>
+                    <Create setMessage = {setMessage} setCategoryPage={setCategoryPage} setItemsList={setItemsList} ingredients = {ingredients} inputFields={inputFields} setInputFields={setInputFields} setPage = {setPage} currentItem={currentItem} editTile={editTitle} setEditTitle={setEditTitle} price={price} setPrice={setPrice} name={name} setName={setName} category={category} setCategory={setCategory} id={id} setId={setId}></Create>
                 </div>
             ) : ("")
 

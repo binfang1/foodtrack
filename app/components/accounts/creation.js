@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { IconName } from "react-icons/go";
 import { GoMoveToStart } from "react-icons/go";
 import { GoTrash } from "react-icons/go";
+import { GoX } from "react-icons/go";
+import { GoCheck } from "react-icons/go";
 
 
 
 
-export default function Create({accounts , setAccounts, setPage, page, name, password, type, setName, setPassword, setType, id, setId, editTile}) {
+export default function Create({setMessage, accounts , setAccounts, setPage, page, name, password, type, setName, setPassword, setType, id, setId, editTile}) {
     async function putData() {
         const url = "http://localhost:3000/api/accounts";
         try {
@@ -102,19 +104,19 @@ export default function Create({accounts , setAccounts, setPage, page, name, pas
 
     const saveChanges = () => {
         event.preventDefault();
-        putData().then((response) => console.log("Account Updated"))
+        putData().then((response) => setMessage("Account Updated!"))
         back()
     }
 
     const addAccount = () => {
         event.preventDefault();
-        postData().then((response) => console.log("Account added"));
+        postData().then((response) => setMessage("Account Added!"));
         back()
     }
 
     const deleteAccount = () => {
         event.preventDefault();
-        deleteData().then((response) => alert("Item Has Been deleted"));
+        deleteData().then((response) => setMessage("Account Deleted!"));
         back()
     }
     
@@ -123,22 +125,22 @@ export default function Create({accounts , setAccounts, setPage, page, name, pas
     return (
         <div className="h-[100vh]">
             <GoMoveToStart onClick={() => back()} className="cursor-pointer text-[3vw] p-[0.4vw] border-1 rounded-3xl solid mt-[1vw] ml-[1vw]"/>
-            <form  onSubmit = {() => addAccount()} className="flex flex-col m-auto gap-[1.7vw] w-[75vw] h-[32vw] text-center">
-                <h1 className="text-[3vw]">{editTile}</h1>
+            <h1 className="text-[3vw] absolute top-0 right-[1vw] bottom-0 mx-auto">{editTile}</h1>
+            <form  onSubmit = {() => addAccount()} className="flex flex-col gap-[1.7vw] w-[30vw] m-auto mt-[2vw]">
 
-                <label className="text-[1vw] flex flex-col text-left mx-auto">
+                <label className="text-[1.5vw] flex flex-col text-left">
                     <p>User name:</p>
-                    <input value = {name} onChange = {getUser} placeholder="Username"className = "w-[30vw] h-[2vw] border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="text" required/>
+                    <input value = {name} onChange = {getUser} placeholder="Username"className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.1vw] text-black" type="text" required/>
                 </label>
 
-                <label className="text-[1vw] flex flex-col text-left mx-auto">
+                <label className="text-[1.5vw] flex flex-col text-left">
                     <p>Password:</p>
-                    <input value = {password} onChange = {getPassword} placeholder="Password" className = "p-[0.5vw] w-[30vw] h-[2vw] border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="text" required/>
+                    <input value = {password} onChange = {getPassword} placeholder="Password" className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.1vw] text-black" required/>
                 </label>
                 
-                <label className="text-[1vw] flex flex-col text-left mx-auto">
+                <label className="text-[1.5vw] flex flex-col text-left">
                     <p>Select Account Type:</p>
-                    <select value = {type} onChange = {getType} className = "w-[30vw] h-[2vw] border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black mx-auto">
+                    <select value = {type} onChange = {getType} className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.1vw] text-black">
                         <option>Server</option>
                         <option>Chef</option>
                         <option>Manager</option>
@@ -150,7 +152,7 @@ export default function Create({accounts , setAccounts, setPage, page, name, pas
                         <input onClick={deleteAccount} className="text-[1vw] cursor-pointer bg-red-300 drop-shadow-md text-black rounded-lg shadow-md w-[14vw] h-[3vw] m-auto" type = "button" value = "Delete Account"/>
                     </div>
                 ) : (
-                    <input  className="text-[1vw] cursor-pointer bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[30vw] h-[3vw] m-auto" type = "submit" value = "Add Account"/>
+                    <input  className="text-[1vw] cursor-pointer bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[30vw] h-[3vw] mx-auto" type = "submit" value = "Add Account"/>
                 )}
                
             </form>

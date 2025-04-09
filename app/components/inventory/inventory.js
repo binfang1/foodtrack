@@ -34,7 +34,7 @@ async function getData() {
     }
   }
 
-export default function Inventory({ setCategoryPage, ingredients, setIngredients}) {
+export default function Inventory({setMessage, setCategoryPage, ingredients, setIngredients}) {
     const [currentItem, setCurrentItem] = useState();
     const [editTitle, setEditTitle] = useState("")
     const [price, setPrice] = useState(0.00);
@@ -78,12 +78,12 @@ export default function Inventory({ setCategoryPage, ingredients, setIngredients
             {page != "Create" && 
             <div className="p-[0.8vw] h-[100vh] flex flex-col bg-white rounded-xl" >
                 <div className="mb-[0.8vw]">
-                    <div className="grid grid-cols-7 text-[0.9vw]">
+                    <div className="grid grid-cols-5 text-[0.9vw]">
                         <p>Name:</p>
-                        <p>Price:</p>
+                        {/*<p>Price:</p>*/}
                         <p>Stock:</p>
                         <p>Threshold</p>
-                        <p>Buy Amount</p>
+                        {/*<p>Buy Amount</p>*/}
                         <p>Status</p>
                         <p className="invisible">a</p>
                     </div>
@@ -94,12 +94,12 @@ export default function Inventory({ setCategoryPage, ingredients, setIngredients
                     <div className="flex flex-col">
                             {ingredients.map(ingredient => (
                                 <div key={ingredient.id}>
-                                    <div className = "mt-[0.8vw] h-[3vw] grid grid-cols-7 bg-white text-black text-black text-[0.9vw]">
+                                    <div className = "mt-[0.8vw] h-[3vw] grid grid-cols-5 bg-white text-black text-black text-[0.9vw]">
                                         <p className="text-[0.9vw] capitalize"> {ingredient.name} </p>
-                                        <p className="text-[0.9vw]">${ingredient.price.toFixed(2)} </p>
+                                        {/*<p className="text-[0.9vw]">${ingredient.price.toFixed(2)} </p>*/}
                                         <p className="text-[0.9vw]">{ingredient.stock.toFixed(1)}</p>
                                         <p className="text-[0.9vw]">{ingredient.threshold}</p>
-                                        <p className="text-[0.9vw]"> {ingredient.buy_amount} </p>
+                                        {/*<p className="text-[0.9vw]"> {ingredient.buy_amount} </p>*/}
                                         {ingredient.stock > ingredient.threshold && (
                                             <p className="text-[0.9vw]">In Stock</p>
                                         )}
@@ -116,12 +116,12 @@ export default function Inventory({ setCategoryPage, ingredients, setIngredients
                     </div>    
                         
                 </div>
-                <button onClick={change} className="mt-auto mb-[1.5vw] cursor-pointer bg-white drop-shadow-sm border-solid border-2 border-[#D9D9D9] text-gray-500 h-[3vw] text-[2vw]">+</button>
+                <button onClick={change} className="mt-auto mb-[1.5vw] cursor-pointer bg-white drop-shadow-sm border-solid border-2 border-[#D9D9D9] text-gray-black h-[3vw] text-[2vw]">+</button>
             </div>
             }
             {page ? (
                 <div>
-                    <Create currentItem ={currentItem} editTitle={editTitle} price={price} setPrice={setPrice} name={name} setName={setName} stock={stock}
+                    <Create setMessage = {setMessage} currentItem ={currentItem} editTitle={editTitle} price={price} setPrice={setPrice} name={name} setName={setName} stock={stock}
                     setStock={setStock} setPage={setPage} threshold={threshold} setThreshold={setThreshold} id={id} setId={setId} buy={buy} setBuy={setBuy}></Create>
                 </div>
             ) : ("")}
