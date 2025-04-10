@@ -37,6 +37,8 @@ export default function OrderItem({loggedIn, order, orders, setOrders , setPage,
     var counter = 1;
     var time = (`${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`);
     const convert = new Date(`${order.completed_datetime.slice(0, 10)} ${order.completed_datetime.slice(11, 16)} UTC`)
+    const now = new Date(Date.now());
+    const month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     async function updateItem(list) {
         const url = "http://localhost:3000/api/raw";
@@ -255,7 +257,7 @@ export default function OrderItem({loggedIn, order, orders, setOrders , setPage,
                 }
                 
                 <div>
-                    <p className="p-[0.4vw] px-[0.6vw] text-[0.9vw]">Finished At: {`${convert.getHours() % 12}:${String(convert.getMinutes()).padStart(2, '0')} ${convert.getHours() < 13 ? "AM" : "PM"}`}</p>
+                    <p className="p-[0.4vw] px-[0.6vw] text-[0.9vw]">Finished: {`${convert.getHours() % 12}:${String(convert.getMinutes()).padStart(2, '0')} ${convert.getHours() < 13 ? "AM" : "PM"} ${now.getDate() == convert.getDate() ? `` : `/ ${month_names[convert.getMonth()]} ${convert.getDate()}`}`}</p>
                     <hr className="border-[#D9D9D9]"></hr>
                 </div>    
                     
