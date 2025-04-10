@@ -36,7 +36,8 @@ async function getIngredient() {
 export default function OrderItem({loggedIn, order, orders, setOrders , setPage, setCategoryPage, itemsList, setItemsList, mainOrder, setMainOrder, items}) {
     var counter = 1;
     var time = (`${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`);
-    
+    const convert = new Date(`${order.completed_datetime.slice(0, 10)} ${order.completed_datetime.slice(11, 16)} UTC`)
+
     async function updateItem(list) {
         const url = "http://localhost:3000/api/raw";
 
@@ -253,7 +254,10 @@ export default function OrderItem({loggedIn, order, orders, setOrders , setPage,
                 </div>
                 }
                 
-                
+                <div>
+                    <p className="p-[0.4vw] px-[0.6vw] text-[0.9vw]">Finished At: {`${convert.getHours() % 12}:${String(convert.getMinutes()).padStart(2, '0')} ${convert.getHours() < 13 ? "AM" : "PM"}`}</p>
+                    <hr className="border-[#D9D9D9]"></hr>
+                </div>    
                     
                 {order.notes ? (
                 <div>
