@@ -21,8 +21,9 @@ async function getData() {
 
 
 
-export default function Create({currentItem, editTile, price, setPrice, name, setName, stock, setStock, setPage, threshold, setThreshold, id, setId, buy, setBuy}) {
+export default function Create({setMessage, currentItem, editTitle, price, setPrice, name, setName, stock, setStock, setPage, threshold, setThreshold, id, setId, buy, setBuy}) {
     const oldName = useRef(name);
+    console.log(editTitle)
     
     async function updateItem(item) {
         const url = "http://localhost:3000/api/items";
@@ -72,10 +73,10 @@ export default function Create({currentItem, editTile, price, setPrice, name, se
             'body': JSON.stringify(
                 {  
                     name: name.toLowerCase(), 
-                    price: price, 
+                    price: null, 
                     threshold: threshold, 
                     stock: stock, 
-                    buy_amount: buy,
+                    buy_amount: null,
                     id: id
                 },
               )
@@ -100,10 +101,10 @@ export default function Create({currentItem, editTile, price, setPrice, name, se
             'body': JSON.stringify(
                 {  
                     name: name, 
-                    price: price, 
+                    price: null, 
                     threshold: threshold, 
                     stock: stock, 
-                    buy_amount: buy
+                    buy_amount: null
                 },
                 )
             });
@@ -191,7 +192,7 @@ export default function Create({currentItem, editTile, price, setPrice, name, se
                 }
             }
             reinventory(list).then(putData().then(function() {
-                alert("Updated");
+                setMessage("Ingredient Updated");
                 back()
             }));
         }); 
@@ -199,7 +200,7 @@ export default function Create({currentItem, editTile, price, setPrice, name, se
 
     const addItem = () => {
         event.preventDefault();
-        postData().then((response) => console.log("Account added"));
+        postData().then((response) => setMessage("Ingredient added"));
         back()
     }
 
@@ -223,7 +224,7 @@ export default function Create({currentItem, editTile, price, setPrice, name, se
                 }
             }
             reinventory(list).then(deleteData().then(function() {
-                alert("meme");
+                setMessage("Ingredient Deleted");
                 back()
             }));
         }); 
@@ -233,34 +234,34 @@ export default function Create({currentItem, editTile, price, setPrice, name, se
 
     return (
         <div className="h-[100vh] p-[0.7vw]">
-                <GoMoveToStart onClick={() => back()} className={`${styles.general_button} ${styles.back_button}`}/>            
-                <form  onSubmit = {() => addItem()} className="flex flex-col m-auto gap-[1.7vw] w-[75vw] h-[32vw] text-center">
-                <h1 className="text-[3vw]">{editTile}</h1>
+            <GoMoveToStart onClick={() => back()} className={`${styles.general_button} ${styles.back_button}`}/>
+            <h1 className="text-[3vw] absolute top-0 right-[1vw] bottom-0 mx-auto">{editTitle}</h1>
+            <form  onSubmit = {() => addItem()} className="flex flex-col gap-[1.7vw] w-[30vw] m-auto mt-[2vw]">
 
-                <label className="text-[1vw] flex flex-col text-left mx-auto">
+                <label className="text-[1.5vw] flex flex-col text-left">
                     <p>Ingredient name:</p>
-                    <input value = {name} onChange = {getName} placeholder="Ingredient Name"className = "w-[30vw] h-[2vw] border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="text" required/>
+                    <input value = {name} onChange = {getName} placeholder="Ingredient Name"className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.1vw] text-black" type="text" required/>
                 </label>
 
-                <label className="text-[1vw] flex flex-col text-left mx-auto">
+                {/*<label className="text-[1vw] flex flex-col text-left mx-auto">
                     <p>Price/item:</p>
                     <input value = {price} onChange = {getPrice} placeholder="Price" className = "p-[0.5vw] w-[30vw] h-[2vw] border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="number" min="0" step ="0.01" required/>
-                </label>
+                </label>*/}
 
-                <label className="text-[1vw] flex flex-col text-left mx-auto">
+                <label className="text-[1.5vw] flex flex-col text-left">
                     <p>Item Stock:</p>
-                    <input value = {stock} onChange = {getStock} placeholder="Stock" className = "p-[0.5vw] w-[30vw] h-[2vw] border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" min="0.1" step = "0.1" ype="number" required/>
+                    <input value = {stock} onChange = {getStock} placeholder="Stock" className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.1vw] text-black" min="0.1" step = "0.1" type="number" required/>
                 </label>
 
-                <label className="text-[1vw] flex flex-col text-left mx-auto">
+                <label className="text-[1.5vw] flex flex-col text-left">
                     <p>Threshold:</p>
-                    <input value = {threshold} onChange = {getThreshold} placeholder="Threshold" className = "p-[0.5vw] w-[30vw] h-[2vw] border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" min="0.1" step = "0.1" type="number" required/>
+                    <input value = {threshold} onChange = {getThreshold} placeholder="Threshold" className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.1vw] text-black" min="0.1" step = "0.1" type="number" required/>
                 </label>
-
+                {/*
                 <label className="text-[1vw] flex flex-col text-left mx-auto">
                     <p>Buy amount of:</p>
                     <input value = {buy} onChange = {getBuy} placeholder="Buy Amount" className = "p-[0.5vw] w-[30vw] h-[2vw] border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" min="0.1" step = "0.1" type="number" required/>
-                </label>
+                </label>*/}
                 
 
                 {id ? (

@@ -26,7 +26,7 @@ ChartJS.register(
   );
 
 async function getOrders() {
-    const url = "http://localhost:3000/api/orders";
+    const url = "http://localhost:3000/api/orders/paid";
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -673,7 +673,7 @@ const month_payment_data = {
           return (
             <div className='flex flex-col'>
 
-              <div className='flex items-center justify-between h-[80vh] mt-[2vw]'>
+              <div className='flex items-center justify-between h-[80vh] mt-[2vw] border-solid border-gray-300 border-1 p-[2vw]'>
 
                 <div className='flex flex-col w-[30vw]  gap-[1vw] h-full'>
                   <div className='flex w-full h-1/3'>
@@ -701,7 +701,7 @@ const month_payment_data = {
           return (
             <div className='flex flex-col'>
 
-              <div className='flex items-center justify-between h-[80vh] mt-[2vw]'>
+              <div className='flex items-center justify-between h-[80vh] mt-[2vw] border-solid border-gray-300 border-1 p-[2vw]'>
 
                 <div className='flex flex-col w-[30vw]  gap-[1vw] h-full'>
                   <div className='flex w-full h-1/3'>

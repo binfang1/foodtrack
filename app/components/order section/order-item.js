@@ -36,7 +36,7 @@ async function getIngredient() {
 export default function OrderItem({loggedIn, order, orders, setOrders , setPage, setCategoryPage, itemsList, setItemsList, mainOrder, setMainOrder, items}) {
     var counter = 1;
     var time = (`${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`);
-    
+    const convert = new Date(`${order.pickup_datetime.slice(0, 10)} ${order.pickup_datetime.slice(11, 16)} UTC`)
     async function updateItem(list) {
         const url = "http://localhost:3000/api/raw";
 
@@ -233,7 +233,8 @@ export default function OrderItem({loggedIn, order, orders, setOrders , setPage,
 
    
     return (
-        <div className="relative w-full bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] ">
+        <div className="relative w-[14.2vw] bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] ">
+            
             <div className="flex flex-col ">
             {order.status == "Completed" && 
                 <div className={`text-center h-[4vw] bg-green-300`}>
@@ -253,31 +254,40 @@ export default function OrderItem({loggedIn, order, orders, setOrders , setPage,
                     <p className="text-[0.9vw]">{order.status}</p>
                 </div>
                 }
-                
 
-                    
-                {order.payment_status != "paid" && loggedIn.type != "Chef" && (
+                <div>
+                    <p className="p-[0.4vw] px-[0.6vw] text-[0.9vw]">Pick Up: {`${convert.getHours() % 12}:${String(convert.getMinutes()).padStart(2, '0')} ${convert.getHours() < 13 ? "AM" : "PM"}`}</p>
+                    <hr className="border-[#D9D9D9]"></hr>
+                </div>    
+                {order.notes ? (
+                <div>
+                    <p className="p-[0.4vw] px-[0.6vw] text-[0.9vw]">Notes: {order.notes}</p>
+                    <hr className="border-[#D9D9D9]"></hr>
+                </div>
+                ) : ("")}
+
+                <div className="flex flex-col">
+                    <div className="text-[0.9vw]  py-[0.8vw] px-[0.6vw] ">
+                        {JSON.parse(order.items).map(item => (
+                            <p className="mb-[0.3vw]" key = {counter++}>{item.quantity} - {item.name}</p>
+                        ))}
+                    </div>
+                    <hr className="border-[#D9D9D9] px-[0px]"></hr>
+                </div>
+            </div>
+
+            <div className="absolute h-full w-full flex top-0">
+                <button className="h-full w-[50%]" onClick={undo}></button>
+                <button className="h-full w-[50%]" onClick={redo}></button>
+            </div>
+
+
+            {order.payment_status != "paid" && loggedIn.type != "Chef" && (
                     <div className="flex p-[0.4vw] relative z-40 text-[0.9vw]">
                         <button className="cursor-pointer hover:underline hover:text-red-400" onClick={deleteOrder}>Delete</button>
                         <button className="cursor-pointer hover:underline ml-auto " onClick={editPayOrder}>Edit/Pay</button>
                     </div>
                 )}
-
-                <div className="flex flex-col p-[0.4vw]">
-            
-           
-
-                    <div className="mt-[2vw] mb-[2vw] text-[0.9vw]">
-                        {JSON.parse(order.items).map(item => (
-                            <p className="mb-[0.3vw]" key = {counter++}>{item.quantity} - {item.name}</p>
-                        ))}
-                    </div>
-                </div>
-            </div>
-            <div className="absolute h-full w-full flex top-0">
-                <button className="h-full w-[50%]" onClick={undo}></button>
-                <button className="h-full w-[50%]" onClick={redo}></button>
-            </div>
         </div>
     );
 }

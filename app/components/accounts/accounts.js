@@ -19,7 +19,7 @@ async function getData() {
     }
   }
 
-export default function Items({ accounts , setAccounts }) {
+export default function Items({setMessage, accounts , setAccounts }) {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [type, setType] = useState("Server");
@@ -64,7 +64,7 @@ export default function Items({ accounts , setAccounts }) {
                                                     <p>{account.username} </p>
                                                 </div>
                                             </div>
-                                            <GoPencil onClick = {() => edit(account)} className="cursor-pointer ml-auto justify-self-center hover:underline">Edit</GoPencil>
+                                            <GoPencil className="cursor-pointer hover:underline ml-auto text-[0.9vw]" onClick = {() => edit(account)}/>
                                         </div>
                                     ))}
                                 </div>
@@ -72,12 +72,12 @@ export default function Items({ accounts , setAccounts }) {
                         ))}
                     </div>    
                 </div>
-                <button onClick = {() => change()} className="mt-auto mb-[1.5vw] cursor-pointer bg-white drop-shadow-sm border-solid border-2 border-[#D9D9D9] text-black h-[3vw] text-[0.9vw]">Add New Account</button>
+                <button onClick = {() => change()} className="mt-auto mb-[1.5vw] cursor-pointer bg-white drop-shadow-sm border-solid border-2 border-[#D9D9D9] text-gray-black h-[3vw] text-[2vw]">+</button>
             </div>
             }
             {page ? (
                 <div>
-                    <Create accounts={accounts} setAccounts={setAccounts} setPage={setPage} page={page} name = {name} password = {password} type = {type} setName = {setName} setPassword = {setPassword} setType = {setType} id = {id} setId = {setId} editTile={editTitle}></Create>
+                    <Create setMessage = {setMessage} accounts={accounts} setAccounts={setAccounts} setPage={setPage} page={page} name = {name} password = {password} type = {type} setName = {setName} setPassword = {setPassword} setType = {setType} id = {id} setId = {setId} editTile={editTitle}></Create>
                 </div>
             ) : ("")}
         </div>

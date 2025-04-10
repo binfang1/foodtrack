@@ -8,7 +8,7 @@ import OrderGrid from "./components/order section/order-grid.js";
 import Items from "./components/view items/items.js"
 import Accounts from "./components/accounts/accounts.js"
 import Inventory from './components/inventory/inventory.js';
-import BuyMore from './components/functions/buyMore.js';
+import Alert from './components/Alert/alert.js';
 import History from './components/history/order-grid.js'
 import { GoHome } from "react-icons/go";
 import { GoNote } from "react-icons/go";
@@ -103,6 +103,8 @@ export default function Home() {
   const [categoryPage, setCategoryPage] = useState("Default");
   const [ingredients, setIngredients] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [message, setMessage] = useState("");
+  const [trigger, setTrigger] = useState(false);
 
   function LogOut() {
     setItemsList([]);
@@ -127,6 +129,7 @@ export default function Home() {
 
   useEffect(() => {
     setPage(page);
+    setMessage("")
   }, [page]);
 
 
@@ -141,7 +144,7 @@ export default function Home() {
     <div className="flex flex-col h-screen overflow-hidden">
       <div className="bg-[#E4E4EF] h-full w-full">
         {loggedIn ? (
-          <div className="flex bg-[#E4E4EF] h-[100vh]]">
+          <div className="flex bg-[#E4E4EF] h-[100vh]] relative">
             <div className="w-[15vw] bg-[#E4E4EF] max-[769px]:w-[30vw]" id = 'darken'>
                 <div className="bg-white h-full drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] p-[0.84vw]  flex flex-col">
                     <div className="text-[0.85vw]">
@@ -218,13 +221,13 @@ export default function Home() {
               <div>
                   <div className="flex max-[769px]:hidden">
                     <ItemGrid categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} items={items}  setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
-                    <ItemList categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} setPage = {setPage} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} sideBarEnabled = {sideBarEnabled} enableSideBar = {enableSideBar} itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal} mainOrder={mainOrder} setMainOrder={setMainOrder}></ItemList>
+                    <ItemList setMessage = {setMessage} categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} setPage = {setPage} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} sideBarEnabled = {sideBarEnabled} enableSideBar = {enableSideBar} itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal} mainOrder={mainOrder} setMainOrder={setMainOrder}></ItemList>
                   </div>
                   <div className='hidden max-[769px]:block'>
                     {back ? (
                       <ItemGrid categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} items={items} setItemsList={setItemsList} itemsList={itemsList}></ItemGrid>
                     ) : (
-                      <ItemList categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} setPage = {setPage} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} sideBarEnabled = {sideBarEnabled} enableSideBar = {enableSideBar} itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal} mainOrder={mainOrder} setMainOrder={setMainOrder}></ItemList>
+                      <ItemList setMessage = {setMessage} categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} setPage = {setPage} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} sideBarEnabled = {sideBarEnabled} enableSideBar = {enableSideBar} itemsList={itemsList} setItemsList={setItemsList} subTotal={subTotal} tax={tax} total={total} setSubTotal={setSubtotal} setTax={setTax} setTotal={setTotal} mainOrder={mainOrder} setMainOrder={setMainOrder}></ItemList>
                     )}
                   </div>
               </div>
@@ -236,13 +239,13 @@ export default function Home() {
             }
             {page == "items" &&
               <div>
-                <Items categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} enableSideBar = {enableSideBar} sideBarEnabled = {sideBarEnabled} items={items} setItemsList={setItemsList} itemsList={itemsList} page = {page} setPage = {setPage} setItems={setItems} setIngredients={setIngredients} ingredients={ingredients}></Items>
+                <Items setMessage = {setMessage} categoryPage = {categoryPage} setCategoryPage = {setCategoryPage} enableSideBar = {enableSideBar} sideBarEnabled = {sideBarEnabled} items={items} setItemsList={setItemsList} itemsList={itemsList} page = {page} setPage = {setPage} setItems={setItems} setIngredients={setIngredients} ingredients={ingredients}></Items>
               </div>
 
             }
             {page == "inventory" &&
               <div>
-                <Inventory setCategoryPage = {setCategoryPage} ingredients = {ingredients} setIngredients = {setIngredients}></Inventory>
+                <Inventory setMessage = {setMessage}setCategoryPage = {setCategoryPage} ingredients = {ingredients} setIngredients = {setIngredients}></Inventory>
               </div>
             }
             {page == "history" &&
@@ -252,7 +255,7 @@ export default function Home() {
             }
             {page == "accounts" && 
               <div>
-                <Accounts accounts = {accounts} setAccounts={setAccounts}></Accounts>
+                <Accounts setMessage = {setMessage} accounts = {accounts} setAccounts={setAccounts}></Accounts>
               </div>
             }
             {page == "analytics" && 
@@ -260,10 +263,13 @@ export default function Home() {
                 <Analytics></Analytics>
               </div>
             }
+            <Alert message = {message} setMessage = {setMessage}></Alert>
           </div>
+          
         ) : (
           <Login page = {page} setPage = {setPage} loggedIn = {loggedIn} setLoggedIn = {setLoggedIn} accounts = {accounts}></Login>
         )}
+
        
       </div>
     </div>

@@ -20,7 +20,7 @@ async function getIngredient() {
   }
 
 
-export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, setCategoryPage, itemGridEnabled, sideBarEnabled, itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList, mainOrder, setMainOrder}) {
+export default function ItemList({setMessage, enableSideBar, enableItemGrid, categoryPage, setCategoryPage, itemGridEnabled, sideBarEnabled, itemsList, subTotal, tax, total, setSubTotal, setTax, setTotal, setItemsList, mainOrder, setMainOrder}) {
     const currentTime = new Date();
     const [popupEnabled, popupIsEnabled] = useState(false);
     const [toggle, setToggle] = useState(false);
@@ -243,6 +243,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
     useEffect(() => {
         if (mainOrder) {
             setMode("Edit")
+            setName(mainOrder.client)
             setPaymentTotal(total)
             setTime(new Date(`${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)}`));
             console.log(mainOrder.pickup_datetime);
@@ -289,6 +290,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
         event.preventDefault();
         if (paymentTotal < total) {
             setEnough("Not Enough");
+            setMessage("Error: not enough pay")
             return;
         }
         else {
@@ -320,7 +322,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                 orderPay().then((response) => console.log(response));
                 setMainOrder("");
                 setItemsList([]);
-                alert("Order has been paid")
+                setMessage("Order has been paid")
                 setPaymentType("");
                 closePopUp();
                 setCategoryPage("Default")
@@ -352,7 +354,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                 })
                 payData().then((response) => console.log(response));
                 setItemsList([]);
-                alert("Order has been paid and added")
+                setMessage("Order has been paid")
                 setPaymentType("");
                 closePopUp();
                 setCategoryPage("Default")
@@ -393,7 +395,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
         })
         postData().then((response) => console.log(response));
         setItemsList([]);
-        alert("Order has been added")
+        setMessage("Order has been Saved")
         closePopUp();
         setCategoryPage("Default")
     }
@@ -426,7 +428,7 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
         })
         updateOrder().then((response) => console.log(response));
         setItemsList([]);
-        alert("Order has been edited and saved")
+        setMessage("Order has been edited")
         setMainOrder("");
         closePopUp();
         setCategoryPage("Default")
@@ -576,38 +578,38 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                     <div className="flex justify-end">
                         <button className="cursor-pointer text-black text-3xl w-10 h-10" onClick = {() => closePopUp()}>X</button>
                     </div>
-                    <h1 className="text-black text-center text-2xl mb-4">{mode}</h1>
+                    <h1 className="text-black text-center text-[2.5vw] mb-4">{mode}</h1>
                     {mode == "Save" &&
-                        <form onSubmit={saveOrder} className="flex flex-col gap-[5vw] mx-auto">
+                        <form onSubmit={saveOrder} className="flex flex-col gap-[2.5vw]">
                             <div>
                                 <label>
-                                    <input placeholder="Enter Order Name" onChange={getName} className = "border-gray-500 border-2 pl-[0.5vw] pr-[0.5vw] text-black" type="text"/>
+                                    <input placeholder="Enter Order Name" onChange={getName} className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.1vw] text-black" type="text"/>
                                 </label>
                             </div>
 
                             <div>
                                 <label>
-                                    <input placeholder="Enter Notes" onChange={getNotes} className = "border-gray-500 border-2 pl-[0.5vw] pr-[0.5vw] text-black"  type="text"/>
+                                    <input placeholder="Enter Notes" onChange={getNotes} className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.1vw] text-black"  type="text"/>
                                 </label>
                             </div>
 
                             <div>
                                 <label>
-                                    <input onChange={getTime} value = {changeTime} className = "w-full border-gray-500 border-2 pl-[0.5vw] pr-[0.5vw] text-black"  type="time"/>
+                                    <input onChange={getTime} value = {changeTime} className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.5vw] text-black"  type="time"/>
                                 </label>
                             </div>
 
-                            <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Save Order"/>
+                            <input className="cursor-pointer w-full h-[3vw] text-[1.5vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md  m-auto" type = "submit" value = "Save Order"/>
                         </form>
                     }
                     {mode == "Pay" &&
-                        <form onSubmit={payOrder} className="flex flex-col gap-[3vw] mx-auto w-full justify-center">
-                            <div className="mx-auto">
+                        <form onSubmit={payOrder} className="flex flex-col gap-[2vw] mx-auto w-full justify-center">
+                            <div className="">
                                 <label>
-                                    <input placeholder="Enter Order Name" onChange={getName} className = "border-gray-500 border-2 pl-[0.5vw] pr-[0.5vw] text-black max-auto" type="text"/>
+                                    <input placeholder="Enter Order Name" onChange={getName} className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.1vw] text-black" type="text" value = {name}/>
                                 </label>
                             </div>
-                            <p className="text-center">Payment Method</p>
+                            <p className="text-black text-center text-[1.5vw]">Payment Method</p>
                             <div className="flex justify-between w-[22vw]">
                                 <button onClick={(event) => changeType(event)} className= {`${paymentType === "cash" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[5vw] h-[2.5vw]`}>Cash</button>
                                 <button onClick={(event) => changeType(event)} className= {`${paymentType === "amex" ? "bg-blue-300" : "bg-white"} cursor-pointer  drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[5vw] h-[2.5vw]`}>AMEX</button>
@@ -618,32 +620,32 @@ export default function ItemList({ enableSideBar, enableItemGrid, categoryPage, 
                             {paymentType ? (
                                 <div className="flex flex-col gap-[2vw]">
                                     <input step="0.01" onChange = {getTotal} placeholder={total.toFixed(2)} className = "h-[2vw] border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="number"/>
-                                    <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Pay"/>
+                                    <input className="cursor-pointer w-full h-[3vw] text-[1.5vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md  m-auto" type = "submit" value = "Pay"/>
                                 </div>
                             ) : ("")}
                         </form>
                     }
                     {mode == "Edit" &&
-                        <form onSubmit={saveChanges} className="flex flex-col gap-[5vw] mx-auto">
+                        <form onSubmit={saveChanges} className="flex flex-col gap-[2vw] mt-[1vw]">
                         <div>
                             <label>
-                                <input placeholder={mainOrder.client} onChange={getName} className = "border-gray-500 border-2 pl-[0.5vw] pr-[0.5vw] text-black" type="text"/>
+                                <input placeholder={mainOrder.client} onChange={getName} className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.1vw] text-black" type="text"/>
                             </label>
                         </div>
 
                         <div>
                             <label>
-                                <input placeholder={mainOrder.notes ? mainOrder.notes : "Enter Notes"} onChange={getNotes} className = "border-gray-500 border-2 pl-[0.5vw] pr-[0.5vw] text-black"  type="text"/>
+                                <input placeholder={mainOrder.notes ? mainOrder.notes : "Enter Notes"} onChange={getNotes} className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.1vw] text-black"  type="text"/>
                             </label>
                         </div>
 
                         <div>
                             <label>
-                                <input onChange={getTime} value = {changeTime} className = "w-full border-gray-500 border-2 pl-[0.5vw] pr-[0.5vw] text-black"  type="time"/>
+                                <input onChange={getTime} value = {changeTime} className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.5vw] text-black"  type="time"/>
                             </label>
                         </div>
 
-                        <input className="cursor-pointer m-auto bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-32 h-12" type = "submit" value = "Save Changes"/>
+                        <input className="cursor-pointer w-full h-[3vw] text-[1.5vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md  m-auto" type = "submit" value = "Save Changes"/>
                     </form>
                     }
                 </div>

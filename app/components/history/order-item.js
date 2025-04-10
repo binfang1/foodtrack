@@ -231,9 +231,10 @@ export default function OrderItem({loggedIn, order, orders, setOrders , setPage,
 
 
     return (
-        <div className="relative w-full bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] ">
+        <div className="relative w-[14.2vw] bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] ">
+
             <div className="flex flex-col ">
-                {order.status == "Completed" && 
+            {order.status == "Completed" && 
                 <div className={`text-center h-[4vw] bg-green-300`}>
                     <p className="text-[1.5vw] text-center">{order.client}</p>
                     <p className="text-[0.9vw]">{order.status}</p>
@@ -251,31 +252,38 @@ export default function OrderItem({loggedIn, order, orders, setOrders , setPage,
                     <p className="text-[0.9vw]">{order.status}</p>
                 </div>
                 }
-
                 
-
+                
                     
-                {order.payment_status != "paid" && loggedIn.type != "Chef" && (
+                {order.notes ? (
+                <div>
+                    <p className="p-[0.4vw] px-[0.6vw] text-[0.9vw]">Notes: {order.notes}</p>
+                    <hr className="border-[#D9D9D9]"></hr>
+                </div>
+                ) : ("")}
+
+                <div className="flex flex-col">
+                    <div className="text-[0.9vw]  py-[0.8vw] px-[0.6vw] ">
+                        {JSON.parse(order.items).map(item => (
+                            <p className="mb-[0.3vw]" key = {counter++}>{item.quantity} - {item.name}</p>
+                        ))}
+                    </div>
+                    <hr className="border-[#D9D9D9] px-[0px]"></hr>
+                </div>
+            </div>
+
+            <div className="absolute h-full w-full flex top-0">
+                <button className="h-full w-[50%]" onClick={undo}></button>
+                <button className="h-full w-[50%]" onClick={redo}></button>
+            </div>
+
+
+            {order.payment_status != "paid" && loggedIn.type != "Chef" && (
                     <div className="flex p-[0.4vw] relative z-40 text-[0.9vw]">
                         <button className="cursor-pointer hover:underline hover:text-red-400" onClick={deleteOrder}>Delete</button>
                         <button className="cursor-pointer hover:underline ml-auto " onClick={editPayOrder}>Edit/Pay</button>
                     </div>
                 )}
-
-                <div className="flex flex-col p-[0.4vw]">
-                  
-
-                    <div className="mt-[2vw] mb-[2vw] text-[0.9vw]">
-                        {JSON.parse(order.items).map(item => (
-                            <p className="mb-[0.3vw]" key = {counter++}>{item.quantity} - {item.name}</p>
-                        ))}
-                    </div>
-                </div>
-            </div>
-            <div className="absolute h-full w-full flex top-0">
-                <button className="h-full w-[50%]" onClick={undo}></button>
-                <button className="h-full w-[50%]" onClick={redo}></button>
-            </div>
         </div>
     );
 }
