@@ -19,7 +19,7 @@ async function getData() {
   }
 
 
-export default function Create({setItemsList, id, setId, currentItem, editTile, price, setPrice, name, setName, category, setCategory, setPage, inputFields, setInputFields, ingredients, setCategoryPage}) {
+export default function Create({setMessage, setItemsList, id, setId, currentItem, editTile, price, setPrice, name, setName, category, setCategory, setPage, inputFields, setInputFields, ingredients, setCategoryPage}) {
 
     
     let list1 = [];
@@ -172,29 +172,29 @@ export default function Create({setItemsList, id, setId, currentItem, editTile, 
     const saveChanges = () => {
         event.preventDefault();
         if (organizeItems()) {
-            alert("Duplicate Ingredient Found, please change");
+            setMessage("Error: Duplicate Entry");
             return;
         }
 
-        putData().then((response) => console.log("Item Updated"))
+        putData().then((response) => setMessage("Item Updated"))
         back()
     }
 
     const addItem = () => {
         event.preventDefault();
         if (organizeItems()) {
-            alert("Duplicate Ingredient Found, please change");
+            setMessage("Error: Duplicate Entry");
             return;
         }
         setItemsList([]);
-        postData().then((response) => console.log("Item added"));
+        postData().then((response) => setMessage("Item added"));
         back()
     }
 
     const deleteItem = () => {
         event.preventDefault();
         setItemsList([]);
-        deleteData().then((response) => console.log("Item Deleted"));
+        deleteData().then((response) => setMessage("Item Deleted"));
         back()
     }
 
@@ -225,11 +225,11 @@ export default function Create({setItemsList, id, setId, currentItem, editTile, 
                 <div className="mx-auto flex flex-col gap-[1vw] overflow-auto max-h-[15vw] border-gray-500 border-2 rounded-md p-[0.5vw] w-full">
                     {inputFields.map((ingredient, index) =>
                     <div key = {index} className="flex gap-[0.5vw] mr-[0.5vw]">
-                    <select value = {ingredient.ingredient} onChange = {(event) => handleIngredient(index, event)} className = "text-[1.5vw] rounded-md h-[3vw] w-2/3 border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black mx-auto">
+                    <select value = {ingredient.ingredient} onChange = {(event) => handleIngredient(index, event)} className = "text-[1.5vw] capitalize rounded-md h-[3vw] w-2/3 border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black mx-auto">
                         {   
                             
                             ingredients.map((ingredient, index) => (
-                                    <option key = {index} className="text-[1.5vw]">{ingredient.name}</option>
+                                    <option key = {index} className="text-[1.5vw] capitalize">{ingredient.name}</option>
                             ))
                         }
                     </select>

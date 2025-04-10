@@ -35,6 +35,7 @@ async function getIngredient() {
 
 export default function OrderItem({loggedIn, order, orders, setOrders , setPage, setCategoryPage, itemsList, setItemsList, mainOrder, setMainOrder, items}) {
     var counter = 1;
+    console.log(order);
     var time = (`${String(new Date().getFullYear()).padStart(2, '0')}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(new Date().getDate()).padStart(2, '0')} ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}:${String(new Date().getSeconds()).padStart(2,'0')}`);
     const convert = new Date(`${order.completed_datetime.slice(0, 10)} ${order.completed_datetime.slice(11, 16)} UTC`)
     const now = new Date(Date.now());

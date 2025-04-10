@@ -82,6 +82,7 @@ export default function OrderItem({loggedIn, order, orders, setOrders , setPage,
 
     async function statusChange (change) {
         const url = "http://localhost:3000/api/status";
+        console.log(time)
         try {
             const response = await fetch(url , {
               'method': 'PUT',

@@ -109,6 +109,14 @@ export default function ItemList({setMessage, enableSideBar, enableItemGrid, cat
         const url = "http://localhost:3000/api/orders";
         const create_date = new Date(`${mainOrder.creation_datetime.slice(0, 10)} ${mainOrder.creation_datetime.slice(11, 16)} UTC`);
         const pickup_date = new Date(`${mainOrder.pickup_datetime.slice(0, 10)} ${mainOrder.pickup_datetime.slice(11, 16)} UTC`);
+        var completed_date;
+        try {
+            let temp_date = new Date(`${mainOrder.completed_datetime.slice(0, 10)} ${mainOrder.completed_datetime.slice(11, 16)} UTC`);
+            completed_date = `${String(temp_date.getFullYear()).padStart(2, '0')}-${String(temp_date.getMonth() + 1).padStart(2, '0')}-${String(temp_date.getDate()).padStart(2, '0')} ${temp_date.getHours()}:${String(temp_date.getMinutes()).padStart(2,'0')}:${String(temp_date.getSeconds()).padStart(2,'0')}`
+        } catch (err) {
+            completed_date = mainOrder.completed_date
+        }
+        
         try {
           const response = await fetch(url , {
             'method': 'PUT',
@@ -121,7 +129,7 @@ export default function ItemList({setMessage, enableSideBar, enableItemGrid, cat
                     notes: mainOrder.notes, 
                     status: mainOrder.status, 
                     creation_datetime: `${String(create_date.getFullYear()).padStart(2, '0')}-${String(create_date.getMonth() + 1).padStart(2, '0')}-${String(create_date.getDate()).padStart(2, '0')} ${create_date.getHours()}:${String(create_date.getMinutes()).padStart(2,'0')}:${String(create_date.getSeconds()).padStart(2,'0')}`, 
-                    completed_datetime: null,
+                    completed_datetime: completed_date,
                     payment_status: "paid",
                     pickup_datetime: `${String(pickup_date.getFullYear()).padStart(2, '0')}-${String(pickup_date.getMonth() + 1).padStart(2, '0')}-${String(pickup_date.getDate()).padStart(2, '0')} ${pickup_date.getHours()}:${String(pickup_date.getMinutes()).padStart(2,'0')}:${String(pickup_date.getSeconds()).padStart(2,'0')}`,
                     payment_method: paymentType,
