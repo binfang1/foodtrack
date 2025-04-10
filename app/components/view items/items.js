@@ -1,7 +1,7 @@
 "use client";
+import { GoPencil } from "react-icons/go";
 import Create from "./creation";
 import { useState, useEffect } from "react";
-import { GoPencil } from "react-icons/go";
 
 async function getData() {
     const url = "http://localhost:3000/api/items";

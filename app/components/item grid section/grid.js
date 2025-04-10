@@ -3,6 +3,7 @@ import GridItem from "./grid-item";
 import CategoryItem from "./category-item";
 import { useEffect, useState } from "react";
 import { GoMoveToStart } from "react-icons/go";
+import styles from "../../styles/styles.module.css"
 
 
 
@@ -50,8 +51,8 @@ export default function ItemGrid({categoryPage, setCategoryPage,  itemGridEnable
                     }
                     {categoryPage != "Default" &&
                     <div>
-                        <div>
-                            <GoMoveToStart onClick={() => setCategoryPage("Default")} className="cursor-pointer text-[3vw] p-[0.4vw] border-1 rounded-3xl solid mt-[1vw] ml-[1vw]"/>
+                        <div className="p-[0.2vw]">
+                            <GoMoveToStart onClick={() => setCategoryPage("Default")} className={`${styles.general_button} ${styles.back_button}`}/>
                         </div>
                         <div className="flex flex-wrap w-[50vw] gap-[1vw] mx-auto mt-[1.625vw]">
                             {newItems.filter(item => item.category === categoryPage).map(item => (
