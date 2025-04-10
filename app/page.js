@@ -1,7 +1,7 @@
 "use client";
 import ReactDOM from 'react-dom'
 import ItemGrid from "./components/item grid section/grid.js";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import ItemList from "./components/items sections/item-list.js";
 import Login from "./components/login/login.js";
 import OrderGrid from "./components/order section/order-grid.js";
@@ -129,7 +129,6 @@ export default function Home() {
 
   useEffect(() => {
     setPage(page);
-    setMessage("")
   }, [page]);
 
 
