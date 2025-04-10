@@ -43,10 +43,15 @@ export default function ItemGrid({categoryPage, setCategoryPage,  itemGridEnable
             max-[769px]:w-[70vw]">
                 <div>
                     {categoryPage == "Default" &&
+                        <div>
+                        <div className="p-[0.2vw]">
+                            <p className="invisible">a</p>
+                        </div>
                         <div  className="flex flex-wrap w-[50vw] gap-[1vw] mx-auto mt-[1.625vw]">
                             {categories.map(item => (
                                 <CategoryItem key = {item.category} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} name = {item.category} categoryPage = {categoryPage} setCategoryPage = {setCategoryPage}></CategoryItem>
                             ))}
+                        </div>
                         </div>
                     }
                     {categoryPage != "Default" &&
@@ -54,7 +59,7 @@ export default function ItemGrid({categoryPage, setCategoryPage,  itemGridEnable
                         <div className="p-[0.2vw]">
                             <GoMoveToStart onClick={() => setCategoryPage("Default")} className={`${styles.general_button} ${styles.back_button}`}/>
                         </div>
-                        <div className="flex flex-wrap w-[50vw] gap-[1vw] mx-auto mt-[1.625vw]">
+                        <div className="flex flex-wrap w-[50vw] gap-[1vw] mx-auto">
                             {newItems.filter(item => item.category === categoryPage).map(item => (
                                 <GridItem key={item.id} enableItemGrid = {enableItemGrid} itemGridEnabled = {itemGridEnabled} id={item.id} name={item.name} price={item.price} ingredients = {JSON.parse(item.ingredients)} num_ingred = {JSON.parse(item.ingredient_num)} category = {item.category} itemsList={itemsList} setItemsList={setItemsList}></GridItem>
                             ))}

@@ -86,7 +86,7 @@ export default function Items({setMessage, items, setItems, itemsList, setItemsL
         setName("");
         setPrice("");
         setCategory("");
-        setInputFields("")
+        setInputFields([])
         setCurrentItem("")
         setPage("Create")
     }

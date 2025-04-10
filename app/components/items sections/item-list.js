@@ -619,7 +619,7 @@ export default function ItemList({setMessage, enableSideBar, enableItemGrid, cat
 
                             {paymentType ? (
                                 <div className="flex flex-col gap-[2vw]">
-                                    <input step="0.01" onChange = {getTotal} placeholder={total.toFixed(2)} className = "h-[2vw] border-gray-500 border-2 pl-[0.1vw] pr-[0.1vw] text-black" type="number"/>
+                                    <input step="0.01" onChange = {getTotal} placeholder={total.toFixed(2)} className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.5vw] text-black" type="number"/>
                                     <input className="cursor-pointer w-full h-[3vw] text-[1.5vw] bg-white drop-shadow-md rounded-xl border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md  m-auto" type = "submit" value = "Pay"/>
                                 </div>
                             ) : ("")}

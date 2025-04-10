@@ -125,8 +125,10 @@ export default function Create({setMessage, accounts , setAccounts, setPage, pag
 
     return (
         <div className="h-[100vh] p-[0.7vw]">
-            <GoMoveToStart onClick={() => back()} className={`${styles.general_button} ${styles.back_button}`}/>
-            <h1 className="text-[3vw] absolute top-0 right-[1vw] bottom-0 mx-auto">{editTile}</h1>
+            <div className="flex align-center">
+                <GoMoveToStart onClick={() => back()} className={`${styles.general_button} ${styles.back_button}`}/>
+                <h1 className="text-[3vw] ml-auto mt-[-1vw]">{editTile}</h1>
+            </div>
             <form  onSubmit = {() => addAccount()} className="flex flex-col gap-[1.7vw] w-[30vw] m-auto mt-[2vw]">
 
                 <label className="text-[1.5vw] flex flex-col text-left">

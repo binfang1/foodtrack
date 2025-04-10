@@ -201,9 +201,10 @@ export default function Create({setItemsList, id, setId, currentItem, editTile, 
 
     return (
         <div className="h-[100vh] p-[0.7vw]">
-            <GoMoveToStart onClick={() => back()} className={`${styles.general_button} ${styles.back_button}`}/>
-            <h1 className="text-[3vw] absolute top-0 right-[1vw] bottom-0 mx-auto">{editTile}</h1>
-            
+            <div className="flex align-center">
+                <GoMoveToStart onClick={() => back()} className={`${styles.general_button} ${styles.back_button}`}/>
+                <h1 className="text-[3vw] ml-auto mt-[-1vw]">{editTile}</h1>
+            </div>
             <form  onSubmit = {() => addItem()} className="flex flex-col m-auto gap-[1.7vw] w-[30vw] h-[52vw]">
                 <label className="text-[1.5vw] flex flex-col text-left">
                     <p>Item Name:</p>
@@ -220,7 +221,7 @@ export default function Create({setItemsList, id, setId, currentItem, editTile, 
                     <input value = {category} onChange = {getCategory} placeholder="Category" className = "rounded-md w-full h-[3vw] border-gray-500 border-2 pl-[1vw] pr-[0.1vw] text-black"  type="text" required/>
                 </label>
 
-
+                {inputFields.length != 0 && ( 
                 <div className="mx-auto flex flex-col gap-[1vw] overflow-auto max-h-[15vw] border-gray-500 border-2 rounded-md p-[0.5vw] w-full">
                     {inputFields.map((ingredient, index) =>
                     <div key = {index} className="flex gap-[0.5vw] mr-[0.5vw]">
@@ -237,7 +238,7 @@ export default function Create({setItemsList, id, setId, currentItem, editTile, 
                     </div>
                     )}
                 </div>
-
+                )}
                 <div className="mx-auto">
                     <input onClick = {() => handleAddFields()}className="text-[1vw] cursor-pointer bg-white drop-shadow-md border-solid border-3 border-[#D9D9D9] text-black rounded-lg shadow-md w-[14vw] h-[3vw] m-auto" type = "button" value = "Add Ingredient"/>
                 </div>
