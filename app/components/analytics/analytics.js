@@ -26,7 +26,7 @@ ChartJS.register(
   );
 
 async function getOrders() {
-    const url = "http://localhost:3000/api/orders";
+    const url = "http://localhost:3000/api/orders/paid";
     try {
       const response = await fetch(url);
       if (!response.ok) {
